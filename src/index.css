@@ -1,5 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@300;400;700&display=swap');
+
 body {
   margin: 0;
-
+  background: #1F2833;
+  font-family: 'MuseoModerno', cursive;
 }
+
+.header {
+  text-align: center;
+  color: #66FCF1;
+}
+
+
 
