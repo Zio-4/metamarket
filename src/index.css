@@ -6,10 +6,12 @@ body {
   font-family: 'MuseoModerno', cursive;
 }
 
-.header {
-  text-align: center;
-  color: #66FCF1;
+
+.items {
+  padding-left: 10em;
+  padding-right: 10em;
 }
+
 
 
 

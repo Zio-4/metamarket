@@ -1,10 +1,15 @@
 import React from 'react';
 import Market from './Components/Market';
+import { Routes, Route, Link } from "react-router-dom";
+import NavBar from './Components/NavBar';
 
 function App() {
   return (
     <div className="App">
-      <h1 className='header'>metaMarket</h1>
+      <NavBar />
+      <Routes>
+        <Route path="/market" element={<Market />} />
+      </Routes>
     </div>
   );
 }
