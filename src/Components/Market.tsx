@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,133 +9,74 @@ import Stack from '@mui/material/Stack'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
+import Chip from '@mui/material/Chip';
 
+interface Iphotos {
+    albumId: number
+    id: number
+    title: string
+    url: string
+    thumbnailUrl: string
+}
 
 function Market() {
-  return (
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={{md: 3}} columns={{md: 12}} className="items">
-            <Grid item md={4}>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardMedia
-                    component="img"
-                    height="140"
-                    image="https://cdn.vox-cdn.com/thumbor/kPVwAvRiRvewKWEiRqtr4yiN9_M=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084330/bored_ape_nft_accidental_.jpg"
-                    alt="green iguana"
-                    />
-                    <CardContent style={{backgroundColor: "gray"}}>
-                        <Typography gutterBottom variant="h5" component="div" style={{color: "white"}}>
-                            Lizard
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" style={{color: "white"}}>
-                            Lizards are a widespread group of squamate reptiles, with over 6,000
-                            species, ranging across all continents except Antarctica
-                        </Typography>
-                    </CardContent>
-                </Card>
-            </Grid>
+    const [photos, setPhotos] = useState<Iphotos[]>([])
 
-            <Grid item md={4}>
-                <Card sx={{ maxWidth: 345 }}>
+    useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/albums/1/photos").then((r) => {
+        if (r.ok) {
+            r.json().then((data) => {
+                console.log(data)
+                setPhotos(data)
+            })
+        } else {
+            r.json().then((err) => {
+                console.log(err)
+            })
+        }
+        })
+    }, [])
+
+
+    const renderPokemon = () => {
+       return photos.map(p => (
+        <Grid item md={4} key={p.id} >
+            <Card sx={{ maxWidth: 330, backgroundColor: "#636363", paddingBottom: 4}} >
                 <CardMedia
                 component="img"
                 height="140"
-                image="https://cdn.vox-cdn.com/thumbor/kPVwAvRiRvewKWEiRqtr4yiN9_M=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084330/bored_ape_nft_accidental_.jpg"
-                alt="green iguana"
+                image="https://media.npr.org/assets/img/2015/09/13/gettyimages-89416439_wide-bd64a5a83670c04a644c4c66e0ec072d384976c2.jpg"
+                alt="photos"
                 />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                </Typography>
+                <CardContent >
+                    <Typography gutterBottom variant="h6" component="div"  sx={{color: "white"}}>
+                        Weekend Pack
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{color: "white"}}>
+                        Description
+                    </Typography>
                 </CardContent>
-                </Card>
-            </Grid>
+                <Stack sx={{width: .3, left: 10}} direction="column" spacing={1}>
+                    <Chip sx={{backgroundColor: "#C5C6C7",}} label="BTC: 0.238"></Chip>
+                    <Chip sx={{backgroundColor: "#C5C6C7"}} label="ETH: 0.718"></Chip>
+                    <Chip sx={{backgroundColor: "#C5C6C7"}} label="USD: 20.00"></Chip>
+                </Stack>
 
-            <Grid item md={4}>
-                <Card sx={{ maxWidth: 345 }}>
-                <CardMedia
-                component="img"
-                height="140"
-                image="https://cdn.vox-cdn.com/thumbor/kPVwAvRiRvewKWEiRqtr4yiN9_M=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084330/bored_ape_nft_accidental_.jpg"
-                alt="green iguana"
-                />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                </Typography>
-                </CardContent>
-                </Card>
-            </Grid>
-
-            <Grid item md={4}>
-                <Card sx={{ maxWidth: 345 }}>
-                <CardMedia
-                component="img"
-                height="140"
-                image="https://cdn.vox-cdn.com/thumbor/kPVwAvRiRvewKWEiRqtr4yiN9_M=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084330/bored_ape_nft_accidental_.jpg"
-                alt="green iguana"
-                />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                </Typography>
-                </CardContent>
-                </Card>
-            </Grid>
-
-            <Grid item md={4}>
-                <Card sx={{ maxWidth: 345 }}>
-                <CardMedia
-                component="img"
-                height="140"
-                image="https://cdn.vox-cdn.com/thumbor/kPVwAvRiRvewKWEiRqtr4yiN9_M=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084330/bored_ape_nft_accidental_.jpg"
-                alt="green iguana"
-                />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                </Typography>
-                </CardContent>
-                </Card>
-            </Grid>
-
-            <Grid item md={4}>
-                <Card sx={{ maxWidth: 345 }}>
-                <CardMedia
-                component="img"
-                height="140"
-                image="https://cdn.vox-cdn.com/thumbor/kPVwAvRiRvewKWEiRqtr4yiN9_M=/1400x788/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23084330/bored_ape_nft_accidental_.jpg"
-                alt="green iguana"
-                />
-                <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
-                </Typography>
-                </CardContent>
-                </Card>
-            </Grid>
+            </Card>
+            <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: 250}} aria-label="add">
+                <AddIcon />
+            </Fab>
         </Grid>
-      </Box>
+        ))
+    }
+    
+  return (
+      //sx={{ flexGrow: 1 }}
+        <Grid container spacing={{md: 1}} sx={{paddingX: 50, paddingTop: 3 }}>
+            {renderPokemon()}
+        </Grid>
 
   )
 }
