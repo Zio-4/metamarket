@@ -15,10 +15,10 @@ function NavBar() {
         <AppBar position="static" sx={{ bgcolor: "#1F2833" }}>
             <Toolbar>
             <Typography  variant="h4" sx={{color: "#66FCF1", fontFamily: 'MuseoModerno', ml: 3, p: 1}} component="div">metaMarket</Typography>
-            <Breadcrumbs sx={{color: "white", marginLeft: "auto", paddingRight: 10}}>
-                <div>1</div>
-                <div>2</div>
-                <div>3</div>
+            <Breadcrumbs sx={{color: "#66FCF1", marginLeft: "auto", paddingRight: 10,}}>
+                <div>Market</div>
+                <div>Account</div>
+                <div>Cart</div>
             </Breadcrumbs>
             </Toolbar>
         </AppBar>
