@@ -10,6 +10,11 @@
       "StackName": "amplify-metamarket-dev-111210",
       "StackId": "arn:aws:cloudformation:us-west-1:553922173385:stack/amplify-metamarket-dev-111210/f018d190-a6e6-11ec-adeb-0227a9e47005",
       "AmplifyAppId": "d3d9ovxdjeb3uf"
+    },
+    "categories": {
+      "auth": {
+        "true": {}
+      }
     }
   }
 }

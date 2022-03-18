@@ -1,0 +1,16 @@
+{
+  "resourceName": "listingImage",
+  "policyUUID": "e5d0bf61",
+  "bucketName": "listing-images",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}
