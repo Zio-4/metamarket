@@ -12,7 +12,7 @@ import Box from '@mui/material/Box'
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import Divider from '@mui/material/Divider';
 
 
@@ -47,7 +47,7 @@ function Market() {
 
     const renderPokemon = () => {
        return photos.map(p => (
-        <Grid item md={4} key={p.id} >
+        <Grid item md={4} key={p.id} component={Link} to={`/markets/${marketname}/${p.id}`} sx={{textDecoration: 'none'}}>
             <Card sx={{ maxWidth: 330, backgroundColor: "#636363", paddingBottom: 4}} >
                 <CardMedia
                 component="img"
