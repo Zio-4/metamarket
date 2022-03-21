@@ -73,7 +73,7 @@ function NavBar() {
           <Button 
             sx={{ my: 2, display: 'block', color: "#66FCF1", fontFamily: 'Cambay' }}
             component={Link}
-            to={'/marketlist'}
+            to={'/markets'}
           >
             Markets <StorefrontSharpIcon fontSize='small'/>
           </Button>

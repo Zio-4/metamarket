@@ -12,6 +12,7 @@ body {
 
 .marketlist-cards-text {
   opacity: 85%;
+  text-decoration: none;
 }
 
 
