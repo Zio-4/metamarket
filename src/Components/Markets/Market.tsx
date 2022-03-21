@@ -12,7 +12,8 @@ import Box from '@mui/material/Box'
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
-
+import { useParams } from 'react-router-dom'
+import Divider from '@mui/material/Divider';
 
 
 interface Iphotos {
@@ -25,6 +26,8 @@ interface Iphotos {
 
 function Market() {
     const [photos, setPhotos] = useState<Iphotos[]>([])
+    const { marketname } = useParams()
+
 
     useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/albums/1/photos").then((r) => {
@@ -75,11 +78,20 @@ function Market() {
     }
     
   return (
-      //sx={{ flexGrow: 1 }}
+    <>
+        <Typography variant="h3" sx={{textAlign: 'center', color: '#C5C6C7', marginTop: 5, textTransform: 'capitalize'}}>
+            explore {marketname}
+        </Typography>
+        <Box sx={{ width: '25%', margin: 'auto', marginTop: 6}}>
+            <Typography sx={{color: '#C5C6C7'}}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris vitae ultricies leo integer. Quis risus sed vulputate odio ut. In egestas erat imperdiet sed euismod nisi porta lorem. Nulla facilisi cras fermentum odio eu feugiat.
+            </Typography>
+        </Box>
+        <Divider variant="middle" sx={{marginY: 8, bgcolor: "gray"}} className='market-divider'></Divider>
         <Grid container spacing={{md: 1}} sx={{paddingX: 50, paddingTop: 3 }}>
             {renderPokemon()}
         </Grid>
-
+    </>
   )
 }
 
