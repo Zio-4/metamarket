@@ -15,9 +15,19 @@ body {
   text-decoration: none;
 }
 
-.market-divider {
-  background: aqua;
+.listing-form {
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  background-color: #242f3b;
+  padding: 3em;
+  border-radius: .25em;
+  margin-top: 4em;
+  border: 1px solid gray;
 }
+
+
+
 
 
 

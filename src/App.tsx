@@ -1,13 +1,14 @@
 import React from 'react';
 import Market from './Components/Markets/Market';
 import { Routes, Route} from "react-router-dom";
-import NavBar from './Components/NavBar';
+import NavBar from './Components/Navigation/NavBar';
 import MarketList from './Components/Markets/MarketList';
-import Cart from './Components/CartComponents/Cart';
+import Cart from './Components/Cart/Cart';
 import Login from './Components/User/Login';
 import SignUp from './Components/User/SignUp';
-import LandingPage from './Components/LandingPage';
+import LandingPage from './Components/Navigation/LandingPage';
 import Listing from './Components/Markets/Listing';
+import ListingForm from './Components/Markets/ListingForm';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/listingform" element={<ListingForm />} />
       </Routes>
     </div>
   );
