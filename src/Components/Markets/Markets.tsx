@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom'
 
-function MarketList() {
+function Markets() {
 
 
   const categories = [ 'art', 'boats', 'cars', 'clothes', 'land', 'houses', 'items', 'jewelry', 'traits' ]
@@ -30,5 +30,5 @@ function MarketList() {
   )
 }
 
-export default MarketList
+export default Markets
 
