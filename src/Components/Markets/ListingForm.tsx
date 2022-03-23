@@ -56,6 +56,9 @@ function ListingForm() {
             <TextField variant="outlined" label="Y coordinate" type="number" />
           </Grid>
           <Grid item>
+            <TextField variant="outlined" label="Description" multiline minRows={4}/>
+          </Grid>
+          <Grid item>
           <label htmlFor="contained-button-file">
             <Input accept="image/*" id="contained-button-file" multiple type="file" />
             <Button variant="contained" component="span" endIcon={<ArrowUpwardSharpIcon/>}>
@@ -66,6 +69,7 @@ function ListingForm() {
             List
           </Button>
           </Grid>
+
         </form>
       {/* </Paper> */}
     </Grid>
