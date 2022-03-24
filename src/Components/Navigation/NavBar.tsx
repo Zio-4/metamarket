@@ -28,8 +28,6 @@ function NavBar() {
     setMobileMenuState(!mobileMenuState)
   }
 
-  console.log(mobileMenuState)
-
   const navigateUser = (e: React.MouseEvent) => {
     let buttonClicked = (e.target as Element).textContent!.toLowerCase()
     if (buttonClicked === 'sell') {
