@@ -10,7 +10,6 @@ Dark cyan: #45A29E
 
 */
 
-
 body {
   margin: 0;
   background: #1F2833;
@@ -37,6 +36,10 @@ body {
   border: 1px solid gray;
 }
 
+.menu {
+  display: none;
+}
+
 nav {
   position: fixed;
   z-index: 999;
@@ -45,7 +48,6 @@ nav {
   top: 0;
   background: #2e3b4b;
   height: 100vh;
-  /* display: none; */
 }
 
 .mobile-menu-exit {
@@ -53,10 +55,16 @@ nav {
   cursor: pointer;
 }
 
+/* #menu-hidden {
+  display: hidden;
+} */
+
+
+/* 
 .navbar-container {
   display: flex;
   place-content: space-between;
-}
+} */
 
 
 

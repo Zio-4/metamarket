@@ -3,7 +3,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
 import StorefrontSharpIcon from '@mui/icons-material/StorefrontSharp';
 import ShoppingCartSharpIcon from '@mui/icons-material/ShoppingCartSharp';
 import AccountBoxSharpIcon from '@mui/icons-material/AccountBoxSharp';
@@ -13,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SellSharpIcon from '@mui/icons-material/SellSharp';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -22,27 +21,35 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
 function NavBar() {
+  let navigate = useNavigate()
+  const [mobileMenuState, setMobileMenuState] = useState(false)
+
+  const setMenu = () => {
+    setMobileMenuState(!mobileMenuState)
+  }
+
+  console.log(mobileMenuState)
+
+  const navigateUser = (e: React.MouseEvent) => {
+    let buttonClicked = (e.target as Element).textContent!.toLowerCase()
+    if (buttonClicked === 'sell') {
+      navigate(`listingform`)
+    } else {
+      navigate(`/${buttonClicked}`)
+    }
+    setMobileMenuState(!mobileMenuState)
+  }
 
   return (
-    // <Box sx={{ flexGrow: 1 }}>
-    //     <AppBar position="static" sx={{ bgcolor: "#1F2833" }}>
-    //         <Toolbar>
-    //         <Typography  variant="h4" sx={{color: "#66FCF1", fontFamily: 'MuseoModerno', ml: 3, p: 1}} component="div">metaMarket</Typography>
-    //         <Breadcrumbs sx={{color: "#66FCF1", marginLeft: "auto", paddingRight: 10, fontFamily: 'MuseoModerno'}}>
-    //             <div>Market</div>
-    //             <div>Cart</div>
-    //             <div>Account</div>
-    //         </Breadcrumbs>
-    //         </Toolbar>
-    //     </AppBar>
-    // </Box>
   <>
-    <nav >
+    <nav className={`${mobileMenuState ? 'menu' : null}`}>
       <div className='navbar-container'>
-        <CloseSharpIcon className='mobile-menu-exit' fontSize="large"/>
+        <IconButton onClick={setMenu}>
+          <CloseSharpIcon className='mobile-menu-exit' fontSize="large"/>
+        </IconButton>
 
           <List >
-              <ListItem sx={{color: '#66FCF1'}}>
+              <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <StorefrontSharpIcon />
                 </ListItemIcon>
@@ -50,7 +57,7 @@ function NavBar() {
                   primary="Markets"
                 />
               </ListItem>
-              <ListItem sx={{color: '#66FCF1'}}>
+              <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <SellSharpIcon />
                 </ListItemIcon>
@@ -58,7 +65,7 @@ function NavBar() {
                   primary="Sell"
                 />
               </ListItem>
-              <ListItem sx={{color: '#66FCF1'}}>
+              <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <ShoppingCartSharpIcon />
                 </ListItemIcon>
@@ -66,12 +73,11 @@ function NavBar() {
                   primary="Cart"
                 />
               </ListItem>
-              <ListItem sx={{color: '#66FCF1'}}>
+              <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <AccountBoxSharpIcon />
                 </ListItemIcon>
                 <ListItemText
-                
                   primary="Login"
                 />
               </ListItem>
@@ -111,6 +117,7 @@ function NavBar() {
               edge="end"
               color="inherit"
               sx={{display: {md: 'none'}}}
+              onClick={setMenu}
             >
               <MenuIcon />
             </IconButton>
