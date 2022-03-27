@@ -29,11 +29,11 @@ body {
   /* display: flex;
   justify-content: center;
   align-items: center; */
-  background-color: #242f3b;
+  background-color: #C5C6C7;
   padding: 3em;
   border-radius: .25em;
   margin-top: 4em;
-  border: 1px solid gray;
+  border: 1px solid #66FCF1;
 }
 
 .menu {
