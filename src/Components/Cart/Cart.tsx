@@ -9,7 +9,7 @@ function Cart() {
     <Grid container justifyContent='center' sx={{marginTop: 2}}>
       <Grid item xs={12} sx={{ textAlign: 'center'}}>
         <Typography sx={{color: 'white', fontSize: '1.8rem',}}>
-          Subtotal: $20.36
+          Subtotal: $25.98
         </Typography>
         <Button variant='outlined' sx={{color: "#66FCF1", marginTop: 1, marginX: 'auto'}}>
           Proceed to checkout
@@ -48,7 +48,7 @@ function Cart() {
                 </Typography>
               </Grid>
             </Grid>
-            <Divider sx={{bgcolor: "#45A29E", marginBottom: '1em'}}/>
+            <Divider sx={{bgcolor: "#45A29E", marginY: '1em'}}/>
             <Grid container>
               <Grid item xs={4} className='borders'>
                 {/* vertically align image */}
