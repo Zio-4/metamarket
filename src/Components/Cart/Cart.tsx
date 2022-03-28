@@ -1,6 +1,6 @@
 import React from 'react'
 import Grid from '@mui/material/Grid';
-import { Button, Card, CardContent, Typography, Box } from '@mui/material';
+import { Button, Card, CardContent, Typography, Box, Divider,} from '@mui/material';
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 
 
@@ -16,15 +16,16 @@ function Cart() {
         </Button>
       </Grid>
       <Grid item xs={12} sx={{marginTop: '1em'}}>
-        <Card sx={{width: 350, marginX: 'auto' }}>
+        <Card sx={{width: 350, marginX: 'auto', bgcolor: '#242526' }} className='card-bg'>
           <CardContent>
             <Grid container>
-              <Grid item xs={4}>
+              <Grid item xs={4} className='borders'>
+                {/* vertically align image */}
                 <Box
                 component="img"
                 sx={{
-                  height: 120,
-                  width: 120,
+                  height: 105,
+                  width: 105,
                   maxHeight: { xs: 400, md: 600 },
                   maxWidth: { xs: 350, md: 350 },
                   borderRadius: 1
@@ -33,16 +34,47 @@ function Cart() {
                 src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/3/2022/01/13201724/Mutant-975x1024-1.jpeg"
                 />
               </Grid>
-              <Grid item xs={4}>
-                <Typography sx={{color: 'gray', fontSize: '.8rem', textAlign: 'center'}}>
-                  Crypto mutant punk #361
-                </Typography>
-                <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />}>
-                  Delete
-                </Button>
+              <Grid item xs={4} className='borders' sx={{ textAlign: 'center'}} >
+                  <Typography sx={{color: '#C1C1C1', fontSize: '.8rem', textAlign: 'center'}}>
+                    Crypto mutant punk #361
+                  </Typography>
+                  <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />} sx={{marginTop: '2.5em'}}>
+                    Delete
+                  </Button>
               </Grid>
-              <Grid item xs={4}>
-                <Typography sx={{textAlign: 'right'}}>
+              <Grid item xs={4} className='borders'>
+                <Typography sx={{textAlign: 'right', color: '#C1C1C1',}}>
+                  $12.99
+                </Typography>
+              </Grid>
+            </Grid>
+            <Divider sx={{bgcolor: "#45A29E", marginBottom: '1em'}}/>
+            <Grid container>
+              <Grid item xs={4} className='borders'>
+                {/* vertically align image */}
+                <Box
+                component="img"
+                sx={{
+                  height: 105,
+                  width: 105,
+                  maxHeight: { xs: 400, md: 600 },
+                  maxWidth: { xs: 350, md: 350 },
+                  borderRadius: 1
+                }}
+                alt="Crypto punk mutant whatever"
+                src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/3/2022/01/13201724/Mutant-975x1024-1.jpeg"
+                />
+              </Grid>
+              <Grid item xs={4} className='borders' sx={{ textAlign: 'center'}} >
+                  <Typography sx={{color: '#C1C1C1', fontSize: '.8rem', textAlign: 'center'}}>
+                    Crypto mutant punk #361
+                  </Typography>
+                  <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />} sx={{marginTop: '2.5em'}}>
+                    Delete
+                  </Button>
+              </Grid>
+              <Grid item xs={4} className='borders'>
+                <Typography sx={{textAlign: 'right', color: '#C1C1C1',}}>
                   $12.99
                 </Typography>
               </Grid>

@@ -55,6 +55,14 @@ nav {
   cursor: pointer;
 }
 
+.card-bg {
+  background-color: #0B0C10;
+}
+
+/* .borders {
+  border: 1px solid blue
+} */
+
 /* #menu-hidden {
   display: hidden;
 } */

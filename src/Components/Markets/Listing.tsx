@@ -33,7 +33,7 @@ function Listing() {
         <Typography sx={{color: 'white', fontSize: '1.8rem', textAlign: 'center'}}>
           Some Kind of Ape Club #361
         </Typography>
-        <Card sx={{width: 350, backgroundColor: '#231F20',  marginX: 'auto', color: 'white'}}>
+        <Card sx={{width: 350, backgroundColor: '#242526',  marginX: 'auto', color: 'white'}}>
           <CardContent>
             <Typography>
               Owned by: Kacii_Eleven
@@ -59,7 +59,7 @@ function Listing() {
             </Typography>
           </CardContent>
         </Card>
-        <Card sx={{width: 350, marginTop: 1, marginX: 'auto', backgroundColor: '#231F20', color: 'white'}}>
+        <Card sx={{width: 350, marginTop: 1, marginX: 'auto', backgroundColor: '#242526', color: 'white'}}>
           <CardContent>
             <Typography>
               Description:
