@@ -4,9 +4,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { TextField, Divider } from '@mui/material';
+import { TextField, Divider, Button } from '@mui/material';
 import USD from '../../../node_modules/cryptocurrency-icons/svg/black/usd.svg'
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
+import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
 
 
 function Listing() {
@@ -54,6 +55,9 @@ function Listing() {
                12 / .003 ETH
             </Typography>
             <Divider sx={{bgcolor: "#45A29E"}} ></Divider>
+            <Button variant='contained' sx={{marginY: '0.5rem', width: '100%'}}>
+              <AddShoppingCartSharpIcon sx={{marginRight: '0.5rem'}}/> Add to cart
+            </Button>
             <Typography>
               Blockchain: ETHEREUM
             </Typography>
