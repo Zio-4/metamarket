@@ -59,6 +59,10 @@ nav {
   background-color: #404040;
 }
 
+.placeholder-text {
+  color: white;
+}
+
 /* .borders {
   border: 1px solid blue
 } */
