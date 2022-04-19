@@ -1,10 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid';
 import { Button, Card, CardContent, Typography, Box, Divider,} from '@mui/material';
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 
+interface Icart {
+  listingId: number
+  title: string
+  price: number
+  image: string
+}
 
 function Cart() {
+  const [cartItems, setCartItems] = useState<Icart[]>([])
+
+  useEffect(() => {
+    console.log(localStorage.getItem('cart'))
+    setCartItems(JSON.parse(localStorage.getItem('cart') || ''))
+  }, [])
+
+  const removeFromCart = (listingId: number) => {
+      let updatedCart = cartItems.filter(item => item.listingId !== listingId)
+      localStorage.setItem('cart', JSON.stringify(updatedCart))
+      setCartItems(updatedCart)
+  }
+
+
   return (
     <Grid container justifyContent='center' sx={{marginTop: 2}}>
       <Grid item xs={12} sx={{ textAlign: 'center'}}>
@@ -18,66 +38,40 @@ function Cart() {
       <Grid item xs={12} sx={{marginTop: '1em'}}>
         <Card sx={{width: 350, marginX: 'auto', bgcolor: '#242526' }} className='card-bg'>
           <CardContent>
-            <Grid container>
-              <Grid item xs={4} className='borders'>
-                {/* vertically align image */}
-                <Box
-                component="img"
-                sx={{
-                  height: 105,
-                  width: 105,
-                  maxHeight: { xs: 400, md: 600 },
-                  maxWidth: { xs: 350, md: 350 },
-                  borderRadius: 1
-                }}
-                alt="Crypto punk mutant whatever"
-                src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/3/2022/01/13201724/Mutant-975x1024-1.jpeg"
-                />
+            {cartItems.map(item => (
+              <div key={item.listingId}>
+                <Grid container>
+                  <Grid item xs={4} className='borders'>
+                    <Box
+                    component="img"
+                    sx={{
+                      height: 105,
+                      width: 105,
+                      maxHeight: { xs: 400, md: 600 },
+                      maxWidth: { xs: 350, md: 350 },
+                      borderRadius: 1
+                    }}
+                    alt="Listing image"
+                    src={item.image}
+                    />
+                  </Grid>
+                  <Grid item xs={4} className='borders' sx={{ textAlign: 'center'}} >
+                      <Typography sx={{color: '#C1C1C1', fontSize: '.8rem', textAlign: 'center'}}>
+                        {item.title}
+                      </Typography>
+                      <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />} sx={{marginTop: '2.5em'}} onClick={() => removeFromCart(item.listingId)}>
+                        Delete
+                      </Button>
+                  </Grid>
+                  <Grid item xs={4} className='borders'>
+                    <Typography sx={{textAlign: 'right', color: '#C1C1C1',}}>
+                      {`$ ${item.price}`}
+                    </Typography>
+                  </Grid>
               </Grid>
-              <Grid item xs={4} className='borders' sx={{ textAlign: 'center'}} >
-                  <Typography sx={{color: '#C1C1C1', fontSize: '.8rem', textAlign: 'center'}}>
-                    Crypto mutant punk #361
-                  </Typography>
-                  <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />} sx={{marginTop: '2.5em'}}>
-                    Delete
-                  </Button>
-              </Grid>
-              <Grid item xs={4} className='borders'>
-                <Typography sx={{textAlign: 'right', color: '#C1C1C1',}}>
-                  $12.99
-                </Typography>
-              </Grid>
-            </Grid>
-            <Divider sx={{bgcolor: "#45A29E", marginY: '1em'}}/>
-            {/* <Grid container>
-              <Grid item xs={4} className='borders'>
-                <Box
-                component="img"
-                sx={{
-                  height: 105,
-                  width: 105,
-                  maxHeight: { xs: 400, md: 600 },
-                  maxWidth: { xs: 350, md: 350 },
-                  borderRadius: 1
-                }}
-                alt="Crypto punk mutant whatever"
-                src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/3/2022/01/13201724/Mutant-975x1024-1.jpeg"
-                />
-              </Grid>
-              <Grid item xs={4} className='borders' sx={{ textAlign: 'center'}} >
-                  <Typography sx={{color: '#C1C1C1', fontSize: '.8rem', textAlign: 'center'}}>
-                    Crypto mutant punk #361
-                  </Typography>
-                  <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />} sx={{marginTop: '2.5em'}}>
-                    Delete
-                  </Button>
-              </Grid>
-              <Grid item xs={4} className='borders'>
-                <Typography sx={{textAlign: 'right', color: '#C1C1C1',}}>
-                  $12.99
-                </Typography>
-              </Grid>
-            </Grid>  */}
+              <Divider sx={{bgcolor: "#45A29E", marginY: '1em'}}/>
+            </div>
+            ))}
           </CardContent>
         </Card>
       </Grid>

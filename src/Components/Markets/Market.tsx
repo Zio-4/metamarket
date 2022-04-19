@@ -79,7 +79,7 @@ function Market() {
                 />
                 <CardContent >
                     <Typography gutterBottom variant="h6" component="div"  sx={{color: "white"}}>
-                        Weekend Pack
+                        {p.title}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{color: "white"}}>
                         Description
