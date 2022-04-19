@@ -12,7 +12,7 @@ import Box from '@mui/material/Box'
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import Chip from '@mui/material/Chip';
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import Divider from '@mui/material/Divider';
 
 
@@ -27,13 +27,13 @@ interface Iphotos {
 function Market() {
     const [photos, setPhotos] = useState<Iphotos[]>([])
     const { marketname } = useParams()
+    let navigate = useNavigate()
 
 
     useEffect(() => {
     fetch("https://jsonplaceholder.typicode.com/albums/1/photos").then((r) => {
         if (r.ok) {
             r.json().then((data) => {
-                console.log(data)
                 setPhotos(data)
             })
         } else {
@@ -44,11 +44,26 @@ function Market() {
         })
     }, [])
 
+//  Type of JSON.parse dependency must be a string .
+// But the local storage return type is string|null so it can be both string and null and when you declare the data, its value is null until you render the component (or call the function) and then call the getItem function, it gets the value, and then it's a string.
+// You can use || operator and add a string to it so that it is not null anymore.
+
+    const addToCart = (): void => {
+        let arr = []
+        if (localStorage.getItem('arr')) {
+            arr = JSON.parse(localStorage.getItem('arr') || '')
+        }
+        arr.push({'listingId' : Math.floor(Math.random() * 10), 'image': 'blah blah'})
+        localStorage.setItem('arr', JSON.stringify(arr))
+    }
+
+    // component={Link} to={`/markets/${marketname}/${p.id}`}  sx={{textDecoration: 'none'}}
+
 
     const renderPokemon = () => {
        return photos.map(p => (
-        <Grid item md={4} key={p.id} component={Link} to={`/markets/${marketname}/${p.id}`} sx={{textDecoration: 'none'}}>
-            <Card sx={{ maxWidth: 330, backgroundColor: "#636363", paddingBottom: 4}} >
+        <Grid item md={4} key={p.id} >
+            <Card sx={{ maxWidth: 330, backgroundColor: "#636363", paddingBottom: 4,}}  onClick={() => navigate(`/markets/${marketname}/${p.id}`)}>
                 <CardMedia
                 component="img"
                 height="140"
@@ -63,14 +78,14 @@ function Market() {
                         Description
                     </Typography>
                 </CardContent>
-                <Stack sx={{width: .3, left: 10}} direction="column" spacing={1}>
+                <Stack sx={{width: { xs: .4, sm: .4, lg: .3}, left: 10}} direction="column" spacing={1}>
                     <Chip sx={{backgroundColor: "#C5C6C7",}} label="BTC: 0.238"></Chip>
                     <Chip sx={{backgroundColor: "#C5C6C7"}} label="ETH: 0.718"></Chip>
                     <Chip sx={{backgroundColor: "#C5C6C7"}} label="USD: 20.00"></Chip>
                 </Stack>
 
             </Card>
-            <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: 250}} aria-label="add">
+            <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={addToCart}>
                 <AddIcon />
             </Fab>
         </Grid>
