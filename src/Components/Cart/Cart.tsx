@@ -49,9 +49,8 @@ function Cart() {
               </Grid>
             </Grid>
             <Divider sx={{bgcolor: "#45A29E", marginY: '1em'}}/>
-            <Grid container>
+            {/* <Grid container>
               <Grid item xs={4} className='borders'>
-                {/* vertically align image */}
                 <Box
                 component="img"
                 sx={{
@@ -78,7 +77,7 @@ function Cart() {
                   $12.99
                 </Typography>
               </Grid>
-            </Grid>
+            </Grid>  */}
           </CardContent>
         </Card>
       </Grid>

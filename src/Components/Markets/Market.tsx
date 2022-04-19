@@ -48,16 +48,23 @@ function Market() {
 // But the local storage return type is string|null so it can be both string and null and when you declare the data, its value is null until you render the component (or call the function) and then call the getItem function, it gets the value, and then it's a string.
 // You can use || operator and add a string to it so that it is not null anymore.
 
-    const addToCart = (): void => {
-        let arr = []
-        if (localStorage.getItem('arr')) {
-            arr = JSON.parse(localStorage.getItem('arr') || '')
+    const addToCart = (image: string, title: string, price: number, id: number) => {
+        let cart = []
+        if (localStorage.getItem('cart')) {
+            cart = JSON.parse(localStorage.getItem('cart') || '')
         }
-        arr.push({'listingId' : Math.floor(Math.random() * 10), 'image': 'blah blah'})
-        localStorage.setItem('arr', JSON.stringify(arr))
+        cart.push({'listingId': id, 'image': image, 'title': title, 'price': price})
+        localStorage.setItem('cart', JSON.stringify(cart))
+        // localStorage.clear();
+        console.log("Listing added to cart")
+        console.log(localStorage.getItem('cart'))
     }
 
-    // component={Link} to={`/markets/${marketname}/${p.id}`}  sx={{textDecoration: 'none'}}
+    // const removeFromCart = (listingId) => {
+    //     let storageCart = JSON.parse(localStorage.getItem('cart') || '')
+    //     let updatedCart = storageCart.filter(listing => listing.listingId !== listingId)
+    //     localStorage.setItem('cart', JSON.stringify(updatedCart))
+    // }
 
 
     const renderPokemon = () => {
@@ -67,7 +74,7 @@ function Market() {
                 <CardMedia
                 component="img"
                 height="140"
-                image="https://media.npr.org/assets/img/2015/09/13/gettyimages-89416439_wide-bd64a5a83670c04a644c4c66e0ec072d384976c2.jpg"
+                image={p.thumbnailUrl}
                 alt="photos"
                 />
                 <CardContent >
@@ -85,7 +92,7 @@ function Market() {
                 </Stack>
 
             </Card>
-            <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={addToCart}>
+            <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={() => addToCart(p.thumbnailUrl, p.title, p.id, p.id)}>
                 <AddIcon />
             </Fab>
         </Grid>
