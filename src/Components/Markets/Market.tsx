@@ -35,6 +35,10 @@ function Market() {
         if (r.ok) {
             r.json().then((data) => {
                 setPhotos(data)
+                console.log(JSON.stringify(data))
+                if (JSON.stringify(data).includes('"id":500')) {
+                    console.log("Trueski")
+                }
             })
         } else {
             r.json().then((err) => {
@@ -42,6 +46,11 @@ function Market() {
             })
         }
         })
+
+    // Check if any listing is in the user's cart, if it is change the FAB
+    if (photos.length > 1) {
+        console.log(JSON.stringify(photos))
+    }
     }, [])
 
 //  Type of JSON.parse dependency must be a string .

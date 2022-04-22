@@ -38,9 +38,10 @@ function NavBar() {
     setMobileMenuState(!mobileMenuState)
   }
 
+
   return (
   <>
-    <nav className={`${mobileMenuState ? 'menu' : null}`}>
+    <nav className={`${mobileMenuState ? null : 'menu'}`}>
       <div className='navbar-container'>
         <IconButton onClick={setMenu}>
           <CloseSharpIcon className='mobile-menu-exit' fontSize="large" sx={{color: 'white'}}/>
