@@ -11,6 +11,7 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import RemoveShoppingCartSharpIcon from '@mui/icons-material/RemoveShoppingCartSharp';
 import Chip from '@mui/material/Chip';
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import Divider from '@mui/material/Divider';
@@ -24,8 +25,16 @@ interface Iphotos {
     thumbnailUrl: string
 }
 
+interface IlistingInCart {
+    listingId: number
+    image: string
+    title: string
+    price: number
+}
+
 function Market() {
     const [photos, setPhotos] = useState<Iphotos[]>([])
+    const [listingIds, setListingIds] =  useState(new Set())
     const { marketname } = useParams()
     let navigate = useNavigate()
 
@@ -35,10 +44,6 @@ function Market() {
         if (r.ok) {
             r.json().then((data) => {
                 setPhotos(data)
-                console.log(JSON.stringify(data))
-                if (JSON.stringify(data).includes('"id":500')) {
-                    console.log("Trueski")
-                }
             })
         } else {
             r.json().then((err) => {
@@ -48,10 +53,12 @@ function Market() {
         })
 
     // Check if any listing is in the user's cart, if it is change the FAB
-    if (photos.length > 1) {
-        console.log(JSON.stringify(photos))
-    }
+       const cart = JSON.parse(localStorage.getItem('cart') || '')
+       const ids = new Set() 
+       cart.forEach((item: IlistingInCart) =>  ids.add(item.listingId))
+       setListingIds(ids)
     }, [])
+
 
 //  Type of JSON.parse dependency must be a string .
 // But the local storage return type is string|null so it can be both string and null and when you declare the data, its value is null until you render the component (or call the function) and then call the getItem function, it gets the value, and then it's a string.
@@ -64,16 +71,23 @@ function Market() {
         }
         cart.push({'listingId': id, 'image': image, 'title': title, 'price': price})
         localStorage.setItem('cart', JSON.stringify(cart))
-        // localStorage.clear();
+        setListingIds(new Set(listingIds).add(id))
         console.log("Listing added to cart")
-        console.log(localStorage.getItem('cart'))
     }
 
-    // const removeFromCart = (listingId) => {
-    //     let storageCart = JSON.parse(localStorage.getItem('cart') || '')
-    //     let updatedCart = storageCart.filter(listing => listing.listingId !== listingId)
-    //     localStorage.setItem('cart', JSON.stringify(updatedCart))
-    // }
+    const removeFromCart = (listingId: number) => {
+        let storageCart = JSON.parse(localStorage.getItem('cart') || '')
+        let updatedCart = storageCart.filter((listing: IlistingInCart) => listing.listingId !== listingId)
+        localStorage.setItem('cart', JSON.stringify(updatedCart))
+
+        // remove from set
+        const updatedListingIds = new Set(listingIds)
+        updatedListingIds.delete(listingId)
+        setListingIds(updatedListingIds)
+    }
+
+    console.log(listingIds)
+    console.log(localStorage.getItem('cart'))
 
 
     const renderPokemon = () => {
@@ -101,9 +115,14 @@ function Market() {
                 </Stack>
 
             </Card>
+            {listingIds.has(p.id) ? <Fab sx={{backgroundColor: "#FF6666", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="remove" onClick={() => removeFromCart(p.id)}> <RemoveShoppingCartSharpIcon/> </Fab> 
+            : 
             <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={() => addToCart(p.thumbnailUrl, p.title, p.id, p.id)}>
                 <AddIcon />
-            </Fab>
+            </Fab>}
+            {/* <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={() => addToCart(p.thumbnailUrl, p.title, p.id, p.id)}>
+                <AddIcon />
+            </Fab> */}
         </Grid>
         ))
     }
