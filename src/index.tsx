@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
+import { store } from './Redux-Toolkit/store'
+import { Provider } from 'react-redux'
 
 import { Amplify } from 'aws-amplify';
 import awsExports from './aws-exports';
@@ -12,7 +14,9 @@ Amplify.configure(awsExports);
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

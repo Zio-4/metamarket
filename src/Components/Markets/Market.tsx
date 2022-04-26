@@ -34,7 +34,7 @@ interface IlistingInCart {
 
 function Market() {
     const [photos, setPhotos] = useState<Iphotos[]>([])
-    const [listingIds, setListingIds] =  useState(new Set())
+    const [listingIds, setListingIds] =  useState([])
     const { marketname } = useParams()
     let navigate = useNavigate()
 
@@ -54,9 +54,11 @@ function Market() {
 
     // Check if any listing is in the user's cart, if it is change the FAB
        const cart = JSON.parse(localStorage.getItem('cart') || '')
-       const ids = new Set() 
-       cart.forEach((item: IlistingInCart) =>  ids.add(item.listingId))
-       setListingIds(ids)
+       console.log(cart)
+       console.log("spread out:", ...cart)
+    //    const ids = [] 
+    //    cart.forEach((item: IlistingInCart) =>  ids.push(item.listingId))
+    //    setListingIds(ids)
     }, [])
 
 
@@ -71,7 +73,9 @@ function Market() {
         }
         cart.push({'listingId': id, 'image': image, 'title': title, 'price': price})
         localStorage.setItem('cart', JSON.stringify(cart))
-        setListingIds(new Set(listingIds).add(id))
+
+        // set
+        // setListingIds(new Set(listingIds).add(id))
         console.log("Listing added to cart")
     }
 
@@ -81,13 +85,10 @@ function Market() {
         localStorage.setItem('cart', JSON.stringify(updatedCart))
 
         // remove from set
-        const updatedListingIds = new Set(listingIds)
-        updatedListingIds.delete(listingId)
-        setListingIds(updatedListingIds)
+        // const updatedListingIds = new Set(listingIds)
+        // updatedListingIds.delete(listingId)
+        // setListingIds(updatedListingIds)
     }
-
-    console.log(listingIds)
-    console.log(localStorage.getItem('cart'))
 
 
     const renderPokemon = () => {
@@ -115,11 +116,11 @@ function Market() {
                 </Stack>
 
             </Card>
-            {listingIds.has(p.id) ? <Fab sx={{backgroundColor: "#FF6666", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="remove" onClick={() => removeFromCart(p.id)}> <RemoveShoppingCartSharpIcon/> </Fab> 
+            {/* {listingIds.has(p.id) ? <Fab sx={{backgroundColor: "#FF6666", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="remove" onClick={() => removeFromCart(p.id)}> <RemoveShoppingCartSharpIcon/> </Fab> 
             : 
             <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={() => addToCart(p.thumbnailUrl, p.title, p.id, p.id)}>
                 <AddIcon />
-            </Fab>}
+            </Fab>} */}
             {/* <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={() => addToCart(p.thumbnailUrl, p.title, p.id, p.id)}>
                 <AddIcon />
             </Fab> */}
