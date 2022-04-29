@@ -15,6 +15,8 @@ import RemoveShoppingCartSharpIcon from '@mui/icons-material/RemoveShoppingCartS
 import Chip from '@mui/material/Chip';
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import Divider from '@mui/material/Divider';
+import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/hooks'
+import { addId, removeId, selectCount } from '../../Redux-Toolkit/listingIDSlice'
 
 
 interface Iphotos {
@@ -34,9 +36,10 @@ interface IlistingInCart {
 
 function Market() {
     const [photos, setPhotos] = useState<Iphotos[]>([])
-    const [listingIds, setListingIds] =  useState([])
     const { marketname } = useParams()
     let navigate = useNavigate()
+    const dispatch = useAppDispatch()
+    const idsInCart = useAppSelector(selectCount)
 
 
     useEffect(() => {
@@ -51,15 +54,9 @@ function Market() {
             })
         }
         })
-
-    // Check if any listing is in the user's cart, if it is change the FAB
-       const cart = JSON.parse(localStorage.getItem('cart') || '')
-       console.log(cart)
-       console.log("spread out:", ...cart)
-    //    const ids = [] 
-    //    cart.forEach((item: IlistingInCart) =>  ids.push(item.listingId))
-    //    setListingIds(ids)
     }, [])
+
+    console.log("ids in cart:", useAppSelector(selectCount))
 
 
 //  Type of JSON.parse dependency must be a string .
@@ -73,7 +70,8 @@ function Market() {
         }
         cart.push({'listingId': id, 'image': image, 'title': title, 'price': price})
         localStorage.setItem('cart', JSON.stringify(cart))
-
+        
+        dispatch(addId(id))
         // set
         // setListingIds(new Set(listingIds).add(id))
         console.log("Listing added to cart")
@@ -83,6 +81,10 @@ function Market() {
         let storageCart = JSON.parse(localStorage.getItem('cart') || '')
         let updatedCart = storageCart.filter((listing: IlistingInCart) => listing.listingId !== listingId)
         localStorage.setItem('cart', JSON.stringify(updatedCart))
+
+        dispatch(removeId(listingId))
+
+        console.log("listing removed from cart")
 
         // remove from set
         // const updatedListingIds = new Set(listingIds)
@@ -116,14 +118,11 @@ function Market() {
                 </Stack>
 
             </Card>
-            {/* {listingIds.has(p.id) ? <Fab sx={{backgroundColor: "#FF6666", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="remove" onClick={() => removeFromCart(p.id)}> <RemoveShoppingCartSharpIcon/> </Fab> 
+            {idsInCart.includes(p.id) ? <Fab sx={{backgroundColor: "#FF6666", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="remove" onClick={() => removeFromCart(p.id)}> <RemoveShoppingCartSharpIcon/> </Fab> 
             : 
             <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={() => addToCart(p.thumbnailUrl, p.title, p.id, p.id)}>
                 <AddIcon />
-            </Fab>} */}
-            {/* <Fab  sx={{backgroundColor: "#45A29E", top: -28, left: {xs: 170, md: 200, lg: 240},}} aria-label="add" onClick={() => addToCart(p.thumbnailUrl, p.title, p.id, p.id)}>
-                <AddIcon />
-            </Fab> */}
+            </Fab>}
         </Grid>
         ))
     }

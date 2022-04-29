@@ -1,13 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 
+interface IlistingInCart {
+    listingId: number
+    image: string
+    title: string
+    price: number
+}
+
+const parseStorage = JSON.parse(localStorage.getItem('cart') || '')
+const listingIds: number[] = []
+parseStorage.forEach((item: IlistingInCart) => listingIds.push(item.listingId))
+
 export interface listingIDState {
     ids: number[]
 }
 
 const initialState: listingIDState = {
-
-    ids: []
+    ids: listingIds
 }
 
 export const listingIDSlice = createSlice({
@@ -26,7 +36,6 @@ export const listingIDSlice = createSlice({
       },
     },
 })
-
 
 export const { addId, removeId, } = listingIDSlice.actions
 
