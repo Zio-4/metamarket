@@ -15,8 +15,9 @@ import RemoveShoppingCartSharpIcon from '@mui/icons-material/RemoveShoppingCartS
 import Chip from '@mui/material/Chip';
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import Divider from '@mui/material/Divider';
-import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/hooks'
+import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/reduxHooks'
 import { addId, removeId, selectCount } from '../../Redux-Toolkit/listingIDSlice'
+import { useAddToCart } from '../../Hooks/useAddToCart'
 
 
 interface Iphotos {
@@ -40,6 +41,8 @@ function Market() {
     let navigate = useNavigate()
     const dispatch = useAppDispatch()
     const idsInCart = useAppSelector(selectCount)
+    const addToCart = useAddToCart()
+
 
 
     useEffect(() => {
@@ -63,19 +66,18 @@ function Market() {
 // But the local storage return type is string|null so it can be both string and null and when you declare the data, its value is null until you render the component (or call the function) and then call the getItem function, it gets the value, and then it's a string.
 // You can use || operator and add a string to it so that it is not null anymore.
 
-    const addToCart = (image: string, title: string, price: number, id: number) => {
-        let cart = []
-        if (localStorage.getItem('cart')) {
-            cart = JSON.parse(localStorage.getItem('cart') || '')
-        }
-        cart.push({'listingId': id, 'image': image, 'title': title, 'price': price})
-        localStorage.setItem('cart', JSON.stringify(cart))
+
+    // const addToCart = (image: string, title: string, price: number, id: number) => {
+    //     let cart = []
+    //     if (localStorage.getItem('cart')) {
+    //         cart = JSON.parse(localStorage.getItem('cart') || '')
+    //     }
+    //     cart.push({'listingId': id, 'image': image, 'title': title, 'price': price})
+    //     localStorage.setItem('cart', JSON.stringify(cart))
         
-        dispatch(addId(id))
-        // set
-        // setListingIds(new Set(listingIds).add(id))
-        console.log("Listing added to cart")
-    }
+    //     dispatch(addId(id))
+    //     console.log("Listing added to cart")
+    // }
 
     const removeFromCart = (listingId: number) => {
         let storageCart = JSON.parse(localStorage.getItem('cart') || '')
@@ -85,11 +87,6 @@ function Market() {
         dispatch(removeId(listingId))
 
         console.log("listing removed from cart")
-
-        // remove from set
-        // const updatedListingIds = new Set(listingIds)
-        // updatedListingIds.delete(listingId)
-        // setListingIds(updatedListingIds)
     }
 
 

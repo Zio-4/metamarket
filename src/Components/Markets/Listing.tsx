@@ -8,7 +8,7 @@ import { TextField, Divider, Button } from '@mui/material';
 import USD from '../../../node_modules/cryptocurrency-icons/svg/black/usd.svg'
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
-import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/hooks'
+import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/reduxHooks'
 import { addId, removeId, selectCount } from '../../Redux-Toolkit/listingIDSlice'
 import { useParams } from 'react-router-dom'
 
