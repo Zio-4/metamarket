@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box'
@@ -8,9 +8,42 @@ import { TextField, Divider, Button } from '@mui/material';
 import USD from '../../../node_modules/cryptocurrency-icons/svg/black/usd.svg'
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
+import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/hooks'
+import { addId, removeId, selectCount } from '../../Redux-Toolkit/listingIDSlice'
+import { useParams } from 'react-router-dom'
 
+interface ItestListing {
+  albumId: number
+  id: number
+  title: string
+  url: string
+  thumbnailUrl: string
+}
+ 
 
 function Listing() {
+  const dispatch = useAppDispatch()
+  const idsInCart = useAppSelector(selectCount)
+  let { id } = useParams()
+  // Partial constructs a type with all properties of ItestListing set to optional. Will return a type that represents all subsets of a given type.
+  const [listing, setListing] = useState<Partial<ItestListing>>({})
+
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/photos/${id}`).then((r) => {
+      if (r.ok) {
+          r.json().then((data) => {
+              console.log("photo data: ", data)
+              setListing(data)
+          })
+      } else {
+          r.json().then((err) => {
+              console.log(err)
+          })
+      }
+      }) 
+  }, [id])
+
+
   return (
     <Grid container justifyContent='center' sx={{marginTop: 4}}>
       <Grid item columns={12} >
@@ -24,7 +57,7 @@ function Listing() {
             borderRadius: 1
           }}
           alt="Crypto punk mutant whatever"
-          src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/3/2022/01/13201724/Mutant-975x1024-1.jpeg"
+          src={listing.thumbnailUrl}
         />
       </Grid>
       <Grid item xs={1}>
@@ -32,7 +65,7 @@ function Listing() {
       </Grid>
       <Grid item columns={12} sx={{marginTop: 2, fontSize: '20'}}>
         <Typography sx={{color: 'white', fontSize: '1.8rem', textAlign: 'center'}}>
-          Some Kind of Ape Club #361
+          {listing.title}
         </Typography>
         <Card sx={{width: 350, backgroundColor: '#242526',  marginX: 'auto', color: 'white'}}>
           <CardContent>
@@ -52,10 +85,11 @@ function Listing() {
             </svg> */}
             
             <Typography sx={{fontSize: '1.7rem'}}>
-               12 / .003 ETH
+               {listing.id} / .003 ETH
             </Typography>
             <Divider sx={{bgcolor: "#45A29E"}} ></Divider>
-            <Button variant='contained' sx={{marginY: '0.5rem', width: '100%'}}>
+            {}
+            <Button variant='contained' sx={{marginY: '0.5rem', width: '100%'}} >
               <AddShoppingCartSharpIcon sx={{marginRight: '0.5rem'}}/> Add to cart
             </Button>
             <Typography>
