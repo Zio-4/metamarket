@@ -13,6 +13,7 @@ import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
 import { useParams } from 'react-router-dom'
 import { useAddToCart } from '../../Hooks/useAddToCart'
 import { useRemoveFromCart } from '../../Hooks/useRemoveFromCart'
+import RemoveShoppingCartSharpIcon from '@mui/icons-material/RemoveShoppingCartSharp';
 
 interface ItestListing {
   albumId: number
@@ -26,7 +27,8 @@ interface ItestListing {
 function Listing() {
   let { id } = useParams()
   // Partial constructs a type with all properties of ItestListing set to optional. Will return a type that represents all subsets of a given type.
-  const [listing, setListing] = useState<Partial<ItestListing>>({})
+  // const [listing, setListing] = useState<Partial<ItestListing>>({})
+  const [listing, setListing] = useState<ItestListing>(Object)
   const idsInCart = useAppSelector(selectCount)
   const addToCart = useAddToCart()
   const removeFromCart = useRemoveFromCart()
@@ -92,10 +94,12 @@ function Listing() {
                {listing.id} / .003 ETH
             </Typography>
             <Divider sx={{bgcolor: "#45A29E"}} ></Divider>
-            {}
+            {idsInCart.includes(listing.id) ? <Button variant='contained' sx={{backgroundColor: "#FF6666", marginY: '0.5rem', width: '100%'}} onClick={() => removeFromCart(listing.id)}>
+              <RemoveShoppingCartSharpIcon sx={{marginRight: '0.5rem'}}/> Remove from cart
+            </Button> : 
             <Button variant='contained' sx={{marginY: '0.5rem', width: '100%'}} onClick={() => addToCart( listing.thumbnailUrl, listing.title, listing.id, listing.id)}>
               <AddShoppingCartSharpIcon sx={{marginRight: '0.5rem'}}/> Add to cart
-            </Button>
+            </Button>}
             <Typography>
               Blockchain: ETHEREUM
             </Typography>
