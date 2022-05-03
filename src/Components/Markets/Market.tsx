@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
+// import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack'
-import Container from '@mui/material/Container'
+// import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Fab from '@mui/material/Fab';
@@ -15,9 +15,10 @@ import RemoveShoppingCartSharpIcon from '@mui/icons-material/RemoveShoppingCartS
 import Chip from '@mui/material/Chip';
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import Divider from '@mui/material/Divider';
-import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/reduxHooks'
-import { addId, removeId, selectCount } from '../../Redux-Toolkit/listingIDSlice'
+import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
+import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
 import { useAddToCart } from '../../Hooks/useAddToCart'
+import { useRemoveFromCart } from '../../Hooks/useRemoveFromCart'
 
 
 interface Iphotos {
@@ -28,66 +29,32 @@ interface Iphotos {
     thumbnailUrl: string
 }
 
-interface IlistingInCart {
-    listingId: number
-    image: string
-    title: string
-    price: number
-}
 
 function Market() {
     const [photos, setPhotos] = useState<Iphotos[]>([])
     const { marketname } = useParams()
     let navigate = useNavigate()
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
     const idsInCart = useAppSelector(selectCount)
     const addToCart = useAddToCart()
-
+    const removeFromCart = useRemoveFromCart()
 
 
     useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/albums/1/photos").then((r) => {
-        if (r.ok) {
-            r.json().then((data) => {
-                setPhotos(data)
+        fetch("https://jsonplaceholder.typicode.com/albums/1/photos").then((r) => {
+            if (r.ok) {
+                r.json().then((data) => {
+                    setPhotos(data)
+                })
+            } else {
+                r.json().then((err) => {
+                    console.log(err)
+                })
+            }
             })
-        } else {
-            r.json().then((err) => {
-                console.log(err)
-            })
-        }
-        })
     }, [])
 
     console.log("ids in cart:", useAppSelector(selectCount))
-
-
-//  Type of JSON.parse dependency must be a string .
-// But the local storage return type is string|null so it can be both string and null and when you declare the data, its value is null until you render the component (or call the function) and then call the getItem function, it gets the value, and then it's a string.
-// You can use || operator and add a string to it so that it is not null anymore.
-
-
-    // const addToCart = (image: string, title: string, price: number, id: number) => {
-    //     let cart = []
-    //     if (localStorage.getItem('cart')) {
-    //         cart = JSON.parse(localStorage.getItem('cart') || '')
-    //     }
-    //     cart.push({'listingId': id, 'image': image, 'title': title, 'price': price})
-    //     localStorage.setItem('cart', JSON.stringify(cart))
-        
-    //     dispatch(addId(id))
-    //     console.log("Listing added to cart")
-    // }
-
-    const removeFromCart = (listingId: number) => {
-        let storageCart = JSON.parse(localStorage.getItem('cart') || '')
-        let updatedCart = storageCart.filter((listing: IlistingInCart) => listing.listingId !== listingId)
-        localStorage.setItem('cart', JSON.stringify(updatedCart))
-
-        dispatch(removeId(listingId))
-
-        console.log("listing removed from cart")
-    }
 
 
     const renderPokemon = () => {

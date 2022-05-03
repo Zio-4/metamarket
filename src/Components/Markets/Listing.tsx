@@ -8,9 +8,11 @@ import { TextField, Divider, Button } from '@mui/material';
 import USD from '../../../node_modules/cryptocurrency-icons/svg/black/usd.svg'
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
-import { useAppDispatch, useAppSelector } from '../../Redux-Toolkit/reduxHooks'
-import { addId, removeId, selectCount } from '../../Redux-Toolkit/listingIDSlice'
+import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
+import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
 import { useParams } from 'react-router-dom'
+import { useAddToCart } from '../../Hooks/useAddToCart'
+import { useRemoveFromCart } from '../../Hooks/useRemoveFromCart'
 
 interface ItestListing {
   albumId: number
@@ -22,11 +24,13 @@ interface ItestListing {
  
 
 function Listing() {
-  const dispatch = useAppDispatch()
-  const idsInCart = useAppSelector(selectCount)
   let { id } = useParams()
   // Partial constructs a type with all properties of ItestListing set to optional. Will return a type that represents all subsets of a given type.
   const [listing, setListing] = useState<Partial<ItestListing>>({})
+  const idsInCart = useAppSelector(selectCount)
+  const addToCart = useAddToCart()
+  const removeFromCart = useRemoveFromCart()
+
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/photos/${id}`).then((r) => {
@@ -89,7 +93,7 @@ function Listing() {
             </Typography>
             <Divider sx={{bgcolor: "#45A29E"}} ></Divider>
             {}
-            <Button variant='contained' sx={{marginY: '0.5rem', width: '100%'}} >
+            <Button variant='contained' sx={{marginY: '0.5rem', width: '100%'}} onClick={() => addToCart( listing.thumbnailUrl, listing.title, listing.id, listing.id)}>
               <AddShoppingCartSharpIcon sx={{marginRight: '0.5rem'}}/> Add to cart
             </Button>
             <Typography>
