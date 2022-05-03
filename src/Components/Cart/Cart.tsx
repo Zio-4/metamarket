@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid';
 import { Button, Card, CardContent, Typography, Box, Divider,} from '@mui/material';
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
+import { useRemoveFromCart } from '../../Hooks/useRemoveFromCart'
 
 interface Icart {
   listingId: number
@@ -12,16 +13,18 @@ interface Icart {
 
 function Cart() {
   const [cartItems, setCartItems] = useState<Icart[]>([])
+  const removeFromCart = useRemoveFromCart()
+  const [itemRemoved, setItemRemoved] = useState(false)
 
   useEffect(() => {
     console.log(localStorage.getItem('cart'))
     setCartItems(JSON.parse(localStorage.getItem('cart') || ''))
-  }, [])
+  }, [itemRemoved])
 
-  const removeFromCart = (listingId: number) => {
-      let updatedCart = cartItems.filter(item => item.listingId !== listingId)
-      localStorage.setItem('cart', JSON.stringify(updatedCart))
-      setCartItems(updatedCart)
+  // Rewrite with useCallBack - https://stackoverflow.com/questions/62601538/react-useeffect-passing-a-function-in-the-dependency-array
+  const removeListing = (listingId: number) => {
+    removeFromCart(listingId)
+    setItemRemoved(!itemRemoved)
   }
 
 
@@ -59,7 +62,7 @@ function Cart() {
                       <Typography sx={{color: '#C1C1C1', fontSize: '.8rem', textAlign: 'center'}}>
                         {item.title}
                       </Typography>
-                      <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />} sx={{marginTop: '2.5em'}} onClick={() => removeFromCart(item.listingId)}>
+                      <Button variant='outlined' size='small' color='warning' endIcon={<DeleteSharpIcon />} sx={{marginTop: '2.5em'}} onClick={() => removeListing(item.listingId)}>
                         Delete
                       </Button>
                   </Grid>
