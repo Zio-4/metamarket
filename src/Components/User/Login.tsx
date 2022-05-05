@@ -1,17 +1,22 @@
 import React from 'react'
-import { Authenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+import { Tabs, Tab, } from '@mui/material'
+import { TabPanel } from '@mui/lab';
 
 function Login() {
+
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <main>
-          <h1 className='placeholder-text'>Hello {user.username}</h1>
-          <button onClick={signOut}>Sign out</button>
-        </main>
-      )}
-    </Authenticator>
+    <>
+      <Tabs >
+        <Tab label="Sign In"/>
+        <Tab label="Sign up"/>
+      </Tabs>
+      <TabPanel value="1">
+        Sign in stuff
+      </TabPanel>
+      <TabPanel value="2">
+        Sign up stuff
+      </TabPanel>
+    </>
   )
 }
 
