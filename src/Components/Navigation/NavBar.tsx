@@ -19,6 +19,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import LoginSharpIcon from '@mui/icons-material/LoginSharp';
+import { Auth } from 'aws-amplify';
 
 function NavBar() {
   let navigate = useNavigate()
@@ -29,13 +31,23 @@ function NavBar() {
   }
 
   const navigateUser = (e: React.MouseEvent) => {
-    let buttonClicked = (e.target as Element).textContent!.toLowerCase()
+    let buttonClicked = (e.target as Element).textContent!.toLowerCase().replace(/\s/g, '');
     if (buttonClicked === 'sell') {
       navigate(`listingform`)
     } else {
+      console.log("button clicked: ", buttonClicked)
       navigate(`/${buttonClicked}`)
     }
     setMobileMenuState(!mobileMenuState)
+  }
+
+  const signOutUser = async () => {
+    try {
+      let response = await Auth.signOut();
+      console.log("response form signout: ", response)
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
   }
 
 
@@ -74,12 +86,29 @@ function NavBar() {
               </ListItem>
               <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
+                  <LoginSharpIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Sign In"
+                />
+              </ListItem>
+              <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
+                <ListItemIcon sx={{color: '#66FCF1'}}>
                   <AccountBoxSharpIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Login"
+                  primary="Account"
                 />
               </ListItem>
+              <ListItem sx={{color: '#FF6666'}} onClick={signOutUser}>
+                <ListItemIcon sx={{color: '#FF6666'}}>
+                  <LogoutSharpIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Sign Out"
+                />
+              </ListItem>
+
           </List>
       </div>
     </nav>

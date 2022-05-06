@@ -21,7 +21,7 @@ function App() {
         <Route path="/markets/:marketname" element={<Market />} />
         <Route path="/markets/:marketname/:id" element={<Listing />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/listingform" element={<ListingForm />} />
       </Routes>
