@@ -12,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate,} from 'react-router-dom'
 import SellSharpIcon from '@mui/icons-material/SellSharp';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -30,13 +30,14 @@ function NavBar() {
     setMobileMenuState(!mobileMenuState)
   }
 
+
   const navigateUser = (e: React.MouseEvent) => {
     let buttonClicked = (e.target as Element).textContent!.toLowerCase().replace(/\s/g, '');
     if (buttonClicked === 'sell') {
-      navigate(`listingform`)
+      navigate(`/listingform`)
     } else {
       console.log("button clicked: ", buttonClicked)
-      navigate(`/${buttonClicked}`)
+      navigate(`/${buttonClicked}`, { state: `${buttonClicked}`})
     }
     setMobileMenuState(!mobileMenuState)
   }

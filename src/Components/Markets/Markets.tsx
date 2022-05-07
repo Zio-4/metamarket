@@ -15,7 +15,7 @@ function Markets() {
     <Box sx={{ flexGrow: 1, marginTop: 10 }}>
       <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{paddingX: 3}}>
         {categories.map((category) => (
-          <Grid item xs={2} sm={4} md={4} key={category} component={Link} to={`/markets/${category}`} sx={{textDecoration: 'none'}}>
+          <Grid item xs={2} sm={4} md={4} key={category} component={Link} to={`/markets/${category}`} state={{ fromMarkets: true }} sx={{textDecoration: 'none'}}>
             <Card sx={{paddingBottom: 10, background: 'linear-gradient(to right bottom, #45A29E, #66FCF1)'}} >
               <CardContent>
                 <Typography sx={{color: 'white', fontFamily: 'Cambay', fontWeight: '700', fontSize: 20}} className='marketlist-cards-text'>

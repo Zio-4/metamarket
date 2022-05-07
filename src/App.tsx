@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Market from './Components/Markets/Market';
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route, useParams} from "react-router-dom";
 import NavBar from './Components/Navigation/NavBar';
 import Markets from './Components/Markets/Markets';
 import Cart from './Components/Cart/Cart';
@@ -9,9 +9,18 @@ import SignUp from './Components/User/SignUp';
 import LandingPage from './Components/Navigation/LandingPage';
 import Listing from './Components/Markets/Listing';
 import ListingForm from './Components/Markets/ListingForm';
+import { Auth } from 'aws-amplify';
 
 
 function App() {
+  useEffect(() => {
+    Auth.currentAuthenticatedUser().then(
+      data => console.log("current user: ", data)
+    ).catch(
+      err => console.log(err)
+    )
+  }, [])
+
   return (
     <div className="App">
       <NavBar />

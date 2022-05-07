@@ -2,6 +2,7 @@ import React, {useState } from 'react'
 import { Tab, Box, TextField, Button, Typography} from '@mui/material'
 import { TabPanel, TabContext, TabList } from '@mui/lab';
 import { Auth } from 'aws-amplify';
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 function Login() {
   const [tabValue, setTabValue] = useState("1")
@@ -18,6 +19,10 @@ function Login() {
   const [codeValue, setCodeValue] = useState("")
   const [username, setUsername] = useState("")
   const [userSigningUp, setUserSigningUp] = useState(false)
+  let navigate = useNavigate()
+  // let location = useLocation()
+
+  // console.log("location state:", location.state)
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue)
@@ -35,12 +40,9 @@ function Login() {
     // Call Auth API with credentials
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
-        let mfaCode = user.preferredMFA
-        console.log("mfa code: ", mfaCode)
-        console.log(user)
-        let userSignIn = await Auth.confirmSignIn(user, mfaCode)
-        console.log("User signed in response: ", userSignIn)
         // navigate the user to main page or from where they came from
+        navigate('/')
+        // store the login status in redux state
 
     } catch (error) {
         console.log('error signing in', error);
@@ -91,6 +93,8 @@ function Login() {
     try {
       console.log("signup username:", username)
       let response = await Auth.confirmSignUp(username, codeValue);
+      // navigate user to page
+      navigate('/')
       console.log("confirm sign up response: ", response)
     } catch (error) {
         console.log('error confirming sign up', error);
