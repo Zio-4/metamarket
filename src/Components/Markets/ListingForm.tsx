@@ -17,8 +17,9 @@ const listColors = [{color: 'Yellow'}, {color: 'Yellow-Green'}, {color: 'Green'}
 
 const blockchains = [{label: 'Ethereum'}, {label: 'Solana'}, {label: 'Polygon'}, {label: 'Cardano'}, {label: 'Tezos'}]
 
-function ListingForm() {
+const categories = [{label: 'Art'}, {label: 'Boats'}, {label: 'Cars'}, {label: 'Clothes'}, {label: 'Land'}, {label: 'Houses'}, {label: 'Items'}, {label: 'Jewelry'}, {label: 'Traits'}]
 
+function ListingForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -36,16 +37,24 @@ function ListingForm() {
             <TextField variant="outlined" label="Price" type="number" required helperText="Price in USD"/>
           </Grid>
           <Grid item>
+            <Autocomplete
+              disablePortal
+              options={categories}
+              renderInput={(params) => <TextField {...params} label="Categories" required/>}
+            />
+          </Grid>
+
+          <Grid item>
             <Autocomplete multiple limitTags={1} options={listColors} getOptionLabel={(option) => option.color} renderInput={(params) => (
-        <TextField {...params} label="Colors" helperText="Based on the color wheel: https://tinyurl.com/2p8bfymr"/>
-      )}/>
+              <TextField {...params} label="Colors" helperText="Based on the color wheel: https://tinyurl.com/2p8bfymr"/>
+            )}/>
           </Grid>
           <Grid item>
-              <Autocomplete
-                disablePortal
-                options={blockchains}
-                renderInput={(params) => <TextField {...params} label="Blockchain" required/>}
-              />
+            <Autocomplete
+              disablePortal
+              options={blockchains}
+              renderInput={(params) => <TextField {...params} label="Blockchain" required/>}
+            />
           </Grid>
           <Typography>
               Land coordinates

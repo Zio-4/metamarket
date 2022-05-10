@@ -54,8 +54,6 @@ function Login() {
     })
   }
 
-
-
   const signUpUser = async () => {
     // console.log(`${createAccountFormValues.createAccountUsername} ${createAccountFormValues.createAccountPassword} ${createAccountFormValues.createAccountConfirmPassword} ${createAccountFormValues.createAccountEmail}`)
     if (createAccountFormValues.createAccountPassword === createAccountFormValues.createAccountConfirmPassword) {
