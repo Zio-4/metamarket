@@ -40,6 +40,7 @@ function Login() {
     // Call Auth API with credentials
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
+        console.log("sign in response: ", user)
         // navigate the user to main page or from where they came from
         navigate('/')
         // store the login status in redux state

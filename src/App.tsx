@@ -15,7 +15,7 @@ import { Auth } from 'aws-amplify';
 function App() {
   useEffect(() => {
     Auth.currentAuthenticatedUser().then(
-      data => console.log("current user: ", data)
+      data => console.log("current user response: ", data)
     ).catch(
       err => console.log(err)
     )
