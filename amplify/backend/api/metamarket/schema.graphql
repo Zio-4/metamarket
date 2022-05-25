@@ -1,16 +1,16 @@
 # @model directive creates CRUD operations and DynamoDB database tables (also adds the helper fields createdAt and updatedAt to your type)
-type Nft @model @auth(rules: [
+type Nft @model @searchable @auth(rules: [
       { allow: public, operations: [read], provider: apiKey }
       { allow: owner }
   ]) {
     id: ID!
-    name: String!
-    price: Int!
-    category: String!
+    name: String! @index(name: "byName", queryField: "nftByName",)
+    price: Int! @index(name: "byPrice", queryField: "nftByPrice")
+    category: String! @index(name: "byCategory", queryField: "nftByCategory")
     blockchain: String!
     colors: [String]
-    xcoordinate: String
-    ycoordinate: String
+    xCoordinate: String
+    yCoordinate: String
     description: String
     imageID: String!
     # This generates queries and mutations that allow you to retrieve the related Nft records from the source User record and vice versa. A field is automatically generated to reference the parent’s primary key.
@@ -18,35 +18,10 @@ type Nft @model @auth(rules: [
 }
 
 type User @model @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  username: String!
+  userId: String! @primaryKey
+  username: String! @index(name: "byName", queryField: "userByUsername")
   favorited: [Nft]
   # Under the hood, @hasMany configures a secondary index on the related table to enable you to query the related model from the source model.
   Nfts: [Nft] @hasMany
 }
-
-#type Nft @model @key(name: "ownedBy", fields: ["userID"]) @auth(rules: [
- #     { allow: public, operations: [read], provider: apiKey }
-  #    { allow: owner }
-  #]) {
-   #id: ID!
-    #name: String!
-    #price: Int!
-    #category: String!
-    #blockchain: String!
-    #colors: [String]
-    #xcoordinate: String
-    #ycoordinate: String
-    #description: String
-    #imageID: String!
-    #userID: ID!
-    #user: User @connection(fields: ["userID"])
-#}
-
-#type User @model @auth(rules: [{ allow: owner }]) {
-  #id: ID!
-  #username: String!
-  #favorited: [Nft]
-  #Nfts: [Nft] @connection(keyName: "ownedBy", fields: ["id"])
-#}
 

@@ -3,6 +3,8 @@ import { Tab, Box, TextField, Button, Typography} from '@mui/material'
 import { TabPanel, TabContext, TabList } from '@mui/lab';
 import { Auth } from 'aws-amplify';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { getUser } from '../../GQL/queries'
+import { API } from 'aws-amplify';
 
 function Login() {
   const [tabValue, setTabValue] = useState("1")
@@ -40,13 +42,20 @@ function Login() {
     // Call Auth API with credentials
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
-        console.log("sign in response: ", user)
+        // pass user login state to redux
+        const userId = user.attributes.sub
+        console.log("userId:", userId)
+        console.log("User object in sign in: ", user)
+
+        const userFromAPI = await API.graphql({ query: getUser, variables: { input: userId }})
+        console.log("user from API :", userFromAPI)
+
         // navigate the user to main page or from where they came from
         navigate('/')
         // store the login status in redux state
 
     } catch (error) {
-        console.log('error signing in', error);
+        console.log('error signing in:', error);
     }
 
     setSignInFormValues({

@@ -8,13 +8,12 @@
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authmetamarket"
     },
-    "conflictResolution": {},
     "additionalAuthTypes": [
       {
         "mode": "API_KEY",
         "expirationTime": 365,
-        "apiKeyExpirationDate": "2023-05-09T19:41:53.860Z",
-        "keyDescription": "Public API"
+        "apiKeyExpirationDate": "2023-05-25T00:10:07.836Z",
+        "keyDescription": "public"
       }
     ]
   }

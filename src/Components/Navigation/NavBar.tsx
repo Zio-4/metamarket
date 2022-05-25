@@ -21,9 +21,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import LoginSharpIcon from '@mui/icons-material/LoginSharp';
 import { Auth } from 'aws-amplify';
+import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
+import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
 
 function NavBar() {
   let navigate = useNavigate()
+  const idsInCart = useAppSelector(selectCount)
   const [mobileMenuState, setMobileMenuState] = useState(false)
 
   const setMenu = () => {
@@ -46,6 +49,7 @@ function NavBar() {
     try {
       let response = await Auth.signOut();
       console.log("response form signout: ", response)
+      // remove user from login status
     } catch (error) {
         console.log('error signing out: ', error);
     }
@@ -79,7 +83,9 @@ function NavBar() {
               </ListItem>
               <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
-                  <ShoppingCartSharpIcon />
+                  <Badge badgeContent={idsInCart.length} color="warning">
+                    <ShoppingCartSharpIcon />
+                  </Badge>
                 </ListItemIcon>
                 <ListItemText
                   primary="Cart"
@@ -176,7 +182,7 @@ function NavBar() {
               sx={{ my: 2, color: "#66FCF1", fontFamily: 'Cambay' }}
               component={Link}
               to={'/cart'}
-              endIcon={<Badge badgeContent={3} color="warning">
+              endIcon={<Badge badgeContent={idsInCart.length} color="warning">
                           <ShoppingCartSharpIcon fontSize='small'/>
                         </Badge>}
             >
