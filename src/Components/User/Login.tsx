@@ -44,11 +44,11 @@ function Login() {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
         // pass user login state to redux
         const userId = user.attributes.sub
-        console.log("userId:", userId)
-        console.log("User object in sign in: ", user)
 
-        const userFromAPI = await API.graphql({ query: getUser, variables: { input: userId }})
-        console.log("user from API :", userFromAPI)
+        console.log("user sub (Id): ", userId)
+
+        // const userFromAPI = await API.graphql({ query: getUser, variables: { input: userId }})
+        // console.log("user from API :", userFromAPI)
 
         // navigate the user to main page or from where they came from
         navigate('/')
