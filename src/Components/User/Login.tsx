@@ -41,6 +41,15 @@ function Login() {
 
   // console.log("location state:", location.state)
 
+  useEffect(() => {
+    if (localStorage.getItem('userSignUpInfo')) {
+      // retrieve the object and set the states
+      const userSignUpInfo = JSON.parse(localStorage.getItem('userSignUpInfo') || '')
+      setUsername(userSignUpInfo.username)
+      setUserSigningUp(true)
+    } else console.log("no userInfo stored")
+  }, [])
+
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue)
   }
@@ -85,7 +94,7 @@ function Login() {
     setUserSigningUp(true)
     setUsername(signupUsername)
 
-    const userSignUpInfo = {signingUp: true, username: signupUsername}
+    const userSignUpInfo = {username: signupUsername}
     localStorage.setItem('userSignUpInfo', JSON.stringify(userSignUpInfo))
   }
 
@@ -124,7 +133,9 @@ function Login() {
     //
     try {
       console.log("signup username:", username)
+
       let response = await Auth.confirmSignUp(username, codeValue);
+      localStorage.removeItem('userSignUpInfo')
       // navigate user to page
       navigate('/')
       console.log("confirm sign up response: ", response)

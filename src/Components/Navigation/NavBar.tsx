@@ -39,7 +39,7 @@ function NavBar() {
     if (buttonClicked === 'sell') {
       navigate(`/listingform`)
     } else {
-      console.log("button clicked: ", buttonClicked)
+      // console.log("button clicked: ", buttonClicked)
       navigate(`/${buttonClicked}`, { state: `${buttonClicked}`})
     }
     setMobileMenuState(!mobileMenuState)
