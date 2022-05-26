@@ -1,10 +1,24 @@
-import React, {useState } from 'react'
+import React, {useState, useEffect } from 'react'
 import { Tab, Box, TextField, Button, Typography} from '@mui/material'
 import { TabPanel, TabContext, TabList } from '@mui/lab';
-import { Auth } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { getUser } from '../../GQL/queries'
-import { API } from 'aws-amplify';
+import { getUser } from '../../graphql/queries'
+import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
+import { setCurrentUser } from '../../Redux-Toolkit/userSlice'
+
+
+type getUserQuery = {
+  getUser: {
+    Nfts?: {}
+    createdAt: string
+    favorited?: []
+    owner: string
+    updatedAt: string
+    userId: string
+    username: string
+  }
+}
 
 function Login() {
   const [tabValue, setTabValue] = useState("1")
@@ -22,6 +36,7 @@ function Login() {
   const [username, setUsername] = useState("")
   const [userSigningUp, setUserSigningUp] = useState(false)
   let navigate = useNavigate()
+  const dispatch = useAppDispatch()
   // let location = useLocation()
 
   // console.log("location state:", location.state)
@@ -47,12 +62,13 @@ function Login() {
 
         console.log("user sub (Id): ", userId)
 
-        // const userFromAPI = await API.graphql({ query: getUser, variables: { input: userId }})
-        // console.log("user from API :", userFromAPI)
+        const userFromDb = await API.graphql({ query: getUser, variables: { userId: userId } }) as { data: getUserQuery}
+        console.log("user from Db =", userFromDb.data.getUser)
+
+        dispatch(setCurrentUser(userFromDb.data.getUser))
 
         // navigate the user to main page or from where they came from
         navigate('/')
-        // store the login status in redux state
 
     } catch (error) {
         console.log('error signing in:', error);
@@ -63,6 +79,16 @@ function Login() {
       signInPassword: ''
     })
   }
+
+  // persists users info in case the page is reloaded before the user can enter the signup verification code
+  const persistUserSignUpInfo = (signupUsername: string) => {
+    setUserSigningUp(true)
+    setUsername(signupUsername)
+
+    const userSignUpInfo = {signingUp: true, username: signupUsername}
+    localStorage.setItem('userSignUpInfo', JSON.stringify(userSignUpInfo))
+  }
+
 
   const signUpUser = async () => {
     // console.log(`${createAccountFormValues.createAccountUsername} ${createAccountFormValues.createAccountPassword} ${createAccountFormValues.createAccountConfirmPassword} ${createAccountFormValues.createAccountEmail}`)
@@ -75,10 +101,8 @@ function Login() {
                 email: createAccountFormValues.createAccountEmail
             }
         });
-        setUserSigningUp(true)
-        setUsername(createAccountFormValues.createAccountUsername)
-        console.log(user);
-        console.log("Success!")
+
+        persistUserSignUpInfo(createAccountFormValues.createAccountUsername)
       } catch (error) {
           console.log('error signing up:', error);
       }

@@ -16,7 +16,7 @@ export const userSlice = createSlice({
       setCurrentUser: (state, action: PayloadAction<object>) => {
         state.currentUser = action.payload
       },
-      removeCurrentUser: (state, action: PayloadAction<number>) => {
+      removeCurrentUser: (state) => {
         state.currentUser = {}
       },
     },
@@ -24,6 +24,6 @@ export const userSlice = createSlice({
 
 export const { setCurrentUser, removeCurrentUser, } = userSlice.actions
 
-export const selectCount = (state: RootState) => state.user.currentUser
+export const userState = (state: RootState) => state.user.currentUser
 
 export default userSlice.reducer

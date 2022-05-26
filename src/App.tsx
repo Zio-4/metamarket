@@ -9,6 +9,8 @@ import LandingPage from './Components/Navigation/LandingPage';
 import Listing from './Components/Markets/Listing';
 import ListingForm from './Components/Markets/ListingForm';
 import { Auth } from 'aws-amplify';
+import { useAppSelector } from './Redux-Toolkit/reduxHooks'
+import { userState } from './Redux-Toolkit/userSlice'
 
 
 function App() {
@@ -19,6 +21,12 @@ function App() {
       err => console.log(err)
     )
   }, [])
+
+  const userFromRedux = useAppSelector(userState)
+  console.log("user from redux =", userFromRedux)
+
+  // Check user in redux state
+  console.log('')
 
   return (
     <div className="App">
