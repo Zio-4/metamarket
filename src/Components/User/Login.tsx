@@ -135,9 +135,13 @@ function Login() {
       console.log("signup username:", username)
 
       let response = await Auth.confirmSignUp(username, codeValue);
+      setSignInFormValues({
+        signInUsername: username,
+        signInPassword: ''
+      })
+      setUserSigningUp(false)
+      setTabValue('1')
       localStorage.removeItem('userSignUpInfo')
-      // navigate user to page
-      navigate('/')
       console.log("confirm sign up response: ", response)
     } catch (error) {
         console.log('error confirming sign up', error);
