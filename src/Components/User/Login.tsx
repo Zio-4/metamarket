@@ -17,7 +17,11 @@ type getUserQuery = {
   }
 }
 
-function Login() {
+interface Iprops {
+  updateUserStatus: () => void
+}
+
+const Login: React.FC<Iprops> = ({updateUserStatus}) => {
   const [tabValue, setTabValue] = useState("1")
   const [signInFormValues, setSignInFormValues] = useState({
     signInUsername: '',
@@ -62,7 +66,7 @@ function Login() {
     // Call Auth API with credentials
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
-
+        updateUserStatus()
         // navigate the user to main page or from where they came from
         navigate('/')
 

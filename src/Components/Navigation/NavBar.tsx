@@ -24,16 +24,20 @@ import { Auth } from 'aws-amplify';
 import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
 import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
 
-function NavBar() {
+interface Iprops {
+  userIsSignedIn: boolean
+  updateUserStatus: () => void
+}
+
+const NavBar: React.FC<Iprops> = ({userIsSignedIn, updateUserStatus}) => {
   let navigate = useNavigate()
   const idsInCart = useAppSelector(selectCount)
   const [mobileMenuState, setMobileMenuState] = useState(false)
-  const [userIsSignedIn, setUserIsSignedIn] = useState(false)
 
   useEffect(() => {
     Auth.currentAuthenticatedUser().then(
       data => {
-        setUserIsSignedIn(true)
+        updateUserStatus()
         console.log("current user from NavBar component: ", data)
       }
     ).catch(
@@ -60,6 +64,7 @@ function NavBar() {
   const signOutUser = async () => {
     try {
       let response = await Auth.signOut();
+      updateUserStatus()
       console.log("response form signout: ", response)
       // remove user from login status
     } catch (error) {
