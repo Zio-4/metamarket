@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar';
@@ -28,6 +28,18 @@ function NavBar() {
   let navigate = useNavigate()
   const idsInCart = useAppSelector(selectCount)
   const [mobileMenuState, setMobileMenuState] = useState(false)
+  const [userIsSignedIn, setUserIsSignedIn] = useState(false)
+
+  useEffect(() => {
+    Auth.currentAuthenticatedUser().then(
+      data => {
+        setUserIsSignedIn(true)
+        console.log("current user from NavBar component: ", data)
+      }
+    ).catch(
+      err => console.log("error from NavBar component: ", err)
+    )
+  }, [])
 
   const setMenu = () => {
     setMobileMenuState(!mobileMenuState)
@@ -91,30 +103,31 @@ function NavBar() {
                   primary="Cart"
                 />
               </ListItem>
-              <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
+              
+              {!userIsSignedIn && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <LoginSharpIcon />
                 </ListItemIcon>
                 <ListItemText
                   primary="Sign In"
                 />
-              </ListItem>
-              <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
+              </ListItem>}
+              {userIsSignedIn && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <AccountBoxSharpIcon />
                 </ListItemIcon>
                 <ListItemText
-                  primary="Account"
+                  primary="Profile"
                 />
-              </ListItem>
-              <ListItem sx={{color: '#FF6666'}} onClick={signOutUser}>
+              </ListItem>}
+              {userIsSignedIn && <ListItem sx={{color: '#FF6666'}} onClick={signOutUser}>
                 <ListItemIcon sx={{color: '#FF6666'}}>
                   <LogoutSharpIcon />
                 </ListItemIcon>
                 <ListItemText
                   primary="Sign Out"
                 />
-              </ListItem>
+              </ListItem>}
 
           </List>
       </div>

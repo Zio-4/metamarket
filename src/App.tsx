@@ -15,18 +15,14 @@ import { userState } from './Redux-Toolkit/userSlice'
 
 function App() {
   useEffect(() => {
-    Auth.currentAuthenticatedUser().then(
-      data => console.log("current user response: ", data)
-    ).catch(
-      err => console.log(err)
-    )
+    //
   }, [])
 
+    // Check user in redux state
   const userFromRedux = useAppSelector(userState)
   console.log("user from redux =", userFromRedux)
 
-  // Check user in redux state
-  console.log('')
+
 
   return (
     <div className="App">

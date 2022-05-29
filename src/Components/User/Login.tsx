@@ -3,9 +3,6 @@ import { Tab, Box, TextField, Button, Typography} from '@mui/material'
 import { TabPanel, TabContext, TabList } from '@mui/lab';
 import { Auth, API } from 'aws-amplify';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { getUser } from '../../graphql/queries'
-import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
-import { setCurrentUser } from '../../Redux-Toolkit/userSlice'
 
 
 type getUserQuery = {
@@ -36,7 +33,6 @@ function Login() {
   const [username, setUsername] = useState("")
   const [userSigningUp, setUserSigningUp] = useState(false)
   let navigate = useNavigate()
-  const dispatch = useAppDispatch()
   // let location = useLocation()
 
   // console.log("location state:", location.state)
@@ -66,15 +62,6 @@ function Login() {
     // Call Auth API with credentials
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
-        // pass user login state to redux
-        const userId = user.attributes.sub
-
-        console.log("user sub (Id): ", userId)
-
-        const userFromDb = await API.graphql({ query: getUser, variables: { userId: userId } }) as { data: getUserQuery}
-        console.log("user from Db =", userFromDb.data.getUser)
-
-        dispatch(setCurrentUser(userFromDb.data.getUser))
 
         // navigate the user to main page or from where they came from
         navigate('/')
@@ -141,6 +128,7 @@ function Login() {
       })
       setUserSigningUp(false)
       setTabValue('1')
+      // Add message to the sing in tab that the user must sign in for security purposes
       localStorage.removeItem('userSignUpInfo')
       console.log("confirm sign up response: ", response)
     } catch (error) {
