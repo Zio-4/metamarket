@@ -7,7 +7,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 type getUserQuery = {
   getUser: {
-    Nfts?: {}
+    Nfts?: []
     createdAt: string
     favorited?: []
     owner: string
@@ -67,9 +67,6 @@ const Login: React.FC<Iprops> = ({updateUserStatus}) => {
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
         updateUserStatus()
-        // navigate the user to main page or from where they came from
-        navigate('/')
-
     } catch (error) {
         console.log('error signing in:', error);
     }
@@ -78,6 +75,8 @@ const Login: React.FC<Iprops> = ({updateUserStatus}) => {
       signInUsername: '',
       signInPassword: ''
     })
+    // navigate the user to main page or from where they came from
+    navigate('/')
   }
 
   // persists users info in case the page is reloaded before the user can enter the signup verification code

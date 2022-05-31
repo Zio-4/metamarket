@@ -31,7 +31,7 @@ const App = () => {
         <Route path="/markets/:marketname/:id" element={<Listing />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/signin" element={<Login updateUserStatus={updateUserStatus}/>} />
-        <Route path="/listingform" element={<ListingForm />} />
+        <Route path="/listingform" element={<ListingForm userIsSignedIn={userIsSignedIn} />} />
       </Routes>
     </div>
   );

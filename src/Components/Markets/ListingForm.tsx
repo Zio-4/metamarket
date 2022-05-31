@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -6,12 +6,13 @@ import { styled } from '@mui/material/styles';
 import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
+import { Auth } from 'aws-amplify';
+import { useNavigate } from 'react-router-dom';
 
 
 const Input = styled('input')({
   display: 'none',
 });
-
 
 const listColors = [{color: 'Yellow'}, {color: 'Yellow-Green'}, {color: 'Green'}, {color: 'Blue-Green'}, {color: 'Blue'}, {color: 'Blue-Violet'}, {color: 'Violet'}, {color: 'Red-Violet'}, {color: 'Red'}, {color: 'Red-Orange'}, {color: 'Orange'}, {color: 'Yellow-Orange'}]
 
@@ -19,12 +20,23 @@ const blockchains = [{label: 'Ethereum'}, {label: 'Solana'}, {label: 'Polygon'},
 
 const categories = [{label: 'Art'}, {label: 'Boats'}, {label: 'Cars'}, {label: 'Clothes'}, {label: 'Land'}, {label: 'Houses'}, {label: 'Items'}, {label: 'Jewelry'}, {label: 'Traits'}]
 
-function ListingForm() {
+interface Iprops {
+  userIsSignedIn: boolean
+}
+
+const ListingForm: React.FC<Iprops> = ({userIsSignedIn}) => {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!userIsSignedIn) return navigate('/signin')
+  },[])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('poop')
   }
+
+
 
   return (
     <Grid container alignItems="center" justifyContent="center" sx={{width: '20rem', marginX: 'auto', }} >
