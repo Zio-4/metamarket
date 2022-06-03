@@ -44,9 +44,9 @@ const Login: React.FC<Iprops> = ({updateUserStatus}) => {
   useEffect(() => {
     if (localStorage.getItem('userSignUpInfo')) {
       // retrieve the object and set the states
+      setUserSigningUp(true)
       const userSignUpInfo = JSON.parse(localStorage.getItem('userSignUpInfo') || '')
       setUsername(userSignUpInfo.username)
-      setUserSigningUp(true)
     } else console.log("no userInfo stored")
   }, [])
 

@@ -12,8 +12,8 @@ export type CreateNftInput = {
   xCoordinate?: string | null,
   yCoordinate?: string | null,
   description?: string | null,
-  imageID: string,
-  userNftsId?: string | null,
+  imageId: string,
+  userOwnedId?: string | null,
 };
 
 export type ModelNftConditionInput = {
@@ -25,11 +25,11 @@ export type ModelNftConditionInput = {
   xCoordinate?: ModelStringInput | null,
   yCoordinate?: ModelStringInput | null,
   description?: ModelStringInput | null,
-  imageID?: ModelStringInput | null,
+  imageId?: ModelStringInput | null,
   and?: Array< ModelNftConditionInput | null > | null,
   or?: Array< ModelNftConditionInput | null > | null,
   not?: ModelNftConditionInput | null,
-  userNftsId?: ModelIDInput | null,
+  userOwnedId?: ModelIDInput | null,
 };
 
 export type ModelStringInput = {
@@ -111,12 +111,12 @@ export type Nft = {
   xCoordinate?: string | null,
   yCoordinate?: string | null,
   description?: string | null,
-  imageID: string,
-  user?: User | null,
+  imageId: string,
+  owner?: User | null,
+  orders?: ModelNftOrderConnection | null,
   createdAt: string,
   updatedAt: string,
-  userNftsId?: string | null,
-  owner?: string | null,
+  userOwnedId?: string | null,
 };
 
 export type User = {
@@ -124,7 +124,8 @@ export type User = {
   userId: string,
   username: string,
   favorited?:  Array<Nft | null > | null,
-  Nfts?: ModelNftConnection | null,
+  owned?: ModelNftConnection | null,
+  sold?:  Array<Nft | null > | null,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
@@ -134,6 +135,45 @@ export type ModelNftConnection = {
   __typename: "ModelNftConnection",
   items:  Array<Nft | null >,
   nextToken?: string | null,
+};
+
+export type ModelNftOrderConnection = {
+  __typename: "ModelNftOrderConnection",
+  items:  Array<NftOrder | null >,
+  nextToken?: string | null,
+};
+
+export type NftOrder = {
+  __typename: "NftOrder",
+  id: string,
+  nft_id: string,
+  order_id: string,
+  nft?: Nft | null,
+  order?: ModelOrderConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  nftOrdersId?: string | null,
+  orderNftsId?: string | null,
+  owner?: string | null,
+};
+
+export type ModelOrderConnection = {
+  __typename: "ModelOrderConnection",
+  items:  Array<Order | null >,
+  nextToken?: string | null,
+};
+
+export type Order = {
+  __typename: "Order",
+  id: string,
+  user: string,
+  date: string,
+  total: number,
+  nfts?: ModelNftOrderConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  nftOrderOrderId?: string | null,
+  owner?: string | null,
 };
 
 export type UpdateNftInput = {
@@ -146,11 +186,83 @@ export type UpdateNftInput = {
   xCoordinate?: string | null,
   yCoordinate?: string | null,
   description?: string | null,
-  imageID?: string | null,
-  userNftsId?: string | null,
+  imageId?: string | null,
+  userOwnedId?: string | null,
 };
 
 export type DeleteNftInput = {
+  id: string,
+};
+
+export type CreateNftOrderInput = {
+  id?: string | null,
+  nft_id: string,
+  order_id: string,
+  nftOrdersId?: string | null,
+  orderNftsId?: string | null,
+};
+
+export type ModelNftOrderConditionInput = {
+  nft_id?: ModelIDInput | null,
+  order_id?: ModelIDInput | null,
+  and?: Array< ModelNftOrderConditionInput | null > | null,
+  or?: Array< ModelNftOrderConditionInput | null > | null,
+  not?: ModelNftOrderConditionInput | null,
+  nftOrdersId?: ModelIDInput | null,
+  orderNftsId?: ModelIDInput | null,
+};
+
+export type UpdateNftOrderInput = {
+  id: string,
+  nft_id?: string | null,
+  order_id?: string | null,
+  nftOrdersId?: string | null,
+  orderNftsId?: string | null,
+};
+
+export type DeleteNftOrderInput = {
+  id: string,
+};
+
+export type CreateOrderInput = {
+  id?: string | null,
+  user: string,
+  date: string,
+  total: number,
+  nftOrderOrderId?: string | null,
+};
+
+export type ModelOrderConditionInput = {
+  user?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  total?: ModelFloatInput | null,
+  and?: Array< ModelOrderConditionInput | null > | null,
+  or?: Array< ModelOrderConditionInput | null > | null,
+  not?: ModelOrderConditionInput | null,
+  nftOrderOrderId?: ModelIDInput | null,
+};
+
+export type ModelFloatInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UpdateOrderInput = {
+  id: string,
+  user?: string | null,
+  date?: string | null,
+  total?: number | null,
+  nftOrderOrderId?: string | null,
+};
+
+export type DeleteOrderInput = {
   id: string,
 };
 
@@ -205,11 +317,11 @@ export type ModelNftFilterInput = {
   xCoordinate?: ModelStringInput | null,
   yCoordinate?: ModelStringInput | null,
   description?: ModelStringInput | null,
-  imageID?: ModelStringInput | null,
+  imageId?: ModelStringInput | null,
   and?: Array< ModelNftFilterInput | null > | null,
   or?: Array< ModelNftFilterInput | null > | null,
   not?: ModelNftFilterInput | null,
-  userNftsId?: ModelIDInput | null,
+  userOwnedId?: ModelIDInput | null,
 };
 
 export type SearchableNftFilterInput = {
@@ -222,10 +334,10 @@ export type SearchableNftFilterInput = {
   xCoordinate?: SearchableStringFilterInput | null,
   yCoordinate?: SearchableStringFilterInput | null,
   description?: SearchableStringFilterInput | null,
-  imageID?: SearchableStringFilterInput | null,
+  imageId?: SearchableStringFilterInput | null,
   createdAt?: SearchableStringFilterInput | null,
   updatedAt?: SearchableStringFilterInput | null,
-  userNftsId?: SearchableIDFilterInput | null,
+  userOwnedId?: SearchableIDFilterInput | null,
   and?: Array< SearchableNftFilterInput | null > | null,
   or?: Array< SearchableNftFilterInput | null > | null,
   not?: SearchableNftFilterInput | null,
@@ -290,10 +402,10 @@ export enum SearchableNftSortableFields {
   xCoordinate = "xCoordinate",
   yCoordinate = "yCoordinate",
   description = "description",
-  imageID = "imageID",
+  imageId = "imageId",
   createdAt = "createdAt",
   updatedAt = "updatedAt",
-  userNftsId = "userNftsId",
+  userOwnedId = "userOwnedId",
 }
 
 
@@ -328,10 +440,10 @@ export enum SearchableNftAggregateField {
   xCoordinate = "xCoordinate",
   yCoordinate = "yCoordinate",
   description = "description",
-  imageID = "imageID",
+  imageId = "imageId",
   createdAt = "createdAt",
   updatedAt = "updatedAt",
-  userNftsId = "userNftsId",
+  userOwnedId = "userOwnedId",
 }
 
 
@@ -368,6 +480,38 @@ export type SearchableAggregateBucketResultItem = {
   doc_count: number,
 };
 
+export type ModelNftOrderFilterInput = {
+  id?: ModelIDInput | null,
+  nft_id?: ModelIDInput | null,
+  order_id?: ModelIDInput | null,
+  and?: Array< ModelNftOrderFilterInput | null > | null,
+  or?: Array< ModelNftOrderFilterInput | null > | null,
+  not?: ModelNftOrderFilterInput | null,
+  nftOrdersId?: ModelIDInput | null,
+  orderNftsId?: ModelIDInput | null,
+};
+
+export type ModelIDKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export type ModelOrderFilterInput = {
+  id?: ModelIDInput | null,
+  user?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  total?: ModelFloatInput | null,
+  and?: Array< ModelOrderFilterInput | null > | null,
+  or?: Array< ModelOrderFilterInput | null > | null,
+  not?: ModelOrderFilterInput | null,
+  nftOrderOrderId?: ModelIDInput | null,
+};
+
 export type CreateNftMutationVariables = {
   input: CreateNftInput,
   condition?: ModelNftConditionInput | null,
@@ -385,8 +529,8 @@ export type CreateNftMutation = {
     xCoordinate?: string | null,
     yCoordinate?: string | null,
     description?: string | null,
-    imageID: string,
-    user?:  {
+    imageId: string,
+    owner?:  {
       __typename: "User",
       userId: string,
       username: string,
@@ -394,10 +538,13 @@ export type CreateNftMutation = {
       updatedAt: string,
       owner?: string | null,
     } | null,
+    orders?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    userNftsId?: string | null,
-    owner?: string | null,
+    userOwnedId?: string | null,
   } | null,
 };
 
@@ -418,8 +565,8 @@ export type UpdateNftMutation = {
     xCoordinate?: string | null,
     yCoordinate?: string | null,
     description?: string | null,
-    imageID: string,
-    user?:  {
+    imageId: string,
+    owner?:  {
       __typename: "User",
       userId: string,
       username: string,
@@ -427,10 +574,13 @@ export type UpdateNftMutation = {
       updatedAt: string,
       owner?: string | null,
     } | null,
+    orders?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    userNftsId?: string | null,
-    owner?: string | null,
+    userOwnedId?: string | null,
   } | null,
 };
 
@@ -451,8 +601,8 @@ export type DeleteNftMutation = {
     xCoordinate?: string | null,
     yCoordinate?: string | null,
     description?: string | null,
-    imageID: string,
-    user?:  {
+    imageId: string,
+    owner?:  {
       __typename: "User",
       userId: string,
       username: string,
@@ -460,9 +610,198 @@ export type DeleteNftMutation = {
       updatedAt: string,
       owner?: string | null,
     } | null,
+    orders?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    userNftsId?: string | null,
+    userOwnedId?: string | null,
+  } | null,
+};
+
+export type CreateNftOrderMutationVariables = {
+  input: CreateNftOrderInput,
+  condition?: ModelNftOrderConditionInput | null,
+};
+
+export type CreateNftOrderMutation = {
+  createNftOrder?:  {
+    __typename: "NftOrder",
+    id: string,
+    nft_id: string,
+    order_id: string,
+    nft?:  {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null,
+    order?:  {
+      __typename: "ModelOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrdersId?: string | null,
+    orderNftsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateNftOrderMutationVariables = {
+  input: UpdateNftOrderInput,
+  condition?: ModelNftOrderConditionInput | null,
+};
+
+export type UpdateNftOrderMutation = {
+  updateNftOrder?:  {
+    __typename: "NftOrder",
+    id: string,
+    nft_id: string,
+    order_id: string,
+    nft?:  {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null,
+    order?:  {
+      __typename: "ModelOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrdersId?: string | null,
+    orderNftsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteNftOrderMutationVariables = {
+  input: DeleteNftOrderInput,
+  condition?: ModelNftOrderConditionInput | null,
+};
+
+export type DeleteNftOrderMutation = {
+  deleteNftOrder?:  {
+    __typename: "NftOrder",
+    id: string,
+    nft_id: string,
+    order_id: string,
+    nft?:  {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null,
+    order?:  {
+      __typename: "ModelOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrdersId?: string | null,
+    orderNftsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type CreateOrderMutationVariables = {
+  input: CreateOrderInput,
+  condition?: ModelOrderConditionInput | null,
+};
+
+export type CreateOrderMutation = {
+  createOrder?:  {
+    __typename: "Order",
+    id: string,
+    user: string,
+    date: string,
+    total: number,
+    nfts?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrderOrderId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type UpdateOrderMutationVariables = {
+  input: UpdateOrderInput,
+  condition?: ModelOrderConditionInput | null,
+};
+
+export type UpdateOrderMutation = {
+  updateOrder?:  {
+    __typename: "Order",
+    id: string,
+    user: string,
+    date: string,
+    total: number,
+    nfts?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrderOrderId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type DeleteOrderMutationVariables = {
+  input: DeleteOrderInput,
+  condition?: ModelOrderConditionInput | null,
+};
+
+export type DeleteOrderMutation = {
+  deleteOrder?:  {
+    __typename: "Order",
+    id: string,
+    user: string,
+    date: string,
+    total: number,
+    nfts?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrderOrderId?: string | null,
     owner?: string | null,
   } | null,
 };
@@ -488,16 +827,31 @@ export type CreateUserMutation = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null > | null,
-    Nfts?:  {
+    owned?:  {
       __typename: "ModelNftConnection",
       nextToken?: string | null,
     } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -525,16 +879,31 @@ export type UpdateUserMutation = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null > | null,
-    Nfts?:  {
+    owned?:  {
       __typename: "ModelNftConnection",
       nextToken?: string | null,
     } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -562,16 +931,31 @@ export type DeleteUserMutation = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null > | null,
-    Nfts?:  {
+    owned?:  {
       __typename: "ModelNftConnection",
       nextToken?: string | null,
     } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -598,16 +982,31 @@ export type GetUserQuery = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null > | null,
-    Nfts?:  {
+    owned?:  {
       __typename: "ModelNftConnection",
       nextToken?: string | null,
     } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -676,8 +1075,8 @@ export type GetNftQuery = {
     xCoordinate?: string | null,
     yCoordinate?: string | null,
     description?: string | null,
-    imageID: string,
-    user?:  {
+    imageId: string,
+    owner?:  {
       __typename: "User",
       userId: string,
       username: string,
@@ -685,10 +1084,13 @@ export type GetNftQuery = {
       updatedAt: string,
       owner?: string | null,
     } | null,
+    orders?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    userNftsId?: string | null,
-    owner?: string | null,
+    userOwnedId?: string | null,
   } | null,
 };
 
@@ -712,11 +1114,10 @@ export type ListNftsQuery = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -744,11 +1145,10 @@ export type NftByNameQuery = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -776,11 +1176,10 @@ export type NftByPriceQuery = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -808,11 +1207,10 @@ export type NftByCategoryQuery = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -841,11 +1239,10 @@ export type SearchNftsQuery = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null >,
     nextToken?: string | null,
     total?: number | null,
@@ -865,6 +1262,167 @@ export type SearchNftsQuery = {
         }
       ) | null,
     } | null >,
+  } | null,
+};
+
+export type GetNftOrderQueryVariables = {
+  id: string,
+};
+
+export type GetNftOrderQuery = {
+  getNftOrder?:  {
+    __typename: "NftOrder",
+    id: string,
+    nft_id: string,
+    order_id: string,
+    nft?:  {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null,
+    order?:  {
+      __typename: "ModelOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrdersId?: string | null,
+    orderNftsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListNftOrdersQueryVariables = {
+  filter?: ModelNftOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListNftOrdersQuery = {
+  listNftOrders?:  {
+    __typename: "ModelNftOrderConnection",
+    items:  Array< {
+      __typename: "NftOrder",
+      id: string,
+      nft_id: string,
+      order_id: string,
+      createdAt: string,
+      updatedAt: string,
+      nftOrdersId?: string | null,
+      orderNftsId?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type NftOrderByOrderIdQueryVariables = {
+  nft_id: string,
+  order_id?: ModelIDKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelNftOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type NftOrderByOrderIdQuery = {
+  nftOrderByOrderId?:  {
+    __typename: "ModelNftOrderConnection",
+    items:  Array< {
+      __typename: "NftOrder",
+      id: string,
+      nft_id: string,
+      order_id: string,
+      createdAt: string,
+      updatedAt: string,
+      nftOrdersId?: string | null,
+      orderNftsId?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetOrderQueryVariables = {
+  id: string,
+};
+
+export type GetOrderQuery = {
+  getOrder?:  {
+    __typename: "Order",
+    id: string,
+    user: string,
+    date: string,
+    total: number,
+    nfts?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrderOrderId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type ListOrdersQueryVariables = {
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListOrdersQuery = {
+  listOrders?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      user: string,
+      date: string,
+      total: number,
+      createdAt: string,
+      updatedAt: string,
+      nftOrderOrderId?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type OrderByUserQueryVariables = {
+  user: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelOrderFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type OrderByUserQuery = {
+  orderByUser?:  {
+    __typename: "ModelOrderConnection",
+    items:  Array< {
+      __typename: "Order",
+      id: string,
+      user: string,
+      date: string,
+      total: number,
+      createdAt: string,
+      updatedAt: string,
+      nftOrderOrderId?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -888,16 +1446,31 @@ export type OnCreateUserSubscription = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null > | null,
-    Nfts?:  {
+    owned?:  {
       __typename: "ModelNftConnection",
       nextToken?: string | null,
     } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -924,16 +1497,31 @@ export type OnUpdateUserSubscription = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null > | null,
-    Nfts?:  {
+    owned?:  {
       __typename: "ModelNftConnection",
       nextToken?: string | null,
     } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -960,16 +1548,31 @@ export type OnDeleteUserSubscription = {
       xCoordinate?: string | null,
       yCoordinate?: string | null,
       description?: string | null,
-      imageID: string,
+      imageId: string,
       createdAt: string,
       updatedAt: string,
-      userNftsId?: string | null,
-      owner?: string | null,
+      userOwnedId?: string | null,
     } | null > | null,
-    Nfts?:  {
+    owned?:  {
       __typename: "ModelNftConnection",
       nextToken?: string | null,
     } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -992,8 +1595,8 @@ export type OnCreateNftSubscription = {
     xCoordinate?: string | null,
     yCoordinate?: string | null,
     description?: string | null,
-    imageID: string,
-    user?:  {
+    imageId: string,
+    owner?:  {
       __typename: "User",
       userId: string,
       username: string,
@@ -1001,10 +1604,13 @@ export type OnCreateNftSubscription = {
       updatedAt: string,
       owner?: string | null,
     } | null,
+    orders?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    userNftsId?: string | null,
-    owner?: string | null,
+    userOwnedId?: string | null,
   } | null,
 };
 
@@ -1024,8 +1630,8 @@ export type OnUpdateNftSubscription = {
     xCoordinate?: string | null,
     yCoordinate?: string | null,
     description?: string | null,
-    imageID: string,
-    user?:  {
+    imageId: string,
+    owner?:  {
       __typename: "User",
       userId: string,
       username: string,
@@ -1033,10 +1639,13 @@ export type OnUpdateNftSubscription = {
       updatedAt: string,
       owner?: string | null,
     } | null,
+    orders?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    userNftsId?: string | null,
-    owner?: string | null,
+    userOwnedId?: string | null,
   } | null,
 };
 
@@ -1056,8 +1665,8 @@ export type OnDeleteNftSubscription = {
     xCoordinate?: string | null,
     yCoordinate?: string | null,
     description?: string | null,
-    imageID: string,
-    user?:  {
+    imageId: string,
+    owner?:  {
       __typename: "User",
       userId: string,
       username: string,
@@ -1065,9 +1674,192 @@ export type OnDeleteNftSubscription = {
       updatedAt: string,
       owner?: string | null,
     } | null,
+    orders?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
-    userNftsId?: string | null,
+    userOwnedId?: string | null,
+  } | null,
+};
+
+export type OnCreateNftOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateNftOrderSubscription = {
+  onCreateNftOrder?:  {
+    __typename: "NftOrder",
+    id: string,
+    nft_id: string,
+    order_id: string,
+    nft?:  {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null,
+    order?:  {
+      __typename: "ModelOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrdersId?: string | null,
+    orderNftsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateNftOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateNftOrderSubscription = {
+  onUpdateNftOrder?:  {
+    __typename: "NftOrder",
+    id: string,
+    nft_id: string,
+    order_id: string,
+    nft?:  {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null,
+    order?:  {
+      __typename: "ModelOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrdersId?: string | null,
+    orderNftsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteNftOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteNftOrderSubscription = {
+  onDeleteNftOrder?:  {
+    __typename: "NftOrder",
+    id: string,
+    nft_id: string,
+    order_id: string,
+    nft?:  {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price: number,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null,
+    order?:  {
+      __typename: "ModelOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrdersId?: string | null,
+    orderNftsId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateOrderSubscription = {
+  onCreateOrder?:  {
+    __typename: "Order",
+    id: string,
+    user: string,
+    date: string,
+    total: number,
+    nfts?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrderOrderId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateOrderSubscription = {
+  onUpdateOrder?:  {
+    __typename: "Order",
+    id: string,
+    user: string,
+    date: string,
+    total: number,
+    nfts?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrderOrderId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteOrderSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteOrderSubscription = {
+  onDeleteOrder?:  {
+    __typename: "Order",
+    id: string,
+    user: string,
+    date: string,
+    total: number,
+    nfts?:  {
+      __typename: "ModelNftOrderConnection",
+      nextToken?: string | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    nftOrderOrderId?: string | null,
     owner?: string | null,
   } | null,
 };

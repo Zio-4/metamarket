@@ -12,9 +12,32 @@ type Nft @model @searchable @auth(rules: [
     xCoordinate: String
     yCoordinate: String
     description: String
-    imageID: String!
+    imageId: String!
     # This generates queries and mutations that allow you to retrieve the related Nft records from the source User record and vice versa. A field is automatically generated to reference the parent’s primary key.
-    user: User @belongsTo
+    owner: User @belongsTo
+    orders: [NftOrder] @hasMany
+}
+
+type NftOrder @model @auth(rules: [
+  {allow: owner, identityClaim: "email"}
+  {allow: public, operations: [read]}
+]) {
+  id: ID!
+  nft_id: ID! @index(name: "byNft", sortKeyFields: ["order_id"], queryField: "nftOrderByOrderId")
+  order_id: ID! 
+  nft: Nft @belongsTo
+  order: [Order] @hasMany
+}
+
+type Order @model @auth(rules: [
+  {allow: owner, identityClaim: "email"}
+  {allow: public, operations: [read]}
+]) {
+  id: ID!
+  user: String! @index(name: "byUser", queryField: "orderByUser")
+  date: String!
+  total: Float!
+  nfts: [NftOrder] @hasMany
 }
 
 type User @model @auth(rules: [{ allow: owner }]) {
@@ -22,6 +45,34 @@ type User @model @auth(rules: [{ allow: owner }]) {
   username: String! @index(name: "byName", queryField: "userByUsername")
   favorited: [Nft]
   # Under the hood, @hasMany configures a secondary index on the related table to enable you to query the related model from the source model.
-  Nfts: [Nft] @hasMany
+  owned: [Nft] @hasMany
+  sold: [Nft]
 }
+
+# enum OrderStatus {
+#   SUCCESS
+#   FAILED
+# }
+
+# input CartItem {
+#   id: ID!
+#   name: String
+#   imageId: String
+#   price: Float
+#   amount: Int
+# }
+
+# input ProcessOrderInput {
+#   id: ID!
+#   cart: [CartItem]
+#   total: Float!
+#   token: String!
+#   address: String
+# }
+
+# type Mutation {
+#   processOrder(input: ProcessOrderInput!): OrderStatus
+#     @function(name: "processPayment-${env}")
+#     @function(name: "createOrder-${env}")
+# }
 

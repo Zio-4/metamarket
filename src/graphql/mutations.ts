@@ -17,18 +17,20 @@ export const createNft = /* GraphQL */ `
       xCoordinate
       yCoordinate
       description
-      imageID
-      user {
+      imageId
+      owner {
         userId
         username
         createdAt
         updatedAt
         owner
       }
+      orders {
+        nextToken
+      }
       createdAt
       updatedAt
-      userNftsId
-      owner
+      userOwnedId
     }
   }
 `;
@@ -47,18 +49,20 @@ export const updateNft = /* GraphQL */ `
       xCoordinate
       yCoordinate
       description
-      imageID
-      user {
+      imageId
+      owner {
         userId
         username
         createdAt
         updatedAt
         owner
       }
+      orders {
+        nextToken
+      }
       createdAt
       updatedAt
-      userNftsId
-      owner
+      userOwnedId
     }
   }
 `;
@@ -77,17 +81,184 @@ export const deleteNft = /* GraphQL */ `
       xCoordinate
       yCoordinate
       description
-      imageID
-      user {
+      imageId
+      owner {
         userId
         username
         createdAt
         updatedAt
         owner
       }
+      orders {
+        nextToken
+      }
       createdAt
       updatedAt
-      userNftsId
+      userOwnedId
+    }
+  }
+`;
+export const createNftOrder = /* GraphQL */ `
+  mutation CreateNftOrder(
+    $input: CreateNftOrderInput!
+    $condition: ModelNftOrderConditionInput
+  ) {
+    createNftOrder(input: $input, condition: $condition) {
+      id
+      nft_id
+      order_id
+      nft {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      order {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrdersId
+      orderNftsId
+      owner
+    }
+  }
+`;
+export const updateNftOrder = /* GraphQL */ `
+  mutation UpdateNftOrder(
+    $input: UpdateNftOrderInput!
+    $condition: ModelNftOrderConditionInput
+  ) {
+    updateNftOrder(input: $input, condition: $condition) {
+      id
+      nft_id
+      order_id
+      nft {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      order {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrdersId
+      orderNftsId
+      owner
+    }
+  }
+`;
+export const deleteNftOrder = /* GraphQL */ `
+  mutation DeleteNftOrder(
+    $input: DeleteNftOrderInput!
+    $condition: ModelNftOrderConditionInput
+  ) {
+    deleteNftOrder(input: $input, condition: $condition) {
+      id
+      nft_id
+      order_id
+      nft {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      order {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrdersId
+      orderNftsId
+      owner
+    }
+  }
+`;
+export const createOrder = /* GraphQL */ `
+  mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      id
+      user
+      date
+      total
+      nfts {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrderOrderId
+      owner
+    }
+  }
+`;
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    updateOrder(input: $input, condition: $condition) {
+      id
+      user
+      date
+      total
+      nfts {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrderOrderId
+      owner
+    }
+  }
+`;
+export const deleteOrder = /* GraphQL */ `
+  mutation DeleteOrder(
+    $input: DeleteOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    deleteOrder(input: $input, condition: $condition) {
+      id
+      user
+      date
+      total
+      nfts {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrderOrderId
       owner
     }
   }
@@ -110,14 +281,28 @@ export const createUser = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
-      Nfts {
+      owned {
         nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
       }
       createdAt
       updatedAt
@@ -143,14 +328,28 @@ export const updateUser = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
-      Nfts {
+      owned {
         nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
       }
       createdAt
       updatedAt
@@ -176,14 +375,28 @@ export const deleteUser = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
-      Nfts {
+      owned {
         nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
       }
       createdAt
       updatedAt

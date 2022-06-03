@@ -17,14 +17,28 @@ export const getUser = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
-      Nfts {
+      owned {
         nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
       }
       createdAt
       updatedAt
@@ -96,18 +110,20 @@ export const getNft = /* GraphQL */ `
       xCoordinate
       yCoordinate
       description
-      imageID
-      user {
+      imageId
+      owner {
         userId
         username
         createdAt
         updatedAt
         owner
       }
+      orders {
+        nextToken
+      }
       createdAt
       updatedAt
-      userNftsId
-      owner
+      userOwnedId
     }
   }
 `;
@@ -128,11 +144,10 @@ export const listNfts = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
       nextToken
     }
@@ -163,11 +178,10 @@ export const nftByName = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
       nextToken
     }
@@ -198,11 +212,10 @@ export const nftByPrice = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
       nextToken
     }
@@ -233,11 +246,10 @@ export const nftByCategory = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
       nextToken
     }
@@ -270,11 +282,10 @@ export const searchNfts = /* GraphQL */ `
         xCoordinate
         yCoordinate
         description
-        imageID
+        imageId
         createdAt
         updatedAt
-        userNftsId
-        owner
+        userOwnedId
       }
       nextToken
       total
@@ -292,6 +303,157 @@ export const searchNfts = /* GraphQL */ `
           }
         }
       }
+    }
+  }
+`;
+export const getNftOrder = /* GraphQL */ `
+  query GetNftOrder($id: ID!) {
+    getNftOrder(id: $id) {
+      id
+      nft_id
+      order_id
+      nft {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      order {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrdersId
+      orderNftsId
+      owner
+    }
+  }
+`;
+export const listNftOrders = /* GraphQL */ `
+  query ListNftOrders(
+    $filter: ModelNftOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNftOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        nft_id
+        order_id
+        createdAt
+        updatedAt
+        nftOrdersId
+        orderNftsId
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const nftOrderByOrderId = /* GraphQL */ `
+  query NftOrderByOrderId(
+    $nft_id: ID!
+    $order_id: ModelIDKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelNftOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    nftOrderByOrderId(
+      nft_id: $nft_id
+      order_id: $order_id
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        nft_id
+        order_id
+        createdAt
+        updatedAt
+        nftOrdersId
+        orderNftsId
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getOrder = /* GraphQL */ `
+  query GetOrder($id: ID!) {
+    getOrder(id: $id) {
+      id
+      user
+      date
+      total
+      nfts {
+        nextToken
+      }
+      createdAt
+      updatedAt
+      nftOrderOrderId
+      owner
+    }
+  }
+`;
+export const listOrders = /* GraphQL */ `
+  query ListOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        user
+        date
+        total
+        createdAt
+        updatedAt
+        nftOrderOrderId
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const orderByUser = /* GraphQL */ `
+  query OrderByUser(
+    $user: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    orderByUser(
+      user: $user
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        user
+        date
+        total
+        createdAt
+        updatedAt
+        nftOrderOrderId
+        owner
+      }
+      nextToken
     }
   }
 `;
