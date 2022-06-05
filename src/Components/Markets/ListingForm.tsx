@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, MouseEvent} from 'react'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -9,6 +9,11 @@ import Typography from '@mui/material/Typography';
 import { Auth, API } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../graphql/queries';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 const Input = styled('input')({
@@ -46,6 +51,7 @@ type getUserQuery = {
 
 const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
   const navigate = useNavigate()
+  const [dialogState, setDialogState] = useState(false)
 
   useEffect(() => {
     // loading animation or if not signed in/ error return
@@ -53,7 +59,9 @@ const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
     // fetch user from db, see if they have a stripe acc (stripe_id)
     const getUserDataFromDb = async () => {
       const data = await API.graphql({ query: getUser, variables: { userId: cognitoUser.cognitoId } }) as getUserQuery
-      if (!data.data.getUser.stripe_id) return navigate('/profile')
+      if (!data.data.getUser.stripe_id) {
+        setDialogState(true)
+      }
     }
     
     getUserDataFromDb()
@@ -65,66 +73,106 @@ const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
     console.log('poop')
   }
 
+  const handleClose = (event: object, reason: string) => {
+    if (reason ==="backdropClick" || reason === "escapeKeyDown") return
+    console.log('reason', reason)
+    setDialogState(false);
+  };
+
+  const redirect = (event: React.MouseEvent<HTMLElement>) => {
+    const eventCast = event.target as Element
+    
+    if (eventCast.textContent === 'Back to home') return navigate('/')
+    else createStripeAccount()
+
+  }
+
+  const createStripeAccount = async () => {
+    // call lambda function
+    setDialogState(false)
+  }
+
 
 
   return (
-    <Grid container alignItems="center" justifyContent="center" sx={{width: '20rem', marginX: 'auto', }} >
-      {/* <Paper sx={{ marginTop: 10 }}> */}
-        <form onSubmit={handleSubmit} className='listing-form' >
-          <Grid item >
-            <TextField variant="outlined" label="Title" required  sx={{ input: {color: 'white', }, width: '13rem', }} />
-          </Grid>
-          <Grid item>
-            <TextField variant="outlined" label="Price" type="number" required helperText="Price in USD"/>
-          </Grid>
-          <Grid item>
-            <Autocomplete
-              disablePortal
-              options={categories}
-              renderInput={(params) => <TextField {...params} label="Categories" required/>}
-            />
-          </Grid>
+    <div>
+      <Dialog
+        open={dialogState}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Create Stripe Connected account?"}
+        </DialogTitle>
+        <DialogContent >
+          <DialogContentText id="alert-dialog-description">
+            metaMarket uses Stripe to securely process payments. You must create a Stripe Connected account to recieve your payments from Nft's that you have sold.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={redirect}>Back to home</Button>
+          <Button onClick={redirect} autoFocus>
+            Create Account
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Grid container alignItems="center" justifyContent="center" sx={{width: '20rem', marginX: 'auto', }} >
+          <form onSubmit={handleSubmit} className='listing-form' >
+            <Grid item >
+              <TextField variant="outlined" label="Title" required  sx={{ input: {color: 'white', }, width: '13rem', }} />
+            </Grid>
+            <Grid item>
+              <TextField variant="outlined" label="Price" type="number" required helperText="Price in USD"/>
+            </Grid>
+            <Grid item>
+              <Autocomplete
+                disablePortal
+                options={categories}
+                renderInput={(params) => <TextField {...params} label="Categories" required/>}
+              />
+            </Grid>
 
-          <Grid item>
-            <Autocomplete multiple limitTags={1} options={listColors} getOptionLabel={(option) => option.color} renderInput={(params) => (
-              <TextField {...params} label="Colors" helperText="Based on the color wheel: https://tinyurl.com/2p8bfymr"/>
-            )}/>
-          </Grid>
-          <Grid item>
-            <Autocomplete
-              disablePortal
-              options={blockchains}
-              renderInput={(params) => <TextField {...params} label="Blockchain" required/>}
-            />
-          </Grid>
-          <Typography>
-              Land coordinates
-          </Typography>
-          <Grid item>
-            <TextField variant="outlined" label="X coordinate" type="number" />
-          </Grid>
-          <Grid item>
-            <TextField variant="outlined" label="Y coordinate" type="number" />
-          </Grid>
-          <Grid item>
-            <TextField variant="outlined" label="Description" multiline minRows={4}/>
-          </Grid>
-          <Grid item>
-            <label htmlFor="contained-button-file">
-              <Input accept="image/*" id="contained-button-file" multiple type="file" />
-              <Button variant="contained" component="span" endIcon={<ArrowUpwardSharpIcon/>}>
-                Upload
+            <Grid item>
+              <Autocomplete multiple limitTags={1} options={listColors} getOptionLabel={(option) => option.color} renderInput={(params) => (
+                <TextField {...params} label="Colors" helperText="Based on the color wheel: https://tinyurl.com/2p8bfymr"/>
+              )}/>
+            </Grid>
+            <Grid item>
+              <Autocomplete
+                disablePortal
+                options={blockchains}
+                renderInput={(params) => <TextField {...params} label="Blockchain" required/>}
+              />
+            </Grid>
+            <Typography>
+                Land coordinates
+            </Typography>
+            <Grid item>
+              <TextField variant="outlined" label="X coordinate" type="number" />
+            </Grid>
+            <Grid item>
+              <TextField variant="outlined" label="Y coordinate" type="number" />
+            </Grid>
+            <Grid item>
+              <TextField variant="outlined" label="Description" multiline minRows={4}/>
+            </Grid>
+            <Grid item>
+              <label htmlFor="contained-button-file">
+                <Input accept="image/*" id="contained-button-file" multiple type="file" />
+                <Button variant="contained" component="span" endIcon={<ArrowUpwardSharpIcon/>}>
+                  Upload
+                </Button>
+              </label>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" type="submit">
+                List
               </Button>
-            </label>
-          </Grid>
-          <Grid item>
-            <Button variant="contained" type="submit">
-              List
-            </Button>
-          </Grid>
-
-        </form>
-    </Grid>
+            </Grid>
+          </form>
+      </Grid>
+    </div>
   ) 
 }
 

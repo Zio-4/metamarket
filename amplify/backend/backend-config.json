@@ -71,5 +71,12 @@
         }
       }
     }
+  },
+  "function": {
+    "createStripeConnectAccount": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }
