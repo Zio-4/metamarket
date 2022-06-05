@@ -6,8 +6,9 @@ import { styled } from '@mui/material/styles';
 import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
-import { Auth } from 'aws-amplify';
+import { Auth, API } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
+import { getUser } from '../../graphql/queries';
 
 
 const Input = styled('input')({
@@ -21,14 +22,42 @@ const blockchains = [{label: 'Ethereum'}, {label: 'Solana'}, {label: 'Polygon'},
 const categories = [{label: 'Art'}, {label: 'Boats'}, {label: 'Cars'}, {label: 'Clothes'}, {label: 'Land'}, {label: 'Houses'}, {label: 'Items'}, {label: 'Jewelry'}, {label: 'Traits'}]
 
 interface Iprops {
-  userIsSignedIn: boolean
+  cognitoUser: {
+    cognitoId: string
+    username: string
+    email: string
+  }
 }
 
-const ListingForm: React.FC<Iprops> = ({userIsSignedIn}) => {
+type getUserQuery = {
+  data: {
+    getUser: {
+      Nfts?: []
+      createdAt: string
+      favorited?: []
+      owner: string
+      updatedAt: string
+      userId: string
+      username: string
+      stripe_id: string
+    }
+  }
+}
+
+const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!userIsSignedIn) return navigate('/signin')
+    // loading animation or if not signed in/ error return
+    if (!cognitoUser.email) return navigate('/signin')
+    // fetch user from db, see if they have a stripe acc (stripe_id)
+    const getUserDataFromDb = async () => {
+      const data = await API.graphql({ query: getUser, variables: { userId: cognitoUser.cognitoId } }) as getUserQuery
+      if (!data.data.getUser.stripe_id) return navigate('/profile')
+    }
+    
+    getUserDataFromDb()
+    .catch(err => console.log("error fetching data: ", err))
   },[])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

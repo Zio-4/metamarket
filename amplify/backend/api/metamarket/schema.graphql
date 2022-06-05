@@ -5,7 +5,7 @@ type Nft @model @searchable @auth(rules: [
   ]) {
     id: ID!
     name: String! @index(name: "byName", queryField: "nftByName",)
-    price: Int! @index(name: "byPrice", queryField: "nftByPrice")
+    price: Int @index(name: "byPrice", queryField: "nftByPrice")
     category: String! @index(name: "byCategory", queryField: "nftByCategory")
     blockchain: String!
     colors: [String]
@@ -15,7 +15,13 @@ type Nft @model @searchable @auth(rules: [
     imageId: String!
     # This generates queries and mutations that allow you to retrieve the related Nft records from the source User record and vice versa. A field is automatically generated to reference the parent’s primary key.
     owner: User @belongsTo
+    listed: ListedStatus @index(name: "byListed", queryField: "nftByListedStatus")
     orders: [NftOrder] @hasMany
+}
+
+enum ListedStatus {
+  YES
+  NO
 }
 
 type NftOrder @model @auth(rules: [
@@ -47,6 +53,7 @@ type User @model @auth(rules: [{ allow: owner }]) {
   # Under the hood, @hasMany configures a secondary index on the related table to enable you to query the related model from the source model.
   owned: [Nft] @hasMany
   sold: [Nft]
+  stripe_id: String
 }
 
 # enum OrderStatus {

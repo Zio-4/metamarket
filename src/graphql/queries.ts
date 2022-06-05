@@ -18,6 +18,7 @@ export const getUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -36,10 +37,12 @@ export const getUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
       }
+      stripe_id
       createdAt
       updatedAt
       owner
@@ -64,6 +67,7 @@ export const listUsers = /* GraphQL */ `
       items {
         userId
         username
+        stripe_id
         createdAt
         updatedAt
         owner
@@ -90,6 +94,7 @@ export const userByUsername = /* GraphQL */ `
       items {
         userId
         username
+        stripe_id
         createdAt
         updatedAt
         owner
@@ -114,10 +119,12 @@ export const getNft = /* GraphQL */ `
       owner {
         userId
         username
+        stripe_id
         createdAt
         updatedAt
         owner
       }
+      listed
       orders {
         nextToken
       }
@@ -145,6 +152,7 @@ export const listNfts = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -179,6 +187,7 @@ export const nftByName = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -213,6 +222,7 @@ export const nftByPrice = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -247,6 +257,42 @@ export const nftByCategory = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      nextToken
+    }
+  }
+`;
+export const nftByListedStatus = /* GraphQL */ `
+  query NftByListedStatus(
+    $listed: ListedStatus!
+    $sortDirection: ModelSortDirection
+    $filter: ModelNftFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    nftByListedStatus(
+      listed: $listed
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -283,6 +329,7 @@ export const searchNfts = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -323,6 +370,7 @@ export const getNftOrder = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId

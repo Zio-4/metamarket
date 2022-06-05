@@ -21,10 +21,12 @@ export const createNft = /* GraphQL */ `
       owner {
         userId
         username
+        stripe_id
         createdAt
         updatedAt
         owner
       }
+      listed
       orders {
         nextToken
       }
@@ -53,10 +55,12 @@ export const updateNft = /* GraphQL */ `
       owner {
         userId
         username
+        stripe_id
         createdAt
         updatedAt
         owner
       }
+      listed
       orders {
         nextToken
       }
@@ -85,10 +89,12 @@ export const deleteNft = /* GraphQL */ `
       owner {
         userId
         username
+        stripe_id
         createdAt
         updatedAt
         owner
       }
+      listed
       orders {
         nextToken
       }
@@ -118,6 +124,7 @@ export const createNftOrder = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -153,6 +160,7 @@ export const updateNftOrder = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -188,6 +196,7 @@ export const deleteNftOrder = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -282,6 +291,7 @@ export const createUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -300,10 +310,12 @@ export const createUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
       }
+      stripe_id
       createdAt
       updatedAt
       owner
@@ -329,6 +341,7 @@ export const updateUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -347,10 +360,12 @@ export const updateUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
       }
+      stripe_id
       createdAt
       updatedAt
       owner
@@ -376,6 +391,7 @@ export const deleteUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
@@ -394,10 +410,12 @@ export const deleteUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        listed
         createdAt
         updatedAt
         userOwnedId
       }
+      stripe_id
       createdAt
       updatedAt
       owner

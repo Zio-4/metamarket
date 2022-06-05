@@ -17,11 +17,17 @@ type getUserQuery = {
   }
 }
 
-interface Iprops {
-  updateUserStatus: () => void
+interface IcognitoUser {
+  cognitoId: string
+  username: string
+  email: string
 }
 
-const Login: React.FC<Iprops> = ({updateUserStatus}) => {
+interface Iprops {
+  signInCognitoUser: (user: IcognitoUser) => void
+}
+
+const Login: React.FC<Iprops> = ({signInCognitoUser}) => {
   const [tabValue, setTabValue] = useState("1")
   const [signInFormValues, setSignInFormValues] = useState({
     signInUsername: '',
@@ -66,7 +72,10 @@ const Login: React.FC<Iprops> = ({updateUserStatus}) => {
     // Call Auth API with credentials
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
-        updateUserStatus()
+        // console.log("user", user)
+        signInCognitoUser({cognitoId: `${user.attributes.sub}`,
+          username: `${user.username}`,
+          email: `${user.attributes.email}`})
     } catch (error) {
         console.log('error signing in:', error);
     }

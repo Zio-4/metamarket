@@ -25,25 +25,20 @@ import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
 import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
 
 interface Iprops {
-  userIsSignedIn: boolean
-  updateUserStatus: () => void
+  cognitoUser: {
+    cognitoId: string
+    username: string
+    email: string
+  }
+  signOutCognitoUser: () => void
 }
 
-const NavBar: React.FC<Iprops> = ({userIsSignedIn, updateUserStatus}) => {
+const NavBar: React.FC<Iprops> = ({cognitoUser, signOutCognitoUser}) => {
   let navigate = useNavigate()
   const idsInCart = useAppSelector(selectCount)
   const [mobileMenuState, setMobileMenuState] = useState(false)
 
-  useEffect(() => {
-    Auth.currentAuthenticatedUser().then(
-      data => {
-        updateUserStatus()
-        console.log("current user from NavBar component: ", data)
-      }
-    ).catch(
-      err => console.log("error from NavBar component: ", err)
-    )
-  }, [])
+
 
   const setMenu = () => {
     setMobileMenuState(!mobileMenuState)
@@ -64,7 +59,7 @@ const NavBar: React.FC<Iprops> = ({userIsSignedIn, updateUserStatus}) => {
   const signOutUser = async () => {
     try {
       let response = await Auth.signOut();
-      updateUserStatus()
+      signOutCognitoUser()
       console.log("response form signout: ", response)
       // remove user from login status
     } catch (error) {
@@ -109,7 +104,7 @@ const NavBar: React.FC<Iprops> = ({userIsSignedIn, updateUserStatus}) => {
                 />
               </ListItem>
               
-              {!userIsSignedIn && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
+              {!cognitoUser.email && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <LoginSharpIcon />
                 </ListItemIcon>
@@ -117,7 +112,7 @@ const NavBar: React.FC<Iprops> = ({userIsSignedIn, updateUserStatus}) => {
                   primary="Sign In"
                 />
               </ListItem>}
-              {userIsSignedIn && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
+              {cognitoUser.email && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <AccountBoxSharpIcon />
                 </ListItemIcon>
@@ -125,7 +120,7 @@ const NavBar: React.FC<Iprops> = ({userIsSignedIn, updateUserStatus}) => {
                   primary="Profile"
                 />
               </ListItem>}
-              {userIsSignedIn && <ListItem sx={{color: '#FF6666'}} onClick={signOutUser}>
+              {cognitoUser.email && <ListItem sx={{color: '#FF6666'}} onClick={signOutUser}>
                 <ListItemIcon sx={{color: '#FF6666'}}>
                   <LogoutSharpIcon />
                 </ListItemIcon>
@@ -142,7 +137,7 @@ const NavBar: React.FC<Iprops> = ({userIsSignedIn, updateUserStatus}) => {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
-            variant="h6"
+            variant="h5"
             noWrap
             component={Link}
             to={'/'}
