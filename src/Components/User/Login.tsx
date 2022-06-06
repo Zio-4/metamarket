@@ -69,23 +69,20 @@ const Login: React.FC<Iprops> = ({signInCognitoUser}) => {
   }
 
   const signInUser = async () => {
-    // Call Auth API with credentials
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
         // console.log("user", user)
         signInCognitoUser({cognitoId: `${user.attributes.sub}`,
           username: `${user.username}`,
           email: `${user.attributes.email}`})
+          setSignInFormValues({
+            signInUsername: '',
+            signInPassword: ''
+          })
+          navigate('/')
     } catch (error) {
         console.log('error signing in:', error);
     }
-
-    setSignInFormValues({
-      signInUsername: '',
-      signInPassword: ''
-    })
-    // navigate the user to main page or from where they came from
-    navigate('/')
   }
 
   // persists users info in case the page is reloaded before the user can enter the signup verification code

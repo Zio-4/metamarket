@@ -46,7 +46,10 @@ type Order @model @auth(rules: [
   nfts: [NftOrder] @hasMany
 }
 
-type User @model @auth(rules: [{ allow: owner }]) {
+type User @model @auth(rules: [
+  { allow: owner }
+  {allow: public, operations: [read]}
+  ]) {
   userId: String! @primaryKey
   username: String! @index(name: "byName", queryField: "userByUsername")
   favorited: [Nft]

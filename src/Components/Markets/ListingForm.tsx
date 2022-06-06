@@ -45,7 +45,7 @@ type getUserQuery = {
       updatedAt: string
       userId: string
       username: string
-      stripe_id: string
+      stripe_id?: string
     }
   }
 }
@@ -65,11 +65,14 @@ const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
     // loading animation or if not signed in/ error return
     if (!cognitoUser.email) return navigate('/signin')
     // fetch user from db, see if they have a stripe acc (stripe_id)
+    console.log("user id: ", cognitoUser.cognitoId)
     const getUserDataFromDb = async () => {
       const data = await API.graphql({ query: getUser, variables: { userId: cognitoUser.cognitoId } }) as getUserQuery
-      if (!data.data.getUser.stripe_id) {
-        setDialogState(true)
-      }
+      console.log(data)
+      // if (!data.data.getUser.stripe_id) {
+      //   console.log(data.data.getUser)
+      //   setDialogState(true)
+      // }
     }
     
     getUserDataFromDb()

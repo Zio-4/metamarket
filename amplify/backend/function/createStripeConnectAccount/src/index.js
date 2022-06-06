@@ -13,6 +13,7 @@ exports.handler = async (event) => {
 
     try {
         const tableName = process.env.tableName
+        console.log('table name: ', tableName)
         const {username, email} = event.arguments.input
 
         const account = await stripe.accounts.create({
