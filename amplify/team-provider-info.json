@@ -15,6 +15,12 @@
       "auth": {
         "true": {},
         "metamarket": {}
+      },
+      "function": {
+        "createStripeConnectAccount": {
+          "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
+          "s3Key": "amplify-builds/createStripeConnectAccount-70716d6f734c396b3376-build.zip"
+        }
       }
     }
   }

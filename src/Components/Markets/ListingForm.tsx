@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
-import { Auth, API } from 'aws-amplify';
+import { Auth, API, graphqlOperation } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 import { getUser } from '../../graphql/queries';
 import Dialog from '@mui/material/Dialog';
@@ -14,6 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { signUpUser } from '../../graphql/mutations';
 
 
 const Input = styled('input')({
@@ -47,6 +48,13 @@ type getUserQuery = {
       stripe_id: string
     }
   }
+}
+
+interface IstripeSignUpResponse {
+  object: string
+  created: string
+  expires_at: string
+  url: string
 }
 
 const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
@@ -87,8 +95,21 @@ const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
 
   }
 
+  const redirectToOnboarding = (url: string) => {
+    window.location.replace(`${url}`)
+  }
+
   const createStripeAccount = async () => {
     // call lambda function
+    try {
+      let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: cognitoUser.username, email: cognitoUser.email} })) as IstripeSignUpResponse
+      console.log("sign up response: ", signUpResponse)
+      // redirect the user to the onboarding flow from the url in the response
+      redirectToOnboarding(signUpResponse.url)
+    } catch (err) {
+      console.log(err)
+    }
+
     setDialogState(false)
   }
 

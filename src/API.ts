@@ -2,6 +2,18 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type SignUpUserInput = {
+  username: string,
+  email: string,
+};
+
+export enum SignUpStatus {
+  SUCCESS = "SUCCESS",
+  PARTIAL = "PARTIAL",
+  FAILED = "FAILED",
+}
+
+
 export type CreateNftInput = {
   id?: string | null,
   name: string,
@@ -533,6 +545,14 @@ export type ModelOrderFilterInput = {
   or?: Array< ModelOrderFilterInput | null > | null,
   not?: ModelOrderFilterInput | null,
   nftOrderOrderId?: ModelIDInput | null,
+};
+
+export type SignUpUserMutationVariables = {
+  input: SignUpUserInput,
+};
+
+export type SignUpUserMutation = {
+  signUpUser?: SignUpStatus | null,
 };
 
 export type CreateNftMutationVariables = {

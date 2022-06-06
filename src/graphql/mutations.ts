@@ -2,6 +2,11 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const signUpUser = /* GraphQL */ `
+  mutation SignUpUser($input: SignUpUserInput!) {
+    signUpUser(input: $input)
+  }
+`;
 export const createNft = /* GraphQL */ `
   mutation CreateNft(
     $input: CreateNftInput!

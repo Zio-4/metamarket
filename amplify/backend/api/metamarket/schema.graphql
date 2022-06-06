@@ -56,8 +56,20 @@ type User @model @auth(rules: [{ allow: owner }]) {
   stripe_id: String
 }
 
+enum SignUpStatus {
+  SUCCESS
+  PARTIAL
+  FAILED
+}
+
+input SignUpUserInput {
+  username: String!
+  email: String!
+}
+
 type Mutation {
-  @function(name: "createStripeConnectAccount-${env}")
+  signUpUser(input: SignUpUserInput!): SignUpStatus
+    @function(name: "createStripeConnectAccount-${env}")
 }
 
 # enum OrderStatus {
