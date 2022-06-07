@@ -10,10 +10,11 @@ const stripe = require('stripe')('sk_test_51J22KpGBmWPuX4VCT8wPqbVnX3yTKaGsuQXOI
 
 
 exports.handler = async (event) => {
+    const tableName = 'User-6dfprceryrdp3naaqf3ia7bo4e-dev'
+    // console.log('table name: ', tableName)
 
     try {
-        const tableName = process.env.tableName
-        console.log('table name: ', tableName)
+
         const {username, email} = event.arguments.input
 
         const account = await stripe.accounts.create({
@@ -27,14 +28,14 @@ exports.handler = async (event) => {
 
         // store the Stripe account id in DBB
         let ddbParams = {
-            Item: {
+            Key: {
                 'stripe_id': `${account.id}`
             },
             TableName: tableName
         }
         
         try {
-            await ddb.putItem(ddbParams).promise()
+            await ddb.updateItem(ddbParams).promise()
             console.log("Successfully updated stripe_id field")
         } catch (err) {
             console.log("Storing to DB error: ", err)

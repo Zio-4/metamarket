@@ -59,11 +59,6 @@ type User @model @auth(rules: [
   stripe_id: String
 }
 
-enum SignUpStatus {
-  SUCCESS
-  PARTIAL
-  FAILED
-}
 
 input SignUpUserInput {
   username: String!
@@ -71,7 +66,7 @@ input SignUpUserInput {
 }
 
 type Mutation {
-  signUpUser(input: SignUpUserInput!): SignUpStatus
+  signUpUser(input: SignUpUserInput!)
     @function(name: "createStripeConnectAccount-${env}")
 }
 
