@@ -68,11 +68,10 @@ const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
     console.log("user id: ", cognitoUser.cognitoId)
     const getUserDataFromDb = async () => {
       const data = await API.graphql({ query: getUser, variables: { userId: cognitoUser.cognitoId } }) as getUserQuery
-      console.log(data)
-      // if (!data.data.getUser.stripe_id) {
-      //   console.log(data.data.getUser)
-      //   setDialogState(true)
-      // }
+      if (!data.data.getUser.stripe_id) {
+        console.log(data.data.getUser)
+        setDialogState(true)
+      }
     }
     
     getUserDataFromDb()

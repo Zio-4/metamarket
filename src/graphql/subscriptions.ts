@@ -2,147 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateUser = /* GraphQL */ `
-  subscription OnCreateUser($owner: String) {
-    onCreateUser(owner: $owner) {
-      userId
-      username
-      favorited {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      owned {
-        nextToken
-      }
-      sold {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      stripe_id
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onUpdateUser = /* GraphQL */ `
-  subscription OnUpdateUser($owner: String) {
-    onUpdateUser(owner: $owner) {
-      userId
-      username
-      favorited {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      owned {
-        nextToken
-      }
-      sold {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      stripe_id
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onDeleteUser = /* GraphQL */ `
-  subscription OnDeleteUser($owner: String) {
-    onDeleteUser(owner: $owner) {
-      userId
-      username
-      favorited {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      owned {
-        nextToken
-      }
-      sold {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      stripe_id
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
 export const onCreateNft = /* GraphQL */ `
   subscription OnCreateNft($owner: String) {
     onCreateNft(owner: $owner) {
@@ -382,6 +241,147 @@ export const onDeleteOrder = /* GraphQL */ `
       createdAt
       updatedAt
       nftOrderOrderId
+      owner
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser($owner: String) {
+    onCreateUser(owner: $owner) {
+      userId
+      username
+      favorited {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      owned {
+        nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      stripe_id
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser($owner: String) {
+    onUpdateUser(owner: $owner) {
+      userId
+      username
+      favorited {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      owned {
+        nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      stripe_id
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser($owner: String) {
+    onDeleteUser(owner: $owner) {
+      userId
+      username
+      favorited {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      owned {
+        nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      stripe_id
+      createdAt
+      updatedAt
       owner
     }
   }

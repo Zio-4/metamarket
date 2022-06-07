@@ -2,107 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getUser = /* GraphQL */ `
-  query GetUser($userId: String!) {
-    getUser(userId: $userId) {
-      userId
-      username
-      favorited {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      owned {
-        nextToken
-      }
-      sold {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        listed
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      stripe_id
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listUsers = /* GraphQL */ `
-  query ListUsers(
-    $userId: String
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-    $sortDirection: ModelSortDirection
-  ) {
-    listUsers(
-      userId: $userId
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
-      items {
-        userId
-        username
-        stripe_id
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
-export const userByUsername = /* GraphQL */ `
-  query UserByUsername(
-    $username: String!
-    $sortDirection: ModelSortDirection
-    $filter: ModelUserFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    userByUsername(
-      username: $username
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        userId
-        username
-        stripe_id
-        createdAt
-        updatedAt
-        owner
-      }
-      nextToken
-    }
-  }
-`;
 export const getNft = /* GraphQL */ `
   query GetNft($id: ID!) {
     getNft(id: $id) {
@@ -499,6 +398,107 @@ export const orderByUser = /* GraphQL */ `
         createdAt
         updatedAt
         nftOrderOrderId
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const getUser = /* GraphQL */ `
+  query GetUser($userId: String!) {
+    getUser(userId: $userId) {
+      userId
+      username
+      favorited {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      owned {
+        nextToken
+      }
+      sold {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        listed
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      stripe_id
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $userId: String
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listUsers(
+      userId: $userId
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        userId
+        username
+        stripe_id
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
+export const userByUsername = /* GraphQL */ `
+  query UserByUsername(
+    $username: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userByUsername(
+      username: $username
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        userId
+        username
+        stripe_id
+        createdAt
+        updatedAt
         owner
       }
       nextToken

@@ -318,27 +318,6 @@ export type DeleteUserInput = {
   userId: string,
 };
 
-export type ModelUserFilterInput = {
-  userId?: ModelStringInput | null,
-  username?: ModelStringInput | null,
-  stripe_id?: ModelStringInput | null,
-  and?: Array< ModelUserFilterInput | null > | null,
-  or?: Array< ModelUserFilterInput | null > | null,
-  not?: ModelUserFilterInput | null,
-};
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
-
-export type ModelUserConnection = {
-  __typename: "ModelUserConnection",
-  items:  Array<User | null >,
-  nextToken?: string | null,
-};
-
 export type ModelNftFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
@@ -356,6 +335,12 @@ export type ModelNftFilterInput = {
   not?: ModelNftFilterInput | null,
   userOwnedId?: ModelIDInput | null,
 };
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 
 export type SearchableNftFilterInput = {
   id?: SearchableIDFilterInput | null,
@@ -545,6 +530,21 @@ export type ModelOrderFilterInput = {
   or?: Array< ModelOrderFilterInput | null > | null,
   not?: ModelOrderFilterInput | null,
   nftOrderOrderId?: ModelIDInput | null,
+};
+
+export type ModelUserFilterInput = {
+  userId?: ModelStringInput | null,
+  username?: ModelStringInput | null,
+  stripe_id?: ModelStringInput | null,
+  and?: Array< ModelUserFilterInput | null > | null,
+  or?: Array< ModelUserFilterInput | null > | null,
+  not?: ModelUserFilterInput | null,
+};
+
+export type ModelUserConnection = {
+  __typename: "ModelUserConnection",
+  items:  Array<User | null >,
+  nextToken?: string | null,
 };
 
 export type SignUpUserMutationVariables = {
@@ -1023,108 +1023,6 @@ export type DeleteUserMutation = {
   } | null,
 };
 
-export type GetUserQueryVariables = {
-  userId: string,
-};
-
-export type GetUserQuery = {
-  getUser?:  {
-    __typename: "User",
-    userId: string,
-    username: string,
-    favorited?:  Array< {
-      __typename: "Nft",
-      id: string,
-      name: string,
-      price?: number | null,
-      category: string,
-      blockchain: string,
-      colors?: Array< string | null > | null,
-      xCoordinate?: string | null,
-      yCoordinate?: string | null,
-      description?: string | null,
-      imageId: string,
-      listed?: ListedStatus | null,
-      createdAt: string,
-      updatedAt: string,
-      userOwnedId?: string | null,
-    } | null > | null,
-    owned?:  {
-      __typename: "ModelNftConnection",
-      nextToken?: string | null,
-    } | null,
-    sold?:  Array< {
-      __typename: "Nft",
-      id: string,
-      name: string,
-      price?: number | null,
-      category: string,
-      blockchain: string,
-      colors?: Array< string | null > | null,
-      xCoordinate?: string | null,
-      yCoordinate?: string | null,
-      description?: string | null,
-      imageId: string,
-      listed?: ListedStatus | null,
-      createdAt: string,
-      updatedAt: string,
-      userOwnedId?: string | null,
-    } | null > | null,
-    stripe_id?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type ListUsersQueryVariables = {
-  userId?: string | null,
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
-};
-
-export type ListUsersQuery = {
-  listUsers?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      userId: string,
-      username: string,
-      stripe_id?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type UserByUsernameQueryVariables = {
-  username: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelUserFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type UserByUsernameQuery = {
-  userByUsername?:  {
-    __typename: "ModelUserConnection",
-    items:  Array< {
-      __typename: "User",
-      userId: string,
-      username: string,
-      stripe_id?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
 export type GetNftQueryVariables = {
   id: string,
 };
@@ -1532,12 +1430,12 @@ export type OrderByUserQuery = {
   } | null,
 };
 
-export type OnCreateUserSubscriptionVariables = {
-  owner?: string | null,
+export type GetUserQueryVariables = {
+  userId: string,
 };
 
-export type OnCreateUserSubscription = {
-  onCreateUser?:  {
+export type GetUserQuery = {
+  getUser?:  {
     __typename: "User",
     userId: string,
     username: string,
@@ -1586,111 +1484,51 @@ export type OnCreateUserSubscription = {
   } | null,
 };
 
-export type OnUpdateUserSubscriptionVariables = {
-  owner?: string | null,
+export type ListUsersQueryVariables = {
+  userId?: string | null,
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
-export type OnUpdateUserSubscription = {
-  onUpdateUser?:  {
-    __typename: "User",
-    userId: string,
-    username: string,
-    favorited?:  Array< {
-      __typename: "Nft",
-      id: string,
-      name: string,
-      price?: number | null,
-      category: string,
-      blockchain: string,
-      colors?: Array< string | null > | null,
-      xCoordinate?: string | null,
-      yCoordinate?: string | null,
-      description?: string | null,
-      imageId: string,
-      listed?: ListedStatus | null,
+export type ListUsersQuery = {
+  listUsers?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      userId: string,
+      username: string,
+      stripe_id?: string | null,
       createdAt: string,
       updatedAt: string,
-      userOwnedId?: string | null,
-    } | null > | null,
-    owned?:  {
-      __typename: "ModelNftConnection",
-      nextToken?: string | null,
-    } | null,
-    sold?:  Array< {
-      __typename: "Nft",
-      id: string,
-      name: string,
-      price?: number | null,
-      category: string,
-      blockchain: string,
-      colors?: Array< string | null > | null,
-      xCoordinate?: string | null,
-      yCoordinate?: string | null,
-      description?: string | null,
-      imageId: string,
-      listed?: ListedStatus | null,
-      createdAt: string,
-      updatedAt: string,
-      userOwnedId?: string | null,
-    } | null > | null,
-    stripe_id?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
   } | null,
 };
 
-export type OnDeleteUserSubscriptionVariables = {
-  owner?: string | null,
+export type UserByUsernameQueryVariables = {
+  username: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelUserFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type OnDeleteUserSubscription = {
-  onDeleteUser?:  {
-    __typename: "User",
-    userId: string,
-    username: string,
-    favorited?:  Array< {
-      __typename: "Nft",
-      id: string,
-      name: string,
-      price?: number | null,
-      category: string,
-      blockchain: string,
-      colors?: Array< string | null > | null,
-      xCoordinate?: string | null,
-      yCoordinate?: string | null,
-      description?: string | null,
-      imageId: string,
-      listed?: ListedStatus | null,
+export type UserByUsernameQuery = {
+  userByUsername?:  {
+    __typename: "ModelUserConnection",
+    items:  Array< {
+      __typename: "User",
+      userId: string,
+      username: string,
+      stripe_id?: string | null,
       createdAt: string,
       updatedAt: string,
-      userOwnedId?: string | null,
-    } | null > | null,
-    owned?:  {
-      __typename: "ModelNftConnection",
-      nextToken?: string | null,
-    } | null,
-    sold?:  Array< {
-      __typename: "Nft",
-      id: string,
-      name: string,
-      price?: number | null,
-      category: string,
-      blockchain: string,
-      colors?: Array< string | null > | null,
-      xCoordinate?: string | null,
-      yCoordinate?: string | null,
-      description?: string | null,
-      imageId: string,
-      listed?: ListedStatus | null,
-      createdAt: string,
-      updatedAt: string,
-      userOwnedId?: string | null,
-    } | null > | null,
-    stripe_id?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -1984,6 +1822,168 @@ export type OnDeleteOrderSubscription = {
     createdAt: string,
     updatedAt: string,
     nftOrderOrderId?: string | null,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnCreateUserSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnCreateUserSubscription = {
+  onCreateUser?:  {
+    __typename: "User",
+    userId: string,
+    username: string,
+    favorited?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price?: number | null,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      listed?: ListedStatus | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
+    owned?:  {
+      __typename: "ModelNftConnection",
+      nextToken?: string | null,
+    } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price?: number | null,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      listed?: ListedStatus | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
+    stripe_id?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnUpdateUserSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnUpdateUserSubscription = {
+  onUpdateUser?:  {
+    __typename: "User",
+    userId: string,
+    username: string,
+    favorited?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price?: number | null,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      listed?: ListedStatus | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
+    owned?:  {
+      __typename: "ModelNftConnection",
+      nextToken?: string | null,
+    } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price?: number | null,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      listed?: ListedStatus | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
+    stripe_id?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner?: string | null,
+  } | null,
+};
+
+export type OnDeleteUserSubscriptionVariables = {
+  owner?: string | null,
+};
+
+export type OnDeleteUserSubscription = {
+  onDeleteUser?:  {
+    __typename: "User",
+    userId: string,
+    username: string,
+    favorited?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price?: number | null,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      listed?: ListedStatus | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
+    owned?:  {
+      __typename: "ModelNftConnection",
+      nextToken?: string | null,
+    } | null,
+    sold?:  Array< {
+      __typename: "Nft",
+      id: string,
+      name: string,
+      price?: number | null,
+      category: string,
+      blockchain: string,
+      colors?: Array< string | null > | null,
+      xCoordinate?: string | null,
+      yCoordinate?: string | null,
+      description?: string | null,
+      imageId: string,
+      listed?: ListedStatus | null,
+      createdAt: string,
+      updatedAt: string,
+      userOwnedId?: string | null,
+    } | null > | null,
+    stripe_id?: string | null,
+    createdAt: string,
+    updatedAt: string,
     owner?: string | null,
   } | null,
 };

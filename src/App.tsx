@@ -57,7 +57,7 @@ const App = () => {
         <Route path="/cart" element={<Cart />} />
         <Route path="/signin" element={<Login signInCognitoUser={signInCognitoUser}/>} />
         <Route path="/listingform" element={<ListingForm cognitoUser={cognitoUser} />} />
-        <Route path='/profile' element={<ProfilePage />} />
+        <Route path='/profile' element={<ProfilePage cognitoUser={cognitoUser}/>} />
       </Routes>
     </div>
   );
