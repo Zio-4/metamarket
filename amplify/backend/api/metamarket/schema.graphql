@@ -69,6 +69,7 @@ type signUpResponse {
 input SignUpUserInput {
   username: String!
   email: String!
+  userId: String!
 }
 
 type Mutation {

@@ -19,7 +19,8 @@
       "function": {
         "createStripeConnectAccount": {
           "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
-          "s3Key": "amplify-builds/createStripeConnectAccount-702f6b6f4f4731494d64-build.zip"
+          "s3Key": "amplify-builds/createStripeConnectAccount-702f6b6f4f4731494d64-build.zip",
+          "tableName": "'User-6dfprceryrdp3naaqf3ia7bo4e-dev'"
         }
       }
     }

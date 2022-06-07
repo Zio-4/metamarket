@@ -104,7 +104,7 @@ const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
   const createStripeAccount = async () => {
     // call lambda function
     try {
-      let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: cognitoUser.username, email: cognitoUser.email} })) as IstripeSignUpResponse
+      let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: cognitoUser.username, email: cognitoUser.email, userId: cognitoUser.cognitoId} })) as IstripeSignUpResponse
       console.log("sign up response: ", signUpResponse)
       // redirect the user to the onboarding flow from the url in the response
       redirectToOnboarding(signUpResponse.url)

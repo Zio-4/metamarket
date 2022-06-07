@@ -10,12 +10,12 @@ const stripe = require('stripe')('sk_test_51J22KpGBmWPuX4VCT8wPqbVnX3yTKaGsuQXOI
 
 
 exports.handler = async (event) => {
-    const tableName = 'User-6dfprceryrdp3naaqf3ia7bo4e-dev'
-    // console.log('table name: ', tableName)
+    const tableName = process.env.tableName
+    console.log('table name: ', tableName)
 
     try {
 
-        const {username, email} = event.arguments.input
+        const {username, email, userId} = event.arguments.input
 
         const account = await stripe.accounts.create({
             type: 'express',
@@ -26,12 +26,18 @@ exports.handler = async (event) => {
         console.log("Account creation response: ", account)
         console.log("Account id: ", account.id)
 
+        const accountId = account.id
+
         // store the Stripe account id in DBB
         let ddbParams = {
             Key: {
-                'stripe_id': {S: `${account.id}`}
+                userId: {S: `${userId}`}
             },
-            TableName: tableName
+            UpdateExpression: "set stripe_id = :account_id",
+            ExpressionAttributeValues: {
+                ":account_id": {S: `${account.id}`},
+            },
+            TableName: tableName,
         }
         
         try {
@@ -41,7 +47,6 @@ exports.handler = async (event) => {
             console.log("Storing to DB error: ", err)
         }
 
-        const accountId = account.id
 
         const accountLink = await stripe.accountLinks.create({
             account: accountId,
@@ -57,7 +62,6 @@ exports.handler = async (event) => {
     } catch (err) {
         throw new Error(err)
     }
-
     // return {
     // //  Uncomment below to enable CORS requests
     // //  headers: {
