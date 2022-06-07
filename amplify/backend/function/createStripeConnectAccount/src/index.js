@@ -29,7 +29,7 @@ exports.handler = async (event) => {
         // store the Stripe account id in DBB
         let ddbParams = {
             Key: {
-                'stripe_id': `${account.id}`
+                'stripe_id': {S: `${account.id}`}
             },
             TableName: tableName
         }

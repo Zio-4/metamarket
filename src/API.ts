@@ -7,12 +7,13 @@ export type SignUpUserInput = {
   email: string,
 };
 
-export enum SignUpStatus {
-  SUCCESS = "SUCCESS",
-  PARTIAL = "PARTIAL",
-  FAILED = "FAILED",
-}
-
+export type signUpResponse = {
+  __typename: "signUpResponse",
+  account?: string | null,
+  refresh_url?: string | null,
+  return_url?: string | null,
+  type?: string | null,
+};
 
 export type CreateNftInput = {
   id?: string | null,
@@ -552,7 +553,13 @@ export type SignUpUserMutationVariables = {
 };
 
 export type SignUpUserMutation = {
-  signUpUser?: SignUpStatus | null,
+  signUpUser?:  {
+    __typename: "signUpResponse",
+    account?: string | null,
+    refresh_url?: string | null,
+    return_url?: string | null,
+    type?: string | null,
+  } | null,
 };
 
 export type CreateNftMutationVariables = {

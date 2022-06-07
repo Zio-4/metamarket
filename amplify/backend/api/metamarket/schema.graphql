@@ -59,6 +59,12 @@ type User @model @auth(rules: [
   stripe_id: String
 }
 
+type signUpResponse {
+  account: String
+  refresh_url: String
+  return_url: String
+  type: String
+}
 
 input SignUpUserInput {
   username: String!
@@ -66,7 +72,7 @@ input SignUpUserInput {
 }
 
 type Mutation {
-  signUpUser(input: SignUpUserInput!)
+  signUpUser(input: SignUpUserInput!): signUpResponse
     @function(name: "createStripeConnectAccount-${env}")
 }
 

@@ -4,7 +4,12 @@
 
 export const signUpUser = /* GraphQL */ `
   mutation SignUpUser($input: SignUpUserInput!) {
-    signUpUser(input: $input)
+    signUpUser(input: $input) {
+      account
+      refresh_url
+      return_url
+      type
+    }
   }
 `;
 export const createNft = /* GraphQL */ `
