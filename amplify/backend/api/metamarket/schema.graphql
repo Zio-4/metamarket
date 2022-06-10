@@ -28,7 +28,7 @@ type NftOrder @model @auth(rules: [
   {allow: public, operations: [read]}
 ]) {
   id: ID!
-  nftId: ID! @index(name: "byNft", sortKeyFields: ["order_id"], queryField: "nftOrderByOrderId")
+  nftId: ID! @index(name: "byNft", sortKeyFields: ["orderId"], queryField: "nftOrderByOrderId")
   orderId: ID! 
   nft: Nft @belongsTo
   order: [Order] @hasMany
