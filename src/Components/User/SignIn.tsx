@@ -14,6 +14,8 @@ type getUserQuery = {
     updatedAt: string
     userId: string
     username: string
+    stripeId: string
+    chargesEnabled: boolean
   }
 }
 
@@ -27,7 +29,7 @@ interface Iprops {
   signInCognitoUser: (user: IcognitoUser) => void
 }
 
-const Login: React.FC<Iprops> = ({signInCognitoUser}) => {
+const SignIn: React.FC<Iprops> = ({signInCognitoUser}) => {
   const [tabValue, setTabValue] = useState("1")
   const [signInFormValues, setSignInFormValues] = useState({
     signInUsername: '',
@@ -182,4 +184,4 @@ const Login: React.FC<Iprops> = ({signInCognitoUser}) => {
   )
 }
 
-export default Login
+export default SignIn

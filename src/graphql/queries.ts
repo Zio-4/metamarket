@@ -15,16 +15,19 @@ export const getNft = /* GraphQL */ `
       yCoordinate
       description
       imageId
-      owner {
-        userId
-        username
-        stripe_id
-        createdAt
-        updatedAt
-        owner
-      }
+      owner
       listed
       orders {
+        items {
+          id
+          nftId
+          orderId
+          createdAt
+          updatedAt
+          nftOrdersId
+          orderNftsId
+          owner
+        }
         nextToken
       }
       createdAt
@@ -51,7 +54,11 @@ export const listNfts = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
@@ -86,7 +93,11 @@ export const nftByName = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
@@ -121,7 +132,11 @@ export const nftByPrice = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
@@ -156,7 +171,50 @@ export const nftByCategory = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        userOwnedId
+      }
+      nextToken
+    }
+  }
+`;
+export const nftByOwner = /* GraphQL */ `
+  query NftByOwner(
+    $owner: String!
+    $sortDirection: ModelSortDirection
+    $filter: ModelNftFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    nftByOwner(
+      owner: $owner
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        price
+        category
+        blockchain
+        colors
+        xCoordinate
+        yCoordinate
+        description
+        imageId
+        owner
+        listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
@@ -191,7 +249,11 @@ export const nftByListedStatus = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
@@ -228,7 +290,11 @@ export const searchNfts = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
@@ -256,8 +322,8 @@ export const getNftOrder = /* GraphQL */ `
   query GetNftOrder($id: ID!) {
     getNftOrder(id: $id) {
       id
-      nft_id
-      order_id
+      nftId
+      orderId
       nft {
         id
         name
@@ -269,12 +335,26 @@ export const getNftOrder = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
       }
       order {
+        items {
+          id
+          user
+          date
+          total
+          createdAt
+          updatedAt
+          nftOrderOrderId
+          owner
+        }
         nextToken
       }
       createdAt
@@ -294,8 +374,28 @@ export const listNftOrders = /* GraphQL */ `
     listNftOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        nft_id
-        order_id
+        nftId
+        orderId
+        nft {
+          id
+          name
+          price
+          category
+          blockchain
+          colors
+          xCoordinate
+          yCoordinate
+          description
+          imageId
+          owner
+          listed
+          createdAt
+          updatedAt
+          userOwnedId
+        }
+        order {
+          nextToken
+        }
         createdAt
         updatedAt
         nftOrdersId
@@ -308,16 +408,16 @@ export const listNftOrders = /* GraphQL */ `
 `;
 export const nftOrderByOrderId = /* GraphQL */ `
   query NftOrderByOrderId(
-    $nft_id: ID!
-    $order_id: ModelIDKeyConditionInput
+    $nftId: ID!
+    $orderId: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelNftOrderFilterInput
     $limit: Int
     $nextToken: String
   ) {
     nftOrderByOrderId(
-      nft_id: $nft_id
-      order_id: $order_id
+      nftId: $nftId
+      orderId: $orderId
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -325,8 +425,28 @@ export const nftOrderByOrderId = /* GraphQL */ `
     ) {
       items {
         id
-        nft_id
-        order_id
+        nftId
+        orderId
+        nft {
+          id
+          name
+          price
+          category
+          blockchain
+          colors
+          xCoordinate
+          yCoordinate
+          description
+          imageId
+          owner
+          listed
+          createdAt
+          updatedAt
+          userOwnedId
+        }
+        order {
+          nextToken
+        }
         createdAt
         updatedAt
         nftOrdersId
@@ -345,6 +465,16 @@ export const getOrder = /* GraphQL */ `
       date
       total
       nfts {
+        items {
+          id
+          nftId
+          orderId
+          createdAt
+          updatedAt
+          nftOrdersId
+          orderNftsId
+          owner
+        }
         nextToken
       }
       createdAt
@@ -366,6 +496,9 @@ export const listOrders = /* GraphQL */ `
         user
         date
         total
+        nfts {
+          nextToken
+        }
         createdAt
         updatedAt
         nftOrderOrderId
@@ -395,6 +528,9 @@ export const orderByUser = /* GraphQL */ `
         user
         date
         total
+        nfts {
+          nextToken
+        }
         createdAt
         updatedAt
         nftOrderOrderId
@@ -420,12 +556,33 @@ export const getUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
       }
       owned {
+        items {
+          id
+          name
+          price
+          category
+          blockchain
+          colors
+          xCoordinate
+          yCoordinate
+          description
+          imageId
+          owner
+          listed
+          createdAt
+          updatedAt
+          userOwnedId
+        }
         nextToken
       }
       sold {
@@ -439,12 +596,17 @@ export const getUser = /* GraphQL */ `
         yCoordinate
         description
         imageId
+        owner
         listed
+        orders {
+          nextToken
+        }
         createdAt
         updatedAt
         userOwnedId
       }
-      stripe_id
+      stripeId
+      chargesEnabled
       createdAt
       updatedAt
       owner
@@ -469,7 +631,45 @@ export const listUsers = /* GraphQL */ `
       items {
         userId
         username
-        stripe_id
+        favorited {
+          id
+          name
+          price
+          category
+          blockchain
+          colors
+          xCoordinate
+          yCoordinate
+          description
+          imageId
+          owner
+          listed
+          createdAt
+          updatedAt
+          userOwnedId
+        }
+        owned {
+          nextToken
+        }
+        sold {
+          id
+          name
+          price
+          category
+          blockchain
+          colors
+          xCoordinate
+          yCoordinate
+          description
+          imageId
+          owner
+          listed
+          createdAt
+          updatedAt
+          userOwnedId
+        }
+        stripeId
+        chargesEnabled
         createdAt
         updatedAt
         owner
@@ -496,7 +696,45 @@ export const userByUsername = /* GraphQL */ `
       items {
         userId
         username
-        stripe_id
+        favorited {
+          id
+          name
+          price
+          category
+          blockchain
+          colors
+          xCoordinate
+          yCoordinate
+          description
+          imageId
+          owner
+          listed
+          createdAt
+          updatedAt
+          userOwnedId
+        }
+        owned {
+          nextToken
+        }
+        sold {
+          id
+          name
+          price
+          category
+          blockchain
+          colors
+          xCoordinate
+          yCoordinate
+          description
+          imageId
+          owner
+          listed
+          createdAt
+          updatedAt
+          userOwnedId
+        }
+        stripeId
+        chargesEnabled
         createdAt
         updatedAt
         owner
