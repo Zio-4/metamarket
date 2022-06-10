@@ -5,6 +5,7 @@
 export type SignUpUserInput = {
   username: string,
   email: string,
+  userId: string,
 };
 
 export type signUpResponse = {
