@@ -20,22 +20,21 @@ exports.handler = async (event) => {
         const account = await stripe.accounts.create({
             type: 'express',
             email: `${email}`,
+            business_type: 'individual',
             metadata: {user: `${username}`}
         });
 
         console.log("Account creation response: ", account)
         console.log("Account id: ", account.id)
 
-        const accountId = account.id
-
         // store the Stripe account id in DBB
         let ddbParams = {
             Key: {
                 userId: {S: `${userId}`}
             },
-            UpdateExpression: "set stripe_id = :account_id",
+            UpdateExpression: "set stripeId = :accountId",
             ExpressionAttributeValues: {
-                ":account_id": {S: `${account.id}`},
+                ":accountId": {S: `${account.id}`},
             },
             TableName: tableName,
         }
@@ -49,7 +48,7 @@ exports.handler = async (event) => {
 
 
         const accountLink = await stripe.accountLinks.create({
-            account: accountId,
+            account: account.id,
             //Swap for live website
             refresh_url: 'http://localhost:3000/profile',
             return_url: 'http://localhost:3000/listingform',

@@ -69,16 +69,12 @@ const ListingForm: React.FC = () => {
     if (!userInfo.email) return navigate('/signin')
     // fetch user from db, see if they have a stripe acc (stripe_id)
 
-    const getUserDataFromDb = async () => {
-      const data = await API.graphql({ query: getUser, variables: { userId: userInfo.userId } }) as getUserQuery
-      if (!data.data.getUser.stripe_id) {
-        console.log(data.data.getUser)
-        setDialogState(true)
-      }
+    if (!userInfo.stripeId) {
+      setDialogState(true)
     }
+
+    console.log("previous location: ", document.referrer)
     
-    getUserDataFromDb()
-    .catch(err => console.log("error fetching data: ", err))
   },[])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -133,7 +129,7 @@ const ListingForm: React.FC = () => {
         </DialogTitle>
         <DialogContent >
           <DialogContentText id="alert-dialog-description">
-            metaMarket uses Stripe to securely process payments. You must create a Stripe Connected account to recieve your payments from Nft's that you have sold.
+            metaMarket uses Stripe to securely process payments. You must create a Stripe connected account to recieve payments from Nft's that you have sold.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
