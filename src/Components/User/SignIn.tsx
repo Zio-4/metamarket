@@ -4,12 +4,14 @@ import { TabPanel, TabContext, TabList } from '@mui/lab';
 import { Auth, API } from 'aws-amplify';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { getUser } from '../../graphql/queries'
+import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
+import { setCurrentUser } from '../../Redux-Toolkit/userSlice'
 
 
 type getUserQuery = {
   data: {
     getUser: {
-      Nfts?: []
+      // Nfts?: []
       createdAt: string
       favorited: []
       owner: string
@@ -30,11 +32,11 @@ interface IcognitoUser {
   email: string
 }
 
-interface Iprops {
-  signInCognitoUser: (user: IcognitoUser) => void
-}
+// interface Iprops {
+//   signInCognitoUser: (user: IcognitoUser) => void
+// }
 
-const SignIn: React.FC<Iprops> = ({signInCognitoUser}) => {
+const SignIn: React.FC = () => {
   const [tabValue, setTabValue] = useState("1")
   const [signInFormValues, setSignInFormValues] = useState({
     signInUsername: '',
@@ -50,6 +52,7 @@ const SignIn: React.FC<Iprops> = ({signInCognitoUser}) => {
   const [username, setUsername] = useState("")
   const [userSigningUp, setUserSigningUp] = useState(false)
   let navigate = useNavigate()
+  const dispatch = useAppDispatch()
   // let location = useLocation()
 
   // console.log("location state:", location.state)
@@ -79,17 +82,18 @@ const SignIn: React.FC<Iprops> = ({signInCognitoUser}) => {
   const signInUser = async () => {
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
-        // console.log("user", user)
-        signInCognitoUser({cognitoId: `${user.attributes.sub}`,
-          username: `${user.username}`,
-          email: `${user.attributes.email}`})
           setSignInFormValues({
             signInUsername: '',
             signInPassword: ''
           })
           const userData = await API.graphql({ query: getUser, variables: { userId: `${user.attributes.sub}`} }) as getUserQuery
           const {username: dbUsername, userId, stripeId, sold, owned, favorited, chargesEnabled} = userData.data.getUser
-          localStorage.setItem('userInfo', JSON.stringify({'username': dbUsername, 'userId': userId, 'stripeId': stripeId, 'sold': sold, 'owned': owned, 'favorited': favorited, 'chargesEnabled': chargesEnabled}))
+          localStorage.setItem('userInfo', JSON.stringify({'username': dbUsername, 'userId': userId, 'email': user.attributes.email, 'stripeId': stripeId, 'sold': sold, 'owned': owned, 'favorited': favorited, 'chargesEnabled': chargesEnabled}))
+          const userInfo = {username: dbUsername, userId: userId, email: user.attributes.email, stripeId: stripeId, sold: sold, owned: owned, favorited: favorited, chargesEnabled: chargesEnabled}
+          // signInCognitoUser({cognitoId: `${user.attributes.sub}`,
+          // username: `${user.username}`,
+          // email: `${user.attributes.email}`})
+          dispatch(setCurrentUser(userInfo))
           navigate('/')
     } catch (error) {
         console.log('error signing in:', error);

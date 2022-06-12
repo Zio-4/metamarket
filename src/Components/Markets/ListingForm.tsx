@@ -15,6 +15,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { signUpUser } from '../../graphql/mutations';
+import { useAppSelector } from '../../Redux-Toolkit/reduxHooks';
+import { userState } from '../../Redux-Toolkit/userSlice';
 
 
 const Input = styled('input')({
@@ -27,13 +29,13 @@ const blockchains = [{label: 'Ethereum'}, {label: 'Solana'}, {label: 'Polygon'},
 
 const categories = [{label: 'Art'}, {label: 'Boats'}, {label: 'Cars'}, {label: 'Clothes'}, {label: 'Land'}, {label: 'Houses'}, {label: 'Items'}, {label: 'Jewelry'}, {label: 'Traits'}]
 
-interface Iprops {
-  cognitoUser: {
-    cognitoId: string
-    username: string
-    email: string
-  }
-}
+// interface Iprops {
+//   cognitoUser: {
+//     cognitoId: string
+//     username: string
+//     email: string
+//   }
+// }
 
 type getUserQuery = {
   data: {
@@ -57,17 +59,18 @@ interface IstripeSignUpResponse {
   url: string
 }
 
-const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
+const ListingForm: React.FC = () => {
   const navigate = useNavigate()
+  const userInfo = useAppSelector(userState)
   const [dialogState, setDialogState] = useState(false)
 
   useEffect(() => {
     // loading animation or if not signed in/ error return
-    if (!cognitoUser.email) return navigate('/signin')
+    if (!userInfo.email) return navigate('/signin')
     // fetch user from db, see if they have a stripe acc (stripe_id)
-    console.log("user id: ", cognitoUser.cognitoId)
+
     const getUserDataFromDb = async () => {
-      const data = await API.graphql({ query: getUser, variables: { userId: cognitoUser.cognitoId } }) as getUserQuery
+      const data = await API.graphql({ query: getUser, variables: { userId: userInfo.userId } }) as getUserQuery
       if (!data.data.getUser.stripe_id) {
         console.log(data.data.getUser)
         setDialogState(true)
@@ -104,7 +107,7 @@ const ListingForm: React.FC<Iprops> = ({cognitoUser}) => {
   const createStripeAccount = async () => {
     // call lambda function
     try {
-      let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: cognitoUser.username, email: cognitoUser.email, userId: cognitoUser.cognitoId} })) as IstripeSignUpResponse
+      let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: userInfo.username, email: userInfo.email, userId: userInfo.userId} })) as IstripeSignUpResponse
       console.log("sign up response: ", signUpResponse)
       // redirect the user to the onboarding flow from the url in the response
       redirectToOnboarding(signUpResponse.url)

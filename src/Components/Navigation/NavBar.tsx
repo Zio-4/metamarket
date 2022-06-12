@@ -23,19 +23,24 @@ import LoginSharpIcon from '@mui/icons-material/LoginSharp';
 import { Auth } from 'aws-amplify';
 import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
 import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
+import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
+import { removeCurrentUser } from '../../Redux-Toolkit/userSlice'
+import { userState } from '../../Redux-Toolkit/userSlice';
 
-interface Iprops {
-  cognitoUser: {
-    cognitoId: string
-    username: string
-    email: string
-  }
-  signOutCognitoUser: () => void
-}
+// interface Iprops {
+//   cognitoUser: {
+//     cognitoId: string
+//     username: string
+//     email: string
+//   }
+//   signOutCognitoUser: () => void
+// }
 
-const NavBar: React.FC<Iprops> = ({cognitoUser, signOutCognitoUser}) => {
+const NavBar: React.FC = () => {
   let navigate = useNavigate()
   const idsInCart = useAppSelector(selectCount)
+  const userInfo = useAppSelector(userState)
+  const dispatch = useAppDispatch()
   const [mobileMenuState, setMobileMenuState] = useState(false)
 
 
@@ -58,7 +63,9 @@ const NavBar: React.FC<Iprops> = ({cognitoUser, signOutCognitoUser}) => {
   const signOutUser = async () => {
     try {
       let response = await Auth.signOut();
-      signOutCognitoUser()
+      localStorage.removeItem('userInfo')
+      dispatch(removeCurrentUser())
+      // signOutCognitoUser()
       console.log("response form signout: ", response)
       // remove user from login status
     } catch (error) {
@@ -103,7 +110,7 @@ const NavBar: React.FC<Iprops> = ({cognitoUser, signOutCognitoUser}) => {
                 />
               </ListItem>
               
-              {!cognitoUser.email && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
+              {!userInfo.username && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <LoginSharpIcon />
                 </ListItemIcon>
@@ -111,7 +118,7 @@ const NavBar: React.FC<Iprops> = ({cognitoUser, signOutCognitoUser}) => {
                   primary="Sign In"
                 />
               </ListItem>}
-              {cognitoUser.email && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
+              {userInfo.username && <ListItem sx={{color: '#66FCF1'}} onClick={navigateUser}>
                 <ListItemIcon sx={{color: '#66FCF1'}}>
                   <AccountBoxSharpIcon />
                 </ListItemIcon>
@@ -119,7 +126,7 @@ const NavBar: React.FC<Iprops> = ({cognitoUser, signOutCognitoUser}) => {
                   primary="Profile"
                 />
               </ListItem>}
-              {cognitoUser.email && <ListItem sx={{color: '#FF6666'}} onClick={signOutUser}>
+              {userInfo.username && <ListItem sx={{color: '#FF6666'}} onClick={signOutUser}>
                 <ListItemIcon sx={{color: '#FF6666'}}>
                   <LogoutSharpIcon />
                 </ListItemIcon>

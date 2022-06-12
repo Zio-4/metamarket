@@ -1,19 +1,23 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
+import { userState } from '../../Redux-Toolkit/userSlice'
 
-interface Iprops {
-  cognitoUser: {
-    cognitoId: string
-    username: string
-    email: string
-  }
-}
 
-const ProfilePage: React.FC<Iprops> = ({cognitoUser}) => {
+
+const ProfilePage: React.FC = () => {
+  const navigate = useNavigate()
+  const userInfo = useAppSelector(userState)
+
+  useEffect(() => {
+    if (!userInfo.username) return navigate('/')
+  }, [])
+
   return (
     <div>
       <div className='placeholder-text'>Profile Page</div>
       <br></br>
-      <div className='placeholder-text'>Current user: {cognitoUser.username}</div>
+      <div className='placeholder-text'>Current user: {userInfo.username}</div>
     </div>
   )
 }

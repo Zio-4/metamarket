@@ -11,53 +11,57 @@ import ListingForm from './Components/Markets/ListingForm';
 import ProfilePage from './Components/User/ProfilePage';
 import { Auth } from 'aws-amplify'
 
-interface IcognitoUser {
-  cognitoId: string
+interface IUser {
   username: string
+  userId: string
   email: string
+  stripeId: string
+  sold: []
+  owned: []
+  favorited: []
+  chargesEnabled: boolean
 }
 
 const App = () => {
   // const [userIsSignedIn, setUserIsSignedIn] = useState(false)
-  const [cognitoUser, setCognitoUser] = useState({
-    cognitoId: '',
-    username: '',
-    email: ''
-  } as IcognitoUser)
+  // const [currentUser, setCurrentUser] = useState({
+  //   username: '', userId: '', email: '', stripeId: '', sold: [], owned: [], favorited: [], chargesEnabled: false
+  // })
 
-  useEffect(() => {
-    Auth.currentAuthenticatedUser().then(
-      data => {
-        setCognitoUser({cognitoId: `${data.attributes.sub}`,
-        username: `${data.username}`,
-        email: `${data.attributes.email}`})
-      }
-    ).catch(
-      err => console.log("error from App component: ", err)
-    )
-  }, [])
+  // useEffect(() => {
+  //   if (localStorage.getItem('userInfo')) {
+  //     console.log("userInfo is in local storage")
+  //     let userInfo = JSON.parse(localStorage.getItem('userInfo') || '')
+  //   }
+  //       // setCurrentUser({cognitoId: `${data.attributes.sub}`,
+  //       // username: `${data.username}`,
+  //       // email: `${data.attributes.email}`})
 
-  const signInCognitoUser = (user: IcognitoUser) => {
-    setCognitoUser(user)
-  }
+  // }, [])
+
+  // const signInCurrentUser = (user: IUser) => {
+  //   setCurrentUser(user)
+  // }
   
-  const signOutCognitoUser = () => {
-    setCognitoUser({cognitoId: "", username: "", email: ""})
-  }
+  // const signOutCognitoUser = () => {
+  //   setCurrentUser({
+  //     username: '', userId: '', email: '', stripeId: '', sold: [], owned: [], favorited: [], chargesEnabled: false
+  //   })
+  // }
 
 
   return (
     <div className="App">
-      <NavBar cognitoUser={cognitoUser} signOutCognitoUser={signOutCognitoUser} />
+      <NavBar  />
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/markets" element={<Markets />} />
         <Route path="/markets/:marketname" element={<Market />} />
         <Route path="/markets/:marketname/:id" element={<Listing />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/signin" element={<SignIn signInCognitoUser={signInCognitoUser}/>} />
-        <Route path="/listingform" element={<ListingForm cognitoUser={cognitoUser} />} />
-        <Route path='/profile' element={<ProfilePage cognitoUser={cognitoUser}/>} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/listingform" element={<ListingForm  />} />
+        <Route path='/profile' element={<ProfilePage />} />
       </Routes>
     </div>
   );
