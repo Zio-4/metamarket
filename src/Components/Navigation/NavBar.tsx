@@ -39,7 +39,6 @@ const NavBar: React.FC<Iprops> = ({cognitoUser, signOutCognitoUser}) => {
   const [mobileMenuState, setMobileMenuState] = useState(false)
 
 
-
   const setMenu = () => {
     setMobileMenuState(!mobileMenuState)
   }

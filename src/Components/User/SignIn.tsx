@@ -3,19 +3,24 @@ import { Tab, Box, TextField, Button, Typography} from '@mui/material'
 import { TabPanel, TabContext, TabList } from '@mui/lab';
 import { Auth, API } from 'aws-amplify';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { getUser } from '../../graphql/queries'
 
 
 type getUserQuery = {
-  getUser: {
-    Nfts?: []
-    createdAt: string
-    favorited?: []
-    owner: string
-    updatedAt: string
-    userId: string
-    username: string
-    stripeId: string
-    chargesEnabled: boolean
+  data: {
+    getUser: {
+      Nfts?: []
+      createdAt: string
+      favorited: []
+      owner: string
+      updatedAt: string
+      userId: string
+      username: string
+      stripeId: string
+      chargesEnabled: boolean,
+      sold: [],
+      owned: []
+    }
   }
 }
 
@@ -70,6 +75,7 @@ const SignIn: React.FC<Iprops> = ({signInCognitoUser}) => {
     setCreateAccountFormValues({...createAccountFormValues, [e.target.name]: e.target.value})
   }
 
+
   const signInUser = async () => {
     try {
         const user = await Auth.signIn(signInFormValues.signInUsername, signInFormValues.signInPassword);
@@ -81,6 +87,9 @@ const SignIn: React.FC<Iprops> = ({signInCognitoUser}) => {
             signInUsername: '',
             signInPassword: ''
           })
+          const userData = await API.graphql({ query: getUser, variables: { userId: `${user.attributes.sub}`} }) as getUserQuery
+          const {username: dbUsername, userId, stripeId, sold, owned, favorited, chargesEnabled} = userData.data.getUser
+          localStorage.setItem('userInfo', JSON.stringify({'username': dbUsername, 'userId': userId, 'stripeId': stripeId, 'sold': sold, 'owned': owned, 'favorited': favorited, 'chargesEnabled': chargesEnabled}))
           navigate('/')
     } catch (error) {
         console.log('error signing in:', error);
