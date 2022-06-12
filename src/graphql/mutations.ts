@@ -5,10 +5,10 @@
 export const signUpUser = /* GraphQL */ `
   mutation SignUpUser($input: SignUpUserInput!) {
     signUpUser(input: $input) {
-      account
-      refresh_url
-      return_url
-      type
+      object
+      created
+      expires_at
+      url
     }
   }
 `;

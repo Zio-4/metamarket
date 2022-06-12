@@ -10,10 +10,10 @@ export type SignUpUserInput = {
 
 export type signUpResponse = {
   __typename: "signUpResponse",
-  account?: string | null,
-  refresh_url?: string | null,
-  return_url?: string | null,
-  type?: string | null,
+  object?: string | null,
+  created?: number | null,
+  expires_at?: number | null,
+  url?: string | null,
 };
 
 export type CreateNftInput = {
@@ -575,10 +575,10 @@ export type SignUpUserMutationVariables = {
 export type SignUpUserMutation = {
   signUpUser?:  {
     __typename: "signUpResponse",
-    account?: string | null,
-    refresh_url?: string | null,
-    return_url?: string | null,
-    type?: string | null,
+    object?: string | null,
+    created?: number | null,
+    expires_at?: number | null,
+    url?: string | null,
   } | null,
 };
 

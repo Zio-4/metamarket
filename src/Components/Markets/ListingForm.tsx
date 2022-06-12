@@ -17,6 +17,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { signUpUser } from '../../graphql/mutations';
 import { useAppSelector } from '../../Redux-Toolkit/reduxHooks';
 import { userState } from '../../Redux-Toolkit/userSlice';
+import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
+import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
+import { set } from '@reduxjs/toolkit/node_modules/immer/dist/internal';
 
 
 const Input = styled('input')({
@@ -53,22 +56,21 @@ type getUserQuery = {
 }
 
 interface IstripeSignUpResponse {
-  object: string
-  created: string
-  expires_at: string
-  url: string
+  accountId: string
+  signUpURL: string
 }
 
 const ListingForm: React.FC = () => {
   const navigate = useNavigate()
   const userInfo = useAppSelector(userState)
+  const dispatch = useAppDispatch()
   const [dialogState, setDialogState] = useState(false)
 
   useEffect(() => {
     // loading animation or if not signed in/ error return
     if (!userInfo.email) return navigate('/signin')
     // fetch user from db, see if they have a stripe acc (stripe_id)
-
+    console.log("userInfo in ListingForm: ", userInfo)
     if (!userInfo.stripeId) {
       setDialogState(true)
     }
@@ -105,9 +107,15 @@ const ListingForm: React.FC = () => {
     // call lambda function
     try {
       let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: userInfo.username, email: userInfo.email, userId: userInfo.userId} })) as IstripeSignUpResponse
-      console.log("sign up response: ", signUpResponse)
+      console.log(signUpResponse)
+      let userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
+      let updatedUser = {...userInStorage, 'stripeId': signUpResponse.accountId}
+      localStorage.setItem('userInfo', JSON.stringify(updatedUser))
+
+      let updateUserState = {...userInfo, stripeId: signUpResponse.accountId}
+      dispatch(setCurrentUser(updateUserState))
       // redirect the user to the onboarding flow from the url in the response
-      redirectToOnboarding(signUpResponse.url)
+      redirectToOnboarding(signUpResponse.signUpURL)
     } catch (err) {
       console.log(err)
     }

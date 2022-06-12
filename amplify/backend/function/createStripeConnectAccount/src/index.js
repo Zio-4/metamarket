@@ -24,8 +24,8 @@ exports.handler = async (event) => {
             metadata: {user: `${username}`}
         });
 
-        console.log("Account creation response: ", account)
-        console.log("Account id: ", account.id)
+        // console.log("Account creation response: ", account)
+        // console.log("Account id: ", account.id)
 
         // store the Stripe account id in DBB
         let ddbParams = {
@@ -41,7 +41,7 @@ exports.handler = async (event) => {
         
         try {
             await ddb.updateItem(ddbParams).promise()
-            console.log("Successfully updated stripe_id field")
+            console.log("Successfully updated stripeId field")
         } catch (err) {
             console.log("Storing to DB error: ", err)
         }
@@ -57,7 +57,12 @@ exports.handler = async (event) => {
 
           console.log('Account link response :', accountLink)
 
-          return accountLink
+          const responseObject = {
+              accountId: account.id,
+              signUpURL: accountLink.url
+          }
+
+          return responseObject
     } catch (err) {
         throw new Error(err)
     }
