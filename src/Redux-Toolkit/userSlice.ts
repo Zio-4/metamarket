@@ -19,7 +19,6 @@ export interface IuserState {
     }
 }
 
-
 const initialState: IuserState = {
     currentUser: userInfo
 }
@@ -30,7 +29,6 @@ export const userSlice = createSlice({
     reducers: {
       setCurrentUser: (state, action: PayloadAction<IuserState['currentUser']>) => {
         console.log('Payload in userSlice: ', action.payload)
-        // state.currentUser = {username: action.payload.username, userId: '', email: '', stripeId: '', sold: [], owned: [], favorited: [], chargesEnabled: false}
         state.currentUser = action.payload
       }, 
       removeCurrentUser: (state) => {
