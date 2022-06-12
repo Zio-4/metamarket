@@ -97,7 +97,8 @@ const ListingForm: React.FC = () => {
   }
 
   const redirectToOnboarding = (url: string) => {
-    window.location.replace(`${url}`)
+    console.log("url in redirect func: ", url)
+    // window.location.replace(url)
   }
 
   const createStripeAccount = async () => {

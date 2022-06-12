@@ -11,6 +11,7 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     if (!userInfo.username) return navigate('/')
+
   }, [])
 
   return (
