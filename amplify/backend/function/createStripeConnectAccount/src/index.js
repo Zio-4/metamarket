@@ -46,7 +46,6 @@ exports.handler = async (event) => {
             console.log("Storing to DB error: ", err)
         }
 
-
         const accountLink = await stripe.accountLinks.create({
             account: account.id,
             //Swap for live website
@@ -57,12 +56,8 @@ exports.handler = async (event) => {
 
           console.log('Account link response :', accountLink)
 
-          const responseObject = {
-              accountId: account.id,
-              signUpURL: accountLink.url
-          }
+        return {accountId: account.id, signUpURL: accountLink.url}
 
-          return responseObject
     } catch (err) {
         throw new Error(err)
     }

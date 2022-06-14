@@ -19,7 +19,6 @@ import { useAppSelector } from '../../Redux-Toolkit/reduxHooks';
 import { userState } from '../../Redux-Toolkit/userSlice';
 import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
 import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
-import { set } from '@reduxjs/toolkit/node_modules/immer/dist/internal';
 
 
 const Input = styled('input')({
@@ -58,6 +57,10 @@ type getUserQuery = {
 interface IstripeSignUpResponse {
   accountId: string
   signUpURL: string
+  // object: string
+  // created: number
+  // expires_at: number
+  // url: string
 }
 
 const ListingForm: React.FC = () => {
@@ -107,7 +110,7 @@ const ListingForm: React.FC = () => {
     // call lambda function
     try {
       let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: userInfo.username, email: userInfo.email, userId: userInfo.userId} })) as IstripeSignUpResponse
-      console.log(signUpResponse)
+      console.log("sign up response: ", signUpResponse)
       let userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
       let updatedUser = {...userInStorage, 'stripeId': signUpResponse.accountId}
       localStorage.setItem('userInfo', JSON.stringify(updatedUser))
