@@ -90,9 +90,6 @@ const SignIn: React.FC = () => {
           const {username: dbUsername, userId, stripeId, sold, owned, favorited, chargesEnabled} = userData.data.getUser
           localStorage.setItem('userInfo', JSON.stringify({'username': dbUsername, 'userId': userId, 'email': user.attributes.email, 'stripeId': stripeId, 'sold': sold, 'owned': owned, 'favorited': favorited, 'chargesEnabled': chargesEnabled}))
           const userInfo = {username: dbUsername, userId: userId, email: user.attributes.email, stripeId: stripeId, sold: sold, owned: owned, favorited: favorited, chargesEnabled: chargesEnabled}
-          // signInCognitoUser({cognitoId: `${user.attributes.sub}`,
-          // username: `${user.username}`,
-          // email: `${user.attributes.email}`})
           dispatch(setCurrentUser(userInfo))
           navigate('/')
     } catch (error) {
@@ -112,6 +109,7 @@ const SignIn: React.FC = () => {
 
   const signUpUser = async () => {
     // console.log(`${createAccountFormValues.createAccountUsername} ${createAccountFormValues.createAccountPassword} ${createAccountFormValues.createAccountConfirmPassword} ${createAccountFormValues.createAccountEmail}`)
+    if (!createAccountFormValues.createAccountEmail) return
     if (createAccountFormValues.createAccountPassword === createAccountFormValues.createAccountConfirmPassword) {
       try {
         const { user } = await Auth.signUp({

@@ -55,11 +55,15 @@ type getUserQuery = {
 }
 
 interface IstripeSignUpResponse {
-  accountId: string
-  object: string
-  created: number
-  expires_at: number
-  url: string
+  data: {
+    signUpUser: {
+      accountId: string
+      object: string
+      created: number
+      expires_at: number
+      url: string
+    }
+  }
 }
 
 const ListingForm: React.FC = () => {
@@ -102,22 +106,28 @@ const ListingForm: React.FC = () => {
 
   const redirectToOnboarding = (url: string) => {
     console.log("url in redirect func: ", url)
-    // window.location.replace(url)
+    window.location.replace(url)
   }
 
   const createStripeAccount = async () => {
     // call lambda function
     try {
       let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: userInfo.username, email: userInfo.email, userId: userInfo.userId} })) as IstripeSignUpResponse
-      console.log("sign up response: ", signUpResponse)
+      // console.log('response :', signUpResponse)
+      // console.log("response.data : ", signUpResponse.data)
+      // console.log("sign up response.data.signUpUser: ", signUpResponse.data.signUpUser)
       let userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
-      let updatedUser = {...userInStorage, 'stripeId': signUpResponse.accountId}
+      // console.log('user in storage: ', userInStorage)
+      let updatedUser = {...userInStorage, 'stripeId': signUpResponse.data.signUpUser.accountId}
+      // console.log('updated user in storage: ', updatedUser)
       localStorage.setItem('userInfo', JSON.stringify(updatedUser))
 
-      let updateUserState = {...userInfo, stripeId: signUpResponse.accountId}
+      // console.log('user info (redux): ', userInfo)
+      let updateUserState = {...userInfo, stripeId: signUpResponse.data.signUpUser.accountId}
+      // console.log('updated User state: ', updateUserState)
       dispatch(setCurrentUser(updateUserState))
       // redirect the user to the onboarding flow from the url in the response
-      redirectToOnboarding(signUpResponse.url)
+      redirectToOnboarding(signUpResponse.data.signUpUser.url)
     } catch (err) {
       console.log(err)
     }

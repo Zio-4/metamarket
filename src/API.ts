@@ -11,7 +11,6 @@ export type SignUpUserInput = {
 export type signUpResponse = {
   __typename: "signUpResponse",
   accountId?: string | null,
-  signUpURL?: string | null,
   object?: string | null,
   created?: number | null,
   expires_at?: number | null,
@@ -578,7 +577,6 @@ export type SignUpUserMutation = {
   signUpUser?:  {
     __typename: "signUpResponse",
     accountId?: string | null,
-    signUpURL?: string | null,
     object?: string | null,
     created?: number | null,
     expires_at?: number | null,
