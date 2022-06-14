@@ -61,7 +61,10 @@ type User @model @auth(rules: [
 
 type signUpResponse {
   accountId: String
-  signUpURL: String
+  object: String
+  created: Int
+  expires_at: Int
+  url: String
 }
 
 input SignUpUserInput {

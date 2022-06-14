@@ -5,6 +5,8 @@
 export const signUpUser = /* GraphQL */ `
   mutation SignUpUser($input: SignUpUserInput!) {
     signUpUser(input: $input) {
+      accountId
+      signUpURL
       object
       created
       expires_at

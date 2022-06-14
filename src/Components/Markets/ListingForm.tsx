@@ -56,11 +56,10 @@ type getUserQuery = {
 
 interface IstripeSignUpResponse {
   accountId: string
-  signUpURL: string
-  // object: string
-  // created: number
-  // expires_at: number
-  // url: string
+  object: string
+  created: number
+  expires_at: number
+  url: string
 }
 
 const ListingForm: React.FC = () => {
@@ -118,7 +117,7 @@ const ListingForm: React.FC = () => {
       let updateUserState = {...userInfo, stripeId: signUpResponse.accountId}
       dispatch(setCurrentUser(updateUserState))
       // redirect the user to the onboarding flow from the url in the response
-      redirectToOnboarding(signUpResponse.signUpURL)
+      redirectToOnboarding(signUpResponse.url)
     } catch (err) {
       console.log(err)
     }

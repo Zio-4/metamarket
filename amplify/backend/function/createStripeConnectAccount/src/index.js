@@ -56,7 +56,7 @@ exports.handler = async (event) => {
 
           console.log('Account link response :', accountLink)
 
-        return {accountId: account.id, signUpURL: accountLink.url}
+        return {accountId: account.id, object: accountLink.object, created: accountLink.created, expires_at: accountLink.expires_at, url: accountLink.url}
 
     } catch (err) {
         throw new Error(err)
