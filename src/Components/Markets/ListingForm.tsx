@@ -19,6 +19,10 @@ import { useAppSelector } from '../../Redux-Toolkit/reduxHooks';
 import { userState } from '../../Redux-Toolkit/userSlice';
 import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
 import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
+import { updateUser } from '../../graphql/mutations';
+// import Stripe from 'stripe';
+import {loadStripe} from '@stripe/stripe-js';
+
 
 
 const Input = styled('input')({
@@ -72,16 +76,59 @@ const ListingForm: React.FC = () => {
   const dispatch = useAppDispatch()
   const [dialogState, setDialogState] = useState(false)
 
+
   useEffect(() => {
     // loading animation or if not signed in/ error return
     if (!userInfo.email) return navigate('/signin')
     // fetch user from db, see if they have a stripe acc (stripe_id)
     console.log("userInfo in ListingForm: ", userInfo)
+
+    const stripePromise = loadStripe('{{pk_test_51J22KpGBmWPuX4VC51HONpLCu5uakHdrRB1IkO7lYVTLicGTsiT80hCvpkI3BsxsI2Pw6Og7E11uLspyIzJrZUh1009y7PuPNC}}', {
+      stripeAccount: `{{${userInfo.stripeId}}}`,
+    });
+    stripePromise.then(r => console.log('response: ', r))
+
+
+
+    // Add custom loading animation letting user know their account is being updated
+    // const getStripeUser = async () => {
+    //   // replace with live key
+      
+    //   const stripeAccount = await stripe.accounts.retrieve(
+    //     userInfo.stripeId
+    //   );
+
+    //   console.log('stripe account after coming back: ', stripeAccount)
+
+    //   if (stripeAccount.charges_enabled) {
+    //     try {
+    //       const updateChargesEnabledInDDB = API.graphql({ query: updateUser, variables: { UpdateUserInput: {userId: userInfo.userId, chargesEnabled: true} }})
+        
+    //       const userInfoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo') || '')
+    //       localStorage.setItem('userInfo', JSON.stringify({...userInfoFromLocalStorage, 'chargesEnabled': true}))
+  
+    //       dispatch(setCurrentUser({...userInfo, chargesEnabled: true}))
+  
+    //       console.log('Successfully udpated account')
+    //     } catch (err) {
+    //       console.log('Error updating account from onboarding')
+    //     }
+    //   } else {
+    //     // let user know they need to finish onboarding if something went wrong or they did not come back from onboarding
+    //     console.log('User did not finish signing up or something went wrong')
+    //     navigate('/profile')
+    //   } 
+    // }
+
+    // if (localStorage.getItem('onboardingInfo')) {
+    //   localStorage.removeItem('onboardingInfo')
+    //   // getStripeUser()
+    // }
+
     if (!userInfo.stripeId) {
       setDialogState(true)
     }
 
-    console.log("previous location: ", document.referrer)
     
   },[])
 
@@ -125,6 +172,8 @@ const ListingForm: React.FC = () => {
       // console.log('user info (redux): ', userInfo)
       let updateUserState = {...userInfo, stripeId: signUpResponse.data.signUpUser.accountId}
       // console.log('updated User state: ', updateUserState)
+
+      localStorage.setItem('onboardingInfo', JSON.stringify({'userCameFromOnboardFlow': true}))
       dispatch(setCurrentUser(updateUserState))
       // redirect the user to the onboarding flow from the url in the response
       redirectToOnboarding(signUpResponse.data.signUpUser.url)
