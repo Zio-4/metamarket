@@ -73,10 +73,24 @@ input SignUpUserInput {
   userId: String!
 }
 
+type checkAndUpdateAccountInput {
+  stripeAccountId: String
+  userId: String
+}
+
+enum checkAndUpdateAccountResponse {
+  SUCCESS
+  FAILED
+}
+
 type Mutation {
   signUpUser(input: SignUpUserInput!): signUpResponse
     @function(name: "createStripeConnectAccount-${env}")
+
+  checkAndUpdateAccount(input: checkAndUpdateAccountInput!): checkAndUpdateAccountResponse
+    @function(name: "updateAccount-${env}")
 }
+
 
 # enum OrderStatus {
 #   SUCCESS
