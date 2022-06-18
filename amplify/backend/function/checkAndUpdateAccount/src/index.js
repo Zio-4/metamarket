@@ -33,7 +33,10 @@ exports.handler = async (event) => {
             } catch (err) {
                 console.log("Storing to DB error: ", err)
             }
+            return 'SUCCESS'
         }
+
+        return 'FAILED'
 
     } catch (err) {
         console.log('error :', err)

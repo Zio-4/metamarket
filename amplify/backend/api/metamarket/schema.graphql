@@ -83,12 +83,28 @@ enum checkAndUpdateAccountResponse {
   FAILED
 }
 
+type createStripeAccountLinkInput {
+  stripeAccountId: String
+  refreshUrl: String
+  returnUrl: String
+}
+
+type createStripeAccountLinkResponse {
+  object: String
+  created: Int
+  expires_at: Int
+  url: String
+}
+
 type Mutation {
   signUpUser(input: SignUpUserInput!): signUpResponse
     @function(name: "createStripeConnectAccount-${env}")
 
   checkAndUpdateAccount(input: checkAndUpdateAccountInput!): checkAndUpdateAccountResponse
     @function(name: "updateAccount-${env}")
+
+  createStripeAccountLink(input: createStripeAccountLinkInput!): createStripeAccountLinkResponse
+    @function(name: "createStripeAccountLink-${env}")
 }
 
 
