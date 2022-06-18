@@ -23,7 +23,13 @@
           "tableName": "User-5od444jrlzb5pmf7ccbxs4swhy-dev"
         },
         "checkAndUpdateAccount": {
-          "tableName": "User-5od444jrlzb5pmf7ccbxs4swhy-dev"
+          "tableName": "User-5od444jrlzb5pmf7ccbxs4swhy-dev",
+          "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
+          "s3Key": "amplify-builds/checkAndUpdateAccount-7671452b396437346258-build.zip"
+        },
+        "createStripeAccountLink": {
+          "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
+          "s3Key": "amplify-builds/createStripeAccountLink-7362356b6c532b6c6b79-build.zip"
         }
       }
     }
