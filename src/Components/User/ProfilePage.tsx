@@ -18,7 +18,13 @@ const ProfilePage: React.FC = () => {
 
   const handleDeleteStripeAccount = async () => {
     // loading
-    // API.graphql(graphqlOperation(deleteStripeAccount))
+    // let deleteResponse = API.graphql(graphqlOperation(deleteStripeAccount))
+    // if (deleteResponse === 'SUCCESSFULLY DELETED ACCOUNT') {
+    //   // update user in localStorage
+    //   // update user in redux
+    // } else {
+    //   // let user know something went wrong
+    // }
   }
 
 
