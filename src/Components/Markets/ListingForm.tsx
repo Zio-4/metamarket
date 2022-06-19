@@ -6,9 +6,8 @@ import { styled } from '@mui/material/styles';
 import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
 import Autocomplete from '@mui/material/Autocomplete';
 import Typography from '@mui/material/Typography';
-import { Auth, API, graphqlOperation } from 'aws-amplify';
+import { API, graphqlOperation } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
-import { getUser } from '../../graphql/queries';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -19,9 +18,8 @@ import { useAppSelector } from '../../Redux-Toolkit/reduxHooks';
 import { userState } from '../../Redux-Toolkit/userSlice';
 import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
 import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
-import { updateUser } from '../../graphql/mutations';
-// import Stripe from 'stripe';
-import {loadStripe} from '@stripe/stripe-js';
+import { checkAndUpdateAccount } from '../../graphql/mutations';
+
 
 
 
@@ -86,9 +84,19 @@ const ListingForm: React.FC = () => {
     
 
     // Add custom loading animation letting user know their account is being updated
-    const getStripeUser = async () => {
-      
+    const updateUser = async () => {
       // Call lambda func
+      let updateUserResponse = await API.graphql(graphqlOperation(checkAndUpdateAccount, {input: {stripeAccountId: userInfo.userId, userId: userInfo.userId}}))
+
+      console.log('updateUserResponse: ', updateUserResponse)
+
+      if (updateUserResponse === 'SUCCESS') {
+        console.log('yay!')
+        // update redux 
+        // update user in localstorage
+      } else {
+        // user know their account did not get updated / something went wrong
+      }
       // if (stripeAccount.charges_enabled) {
       //   try {
       //     const updateChargesEnabledInDDB = API.graphql({ query: updateUser, variables: { UpdateUserInput: {userId: userInfo.userId, chargesEnabled: true} }})
@@ -111,11 +119,15 @@ const ListingForm: React.FC = () => {
 
     if (localStorage.getItem('onboardingInfo')) {
       localStorage.removeItem('onboardingInfo')
-      // getStripeUser()
+      updateUser()
     }
 
-    if (!userInfo.stripeId) {
+    if (!userInfo.stripeId && !userInfo.chargesEnabled) {
       setDialogState(true)
+    }
+
+    if (!userInfo.chargesEnabled) {
+      // Tell user to finish the onboarding flow to have account fully set up
     }
 
     
@@ -123,7 +135,7 @@ const ListingForm: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log('poop')
+    console.log('handle submit')
   }
 
   const handleClose = (event: object, reason: string) => {
