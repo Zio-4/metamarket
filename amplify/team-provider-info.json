@@ -29,7 +29,7 @@
         },
         "createStripeAccountLink": {
           "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
-          "s3Key": "amplify-builds/createStripeAccountLink-7362356b6c532b6c6b79-build.zip"
+          "s3Key": "amplify-builds/createStripeAccountLink-6c585562717334416668-build.zip"
         }
       }
     }
