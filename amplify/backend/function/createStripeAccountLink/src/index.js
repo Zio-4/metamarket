@@ -15,4 +15,5 @@ exports.handler = async (event) => {
         type: 'account_onboarding',
       });
     
+    return accountLink
 };
