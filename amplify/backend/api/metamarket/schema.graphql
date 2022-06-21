@@ -103,7 +103,7 @@ enum deleteStripeConnectAccountResponse {
 type Mutation {
   signUpUser(input: SignUpUserInput!): SignUpResponse @function(name: "createStripeConnectAccount-${env}")
   checkAndUpdateAccount(input: CheckAndUpdateAccountInput!): CheckAndUpdateAccountResponse @function(name: "checkAndUpdateAccount-${env}")
-  deleteStripeConnectAccount(input: CheckAndUpdateAccountInput!): deleteStripeConnectAccountResponse @function(name: "deleteStripeConnectAccount-{env}")
+  deleteStripeConnectAccount(input: CheckAndUpdateAccountInput!): deleteStripeConnectAccountResponse @function(name: "deleteStripeConnectAccount-${env}")
 }
 
 

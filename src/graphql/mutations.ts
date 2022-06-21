@@ -18,6 +18,11 @@ export const checkAndUpdateAccount = /* GraphQL */ `
     checkAndUpdateAccount(input: $input)
   }
 `;
+export const deleteStripeConnectAccount = /* GraphQL */ `
+  mutation DeleteStripeConnectAccount($input: CheckAndUpdateAccountInput!) {
+    deleteStripeConnectAccount(input: $input)
+  }
+`;
 export const createNft = /* GraphQL */ `
   mutation CreateNft(
     $input: CreateNftInput!

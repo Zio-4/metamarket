@@ -28,6 +28,13 @@ export enum CheckAndUpdateAccountResponse {
 }
 
 
+export enum deleteStripeConnectAccountResponse {
+  SUCCESSFULLY = "SUCCESSFULLY",
+  DELETED = "DELETED",
+  ACCOUNT = "ACCOUNT",
+}
+
+
 export type CreateNftInput = {
   id?: string | null,
   name: string,
@@ -601,6 +608,14 @@ export type CheckAndUpdateAccountMutationVariables = {
 
 export type CheckAndUpdateAccountMutation = {
   checkAndUpdateAccount?: CheckAndUpdateAccountResponse | null,
+};
+
+export type DeleteStripeConnectAccountMutationVariables = {
+  input: CheckAndUpdateAccountInput,
+};
+
+export type DeleteStripeConnectAccountMutation = {
+  deleteStripeConnectAccount?: deleteStripeConnectAccountResponse | null,
 };
 
 export type CreateNftMutationVariables = {

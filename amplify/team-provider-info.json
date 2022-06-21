@@ -32,6 +32,8 @@
           "s3Key": "amplify-builds/createStripeAccountLink-6463373830576f707463-build.zip"
         },
         "deleteStripeConnectAccount": {
+          "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
+          "s3Key": "amplify-builds/deleteStripeConnectAccount-666c64734d326d655a70-build.zip",
           "tableName": "User-gjwunvctrjgghnx6jcuwe5pvwm-dev"
         }
       }

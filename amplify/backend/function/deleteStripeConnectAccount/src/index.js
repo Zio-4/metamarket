@@ -13,10 +13,11 @@ const stripe = require('stripe')('sk_test_51J22KpGBmWPuX4VCT8wPqbVnX3yTKaGsuQXOI
  */
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
+    const tableName = process.env.tableName
 
-    const { stripeId, userId } = event.arguments.input
+    const { stripeAccountId, userId } = event.arguments.input
 
-    const deleteResp = await stripe.accounts.del(stripeId);
+    const deleteResp = await stripe.accounts.del(stripeAccountId);
 
     if (deleteResp.deleted) {
         let ddbParams = {

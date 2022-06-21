@@ -4,6 +4,7 @@ import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
 import { userState } from '../../Redux-Toolkit/userSlice'
 import { Button } from '@mui/material'
 import { API, graphqlOperation } from 'aws-amplify'
+import { deleteStripeConnectAccount } from '../../graphql/mutations'
 
 
 
@@ -18,13 +19,15 @@ const ProfilePage: React.FC = () => {
 
   const handleDeleteStripeAccount = async () => {
     // loading
-    // let deleteResponse = API.graphql(graphqlOperation(deleteStripeAccount, {input: {stripeAccountId: userInfo.userId, userId: userInfo.userId}}))
-    // if (deleteResponse === 'SUCCESSFULLY DELETED ACCOUNT') {
-    //   // update user in localStorage
-    //   // update user in redux
-    // } else {
-    //   // let user know something went wrong
-    // }
+    let deleteResponse = await API.graphql(graphqlOperation(deleteStripeConnectAccount, {input: {stripeAccountId: 'acct_1L9yOM4eH0eo17WI', userId: '6a845f72-00d5-4030-aa73-b908f7df08b2'}}))
+    console.log('deleteResponse :', deleteResponse)
+    if (deleteResponse === 'SUCCESSFULLY DELETED ACCOUNT') {
+      console.log('hurray!')
+      // update user in localStorage
+      // update user in redux
+    } else {
+      // let user know something went wrong
+    }
   }
 
 
