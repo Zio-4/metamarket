@@ -24,12 +24,15 @@
         },
         "checkAndUpdateAccount": {
           "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
-          "s3Key": "amplify-builds/checkAndUpdateAccount-54597950464477726245-build.zip",
+          "s3Key": "amplify-builds/checkAndUpdateAccount-417a51657a63526e6e67-build.zip",
           "tableName": "User-gjwunvctrjgghnx6jcuwe5pvwm-dev"
         },
         "createStripeAccountLink": {
           "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
           "s3Key": "amplify-builds/createStripeAccountLink-6463373830576f707463-build.zip"
+        },
+        "deleteStripeConnectAccount": {
+          "tableName": "User-gjwunvctrjgghnx6jcuwe5pvwm-dev"
         }
       }
     }

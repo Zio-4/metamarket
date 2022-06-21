@@ -15,6 +15,7 @@ exports.handler = async (event) => {
         
         const account = await stripe.accounts.retrieve(stripeAccountId);
 
+        console.log('Are charges enabled? :', account.charges_enabled)
         if (account.charges_enabled) {
             let ddbParams = {
                 Key: {

@@ -21,8 +21,6 @@ import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
 import { checkAndUpdateAccount } from '../../graphql/mutations';
 
 
-
-
 const Input = styled('input')({
   display: 'none',
 });
@@ -81,40 +79,20 @@ const ListingForm: React.FC = () => {
     // fetch user from db, see if they have a stripe acc (stripe_id)
     console.log("userInfo in ListingForm: ", userInfo)
 
-    
-
     // Add custom loading animation letting user know their account is being updated
     const updateUser = async () => {
       // Call lambda func
-      let updateUserResponse = await API.graphql(graphqlOperation(checkAndUpdateAccount, {input: {stripeAccountId: userInfo.userId, userId: userInfo.userId}}))
+      let updateUserResponse = await API.graphql(graphqlOperation(checkAndUpdateAccount, {input: {stripeAccountId: userInfo.stripeId, userId: userInfo.userId}}))
 
       console.log('updateUserResponse: ', updateUserResponse)
 
       if (updateUserResponse === 'SUCCESS') {
-        console.log('yay!')
+        console.log('yay everything went correctly!')
         // update redux 
         // update user in localstorage
       } else {
-        // user know their account did not get updated / something went wrong
+        // let user know their account did not get updated / something went wrong
       }
-      // if (stripeAccount.charges_enabled) {
-      //   try {
-      //     const updateChargesEnabledInDDB = API.graphql({ query: updateUser, variables: { UpdateUserInput: {userId: userInfo.userId, chargesEnabled: true} }})
-        
-      //     const userInfoFromLocalStorage = JSON.parse(localStorage.getItem('userInfo') || '')
-      //     localStorage.setItem('userInfo', JSON.stringify({...userInfoFromLocalStorage, 'chargesEnabled': true}))
-  
-      //     dispatch(setCurrentUser({...userInfo, chargesEnabled: true}))
-  
-      //     console.log('Successfully udpated account')
-      //   } catch (err) {
-      //     console.log('Error updating account from onboarding')
-      //   }
-      // } else {
-      //   // let user know they need to finish onboarding if something went wrong or they did not come back from onboarding
-      //   console.log('User did not finish signing up or something went wrong')
-      //   navigate('/profile')
-      // } 
     }
 
     if (localStorage.getItem('onboardingInfo')) {
@@ -161,18 +139,11 @@ const ListingForm: React.FC = () => {
     // call lambda function
     try {
       let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: userInfo.username, email: userInfo.email, userId: userInfo.userId} })) as IstripeSignUpResponse
-      // console.log('response :', signUpResponse)
-      // console.log("response.data : ", signUpResponse.data)
-      // console.log("sign up response.data.signUpUser: ", signUpResponse.data.signUpUser)
       let userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
-      // console.log('user in storage: ', userInStorage)
       let updatedUser = {...userInStorage, 'stripeId': signUpResponse.data.signUpUser.accountId}
-      // console.log('updated user in storage: ', updatedUser)
       localStorage.setItem('userInfo', JSON.stringify(updatedUser))
 
-      // console.log('user info (redux): ', userInfo)
       let updateUserState = {...userInfo, stripeId: signUpResponse.data.signUpUser.accountId}
-      // console.log('updated User state: ', updateUserState)
 
       localStorage.setItem('onboardingInfo', JSON.stringify({'userCameFromOnboardFlow': true}))
       dispatch(setCurrentUser(updateUserState))

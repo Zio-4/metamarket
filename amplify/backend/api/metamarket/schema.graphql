@@ -83,6 +83,10 @@ enum CheckAndUpdateAccountResponse {
   FAILED
 }
 
+enum deleteStripeConnectAccountResponse {
+  SUCCESSFULLY DELETED ACCOUNT
+}
+
 # type CreateStripeAccountLinkInput {
 #   stripeAccountId: String
 #   refreshUrl: String
@@ -99,6 +103,7 @@ enum CheckAndUpdateAccountResponse {
 type Mutation {
   signUpUser(input: SignUpUserInput!): SignUpResponse @function(name: "createStripeConnectAccount-${env}")
   checkAndUpdateAccount(input: CheckAndUpdateAccountInput!): CheckAndUpdateAccountResponse @function(name: "checkAndUpdateAccount-${env}")
+  deleteStripeConnectAccount(input: CheckAndUpdateAccountInput!): deleteStripeConnectAccountResponse @function(name: "deleteStripeConnectAccount-{env}")
 }
 
 
