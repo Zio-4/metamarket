@@ -1,5 +1,5 @@
 # @model directive creates CRUD operations and DynamoDB database tables (also adds the helper fields createdAt and updatedAt to your type)
-type Nft @model @searchable @auth(rules: [
+type Nft @model @auth(rules: [
       { allow: public, operations: [read], provider: apiKey }
       { allow: owner }
   ]) {

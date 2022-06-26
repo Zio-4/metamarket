@@ -19,7 +19,7 @@ const ProfilePage: React.FC = () => {
 
   const handleDeleteStripeAccount = async () => {
     // loading
-    let deleteResponse = await API.graphql(graphqlOperation(deleteStripeConnectAccount, {input: {stripeAccountId: 'acct_1L9yOM4eH0eo17WI', userId: '6a845f72-00d5-4030-aa73-b908f7df08b2'}}))
+    let deleteResponse = await API.graphql(graphqlOperation(deleteStripeConnectAccount, {input: {stripeAccountId: 'acct_1LAUEwQH508CPaZP', userId: '6a845f72-00d5-4030-aa73-b908f7df08b2'}}))
     console.log('deleteResponse :', deleteResponse)
     if (deleteResponse === 'SUCCESSFULLY DELETED ACCOUNT') {
       console.log('hurray!')

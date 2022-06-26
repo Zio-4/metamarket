@@ -262,62 +262,6 @@ export const nftByListedStatus = /* GraphQL */ `
     }
   }
 `;
-export const searchNfts = /* GraphQL */ `
-  query SearchNfts(
-    $filter: SearchableNftFilterInput
-    $sort: [SearchableNftSortInput]
-    $limit: Int
-    $nextToken: String
-    $from: Int
-    $aggregates: [SearchableNftAggregationInput]
-  ) {
-    searchNfts(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-      from: $from
-      aggregates: $aggregates
-    ) {
-      items {
-        id
-        name
-        price
-        category
-        blockchain
-        colors
-        xCoordinate
-        yCoordinate
-        description
-        imageId
-        owner
-        listed
-        orders {
-          nextToken
-        }
-        createdAt
-        updatedAt
-        userOwnedId
-      }
-      nextToken
-      total
-      aggregateItems {
-        name
-        result {
-          ... on SearchableAggregateScalarResult {
-            value
-          }
-          ... on SearchableAggregateBucketResult {
-            buckets {
-              key
-              doc_count
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 export const getNftOrder = /* GraphQL */ `
   query GetNftOrder($id: ID!) {
     getNftOrder(id: $id) {
