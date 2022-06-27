@@ -6,9 +6,9 @@ import { deleteStripeConnectAccount } from '../../graphql/mutations'
 function LandingPage() {
   const handleDeleteStripeAccount = async () => {
     // loading
-    let deleteResponse = await API.graphql(graphqlOperation(deleteStripeConnectAccount, {input: {stripeAccountId: 'acct_1LATzI8kNHp12tsU', userId: '6a845f72-00d5-4030-aa73-b908f7df08b2'}}))
+    let deleteResponse = await API.graphql(graphqlOperation(deleteStripeConnectAccount, {input: {stripeAccountId: 'acct_1LAU5yQJVxACuSzu', userId: '4e5360a9-3c67-4f8a-a0c0-7b7ddffc5f15'}}))
     console.log('deleteResponse :', deleteResponse)
-    if (deleteResponse === 'SUCCESSFULLY DELETED ACCOUNT') {
+    if (deleteResponse === 'SUCCESFULLY DELETED ACCOUNT') {
       console.log('hurray!')
       // update user in localStorage
       // update user in redux
