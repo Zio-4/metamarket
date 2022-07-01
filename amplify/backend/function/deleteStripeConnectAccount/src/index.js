@@ -39,6 +39,7 @@ exports.handler = async (event) => {
             return  'SUCCESSFULLY DELETED ACCOUNT'
         } catch (err) {
             console.log("Storing to DB error: ", err)
+
         }
-    }
+    } else return 'FAILED TO DELETE ACCOUNT'
 };

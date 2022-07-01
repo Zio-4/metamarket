@@ -6,6 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { getUser } from '../../graphql/queries'
 import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
 import { setCurrentUser } from '../../Redux-Toolkit/userSlice'
+import {useUpdateUser} from '../../Hooks/useUpdateUser'
 
 
 type getUserQuery = {
@@ -36,7 +37,7 @@ interface IcognitoUser {
 //   signInCognitoUser: (user: IcognitoUser) => void
 // }
 
-const SignIn: React.FC = () => {
+const SignInTab: React.FC = () => {
   const [tabValue, setTabValue] = useState("1")
   const [signInFormValues, setSignInFormValues] = useState({
     signInUsername: '',
@@ -53,6 +54,7 @@ const SignIn: React.FC = () => {
   const [userSigningUp, setUserSigningUp] = useState(false)
   let navigate = useNavigate()
   const dispatch = useAppDispatch()
+  const updateUser = useUpdateUser()
   // let location = useLocation()
 
   // console.log("location state:", location.state)
@@ -88,9 +90,11 @@ const SignIn: React.FC = () => {
           })
           const userData = await API.graphql({ query: getUser, variables: { userId: `${user.attributes.sub}`} }) as getUserQuery
           const {username: dbUsername, userId, stripeId, sold, owned, favorited, chargesEnabled} = userData.data.getUser
-          localStorage.setItem('userInfo', JSON.stringify({'username': dbUsername, 'userId': userId, 'email': user.attributes.email, 'stripeId': stripeId, 'sold': sold, 'owned': owned, 'favorited': favorited, 'chargesEnabled': chargesEnabled}))
-          const userInfo = {username: dbUsername, userId: userId, email: user.attributes.email, stripeId: stripeId, sold: sold, owned: owned, favorited: favorited, chargesEnabled: chargesEnabled}
-          dispatch(setCurrentUser(userInfo))
+          updateUser({username: dbUsername, userId: userId, email: user.attributes.email, stripeId: stripeId, sold: sold, owned: owned, favorited: favorited, chargesEnabled: chargesEnabled})
+
+          // localStorage.setItem('userInfo', JSON.stringify({'username': dbUsername, 'userId': userId, 'email': user.attributes.email, 'stripeId': stripeId, 'sold': sold, 'owned': owned, 'favorited': favorited, 'chargesEnabled': chargesEnabled}))
+          // const userInfo = {username: dbUsername, userId: userId, email: user.attributes.email, stripeId: stripeId, sold: sold, owned: owned, favorited: favorited, chargesEnabled: chargesEnabled}
+          // dispatch(setCurrentUser(userInfo))
           navigate('/')
     } catch (error) {
         console.log('error signing in:', error);
@@ -167,32 +171,32 @@ const SignIn: React.FC = () => {
         <Button variant='contained' sx={{ width: '100%', marginTop: '0.8rem'}} onClick={confirmSignUp}>Confirm Sign Up</Button>
       </div>
       : <TabContext value={tabValue}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'white',}}>
-          <TabList onChange={handleTabChange} aria-label="login & sign up tabs" textColor='secondary' indicatorColor='secondary' centered >
-            <Tab label="Sign in" value="1" />
-            <Tab label="Create Account" value="2" />
-          </TabList>
-        </Box>
-        <TabPanel value="1" sx={{bgcolor: '#C5C6C7'}}>
-          <TextField variant='outlined' label='Username' sx={{ width: '100%', }} name='signInUsername' value={signInFormValues.signInUsername} onChange={handleSignInChange}/>
-          <TextField variant='outlined' label='Password' sx={{ width: '100%', marginTop: '0.5rem' }} name='signInPassword' value={signInFormValues.signInPassword} onChange={handleSignInChange}/>
-          <Button variant='contained' sx={{ width: '100%', marginTop: '0.8rem'}} onClick={signInUser}>
-            Sign In
-          </Button>
-          <Typography sx={{textAlign: 'center', marginTop: '0.5rem'}}>Forgot your password?</Typography>
-        </TabPanel>
-        <TabPanel value="2" sx={{bgcolor: '#C5C6C7'}}>
-          <TextField variant='outlined' label='Username' sx={{ width: '100%', }} name='createAccountUsername' value={createAccountFormValues.createAccountUsername} onChange={handleCreateAccountChange}/>
-          <TextField variant='outlined' label='Password' sx={{ width: '100%', marginTop: '0.5rem',}} name='createAccountPassword' value={createAccountFormValues.createAccountPassword} onChange={handleCreateAccountChange}/>
-          <TextField variant='outlined' label='Confirm Password' sx={{ width: '100%', marginTop: '0.5rem', }} name='createAccountConfirmPassword' value={createAccountFormValues.createAccountConfirmPassword} onChange={handleCreateAccountChange}/>
-          <TextField variant='outlined' label='Email' sx={{ width: '100%', marginTop: '0.5rem', }} name='createAccountEmail' value={createAccountFormValues.createAccountEmail} onChange={handleCreateAccountChange}/>
-          <Button variant='contained' sx={{ width: '100%', marginTop: '0.8rem'}} onClick={signUpUser}>
-            Create Account
-          </Button>
-        </TabPanel>
-      </TabContext>}
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'white',}}>
+                <TabList onChange={handleTabChange} aria-label="login & sign up tabs" textColor='secondary' indicatorColor='secondary' centered >
+                <Tab label="Sign in" value="1" />
+                <Tab label="Create Account" value="2" />
+                </TabList>
+            </Box>
+            <TabPanel value="1" sx={{bgcolor: '#C5C6C7'}}>
+                <TextField variant='outlined' label='Username' sx={{ width: '100%', }} name='signInUsername' value={signInFormValues.signInUsername} onChange={handleSignInChange}/>
+                <TextField variant='outlined' label='Password' sx={{ width: '100%', marginTop: '0.5rem' }} name='signInPassword' value={signInFormValues.signInPassword} onChange={handleSignInChange}/>
+                <Button variant='contained' sx={{ width: '100%', marginTop: '0.8rem'}} onClick={signInUser}>
+                Sign In
+                </Button>
+                <Typography sx={{textAlign: 'center', marginTop: '0.5rem'}}>Forgot your password?</Typography>
+            </TabPanel>
+            <TabPanel value="2" sx={{bgcolor: '#C5C6C7'}}>
+                <TextField variant='outlined' label='Username' sx={{ width: '100%', }} name='createAccountUsername' value={createAccountFormValues.createAccountUsername} onChange={handleCreateAccountChange}/>
+                <TextField variant='outlined' label='Password' sx={{ width: '100%', marginTop: '0.5rem',}} name='createAccountPassword' value={createAccountFormValues.createAccountPassword} onChange={handleCreateAccountChange}/>
+                <TextField variant='outlined' label='Confirm Password' sx={{ width: '100%', marginTop: '0.5rem', }} name='createAccountConfirmPassword' value={createAccountFormValues.createAccountConfirmPassword} onChange={handleCreateAccountChange}/>
+                <TextField variant='outlined' label='Email' sx={{ width: '100%', marginTop: '0.5rem', }} name='createAccountEmail' value={createAccountFormValues.createAccountEmail} onChange={handleCreateAccountChange}/>
+                <Button variant='contained' sx={{ width: '100%', marginTop: '0.8rem'}} onClick={signUpUser}>
+                Create Account
+                </Button>
+            </TabPanel>
+    </TabContext>}
     </div>
   )
 }
 
-export default SignIn
+export default SignInTab

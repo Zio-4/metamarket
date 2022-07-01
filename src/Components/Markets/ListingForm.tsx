@@ -19,6 +19,7 @@ import { userState } from '../../Redux-Toolkit/userSlice';
 import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
 import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
 import { checkAndUpdateAccount } from '../../graphql/mutations';
+import { useUpdateUser } from '../../Hooks/useUpdateUser';
 
 
 const Input = styled('input')({
@@ -71,6 +72,8 @@ const ListingForm: React.FC = () => {
   const userInfo = useAppSelector(userState)
   const dispatch = useAppDispatch()
   const [dialogState, setDialogState] = useState(false)
+  const updateUserHook = useUpdateUser()
+
 
 
   useEffect(() => {
@@ -88,10 +91,13 @@ const ListingForm: React.FC = () => {
 
       if (updateUserResponse === 'SUCCESS') {
         console.log('yay everything went correctly!')
-        // update redux 
+        updateUserHook({chargesEnabled: true})
+        // updateUser({chargesEnabled: true})
+        // update redux
         // update user in localstorage
       } else {
         // let user know their account did not get updated / something went wrong
+        console.log('Something went wrong. You can try again from the profile page.')
       }
     }
 
@@ -139,14 +145,16 @@ const ListingForm: React.FC = () => {
     // call lambda function
     try {
       let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: userInfo.username, email: userInfo.email, userId: userInfo.userId} })) as IstripeSignUpResponse
-      let userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
-      let updatedUser = {...userInStorage, 'stripeId': signUpResponse.data.signUpUser.accountId}
-      localStorage.setItem('userInfo', JSON.stringify(updatedUser))
+      updateUserHook({stripeId: signUpResponse.data.signUpUser.accountId})
+      
+      // let userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
+      // let updatedUser = {...userInStorage, 'stripeId': signUpResponse.data.signUpUser.accountId}
+      // localStorage.setItem('userInfo', JSON.stringify(updatedUser))
 
-      let updateUserState = {...userInfo, stripeId: signUpResponse.data.signUpUser.accountId}
+      // let updateUserState = {...userInfo, stripeId: signUpResponse.data.signUpUser.accountId}
 
       localStorage.setItem('onboardingInfo', JSON.stringify({'userCameFromOnboardFlow': true}))
-      dispatch(setCurrentUser(updateUserState))
+      // dispatch(setCurrentUser(updateUserState))
       // redirect the user to the onboarding flow from the url in the response
       redirectToOnboarding(signUpResponse.data.signUpUser.url)
     } catch (err) {

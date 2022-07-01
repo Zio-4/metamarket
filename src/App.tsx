@@ -4,7 +4,7 @@ import { Routes, Route, useParams} from "react-router-dom";
 import NavBar from './Components/Navigation/NavBar';
 import Markets from './Components/Markets/Markets';
 import Cart from './Components/Cart/Cart';
-import SignIn from './Components/User/SignIn';
+import SignInTab from './Components/User/SignInTab';
 import LandingPage from './Components/Navigation/LandingPage';
 import Listing from './Components/Markets/Listing';
 import ListingForm from './Components/Markets/ListingForm';
@@ -24,7 +24,7 @@ const App = () => {
         <Route path="/markets/:marketname" element={<Market />} />
         <Route path="/markets/:marketname/:id" element={<Listing />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signin" element={<SignInTab />} />
         <Route path="/listingform" element={<ListingForm  />} />
         <Route path='/profile' element={<ProfilePage />} />
       </Routes>

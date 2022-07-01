@@ -23,7 +23,7 @@ exports.handler = async (event) => {
                 },
                 UpdateExpression: "set chargesEnabled = :updateChargesEnabled",
                 ExpressionAttributeValues: {
-                    ":updateChargesEnabled": {BOOL: 1},
+                    ":updateChargesEnabled": {BOOL: true},
                 }, 
                 TableName: tableName,
             }
@@ -31,17 +31,15 @@ exports.handler = async (event) => {
             try {
                 await ddb.updateItem(ddbParams).promise()
                 console.log("Successfully updated chargesEnabled field")
+                return 'SUCCESS'
             } catch (err) {
                 console.log("Storing to DB error: ", err)
+                return 'FAILED'
             }
-            return 'SUCCESS'
-        }
 
-        return 'FAILED'
+        }
 
     } catch (err) {
         console.log('error :', err)
     }
-
-    console.log(`EVENT: ${JSON.stringify(event)}`);
 };
