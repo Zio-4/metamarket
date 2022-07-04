@@ -34,14 +34,17 @@ const ProfilePage: React.FC = () => {
     if (deleteResponse === 'SUCCESFULLY DELETED ACCOUNT') {
       console.log('hurray!')
 
-      const userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
-      const updatedUser = {...userInStorage, 'stripeId': '', 'chargesEnabled': false}
-      localStorage.setItem('userInfo', JSON.stringify(updatedUser))
+      updateUser({stripeId: '', chargesEnabled: false})
+
+      // const userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
+      // const updatedUser = {...userInStorage, 'stripeId': '', 'chargesEnabled': false}
+      // localStorage.setItem('userInfo', JSON.stringify(updatedUser))
       
-      const updateUserState = {...userInfo, stripeId: '', chargesEnabled: false}
-      dispatch(setCurrentUser(updateUserState))
+      // const updateUserState = {...userInfo, stripeId: '', chargesEnabled: false}
+      // dispatch(setCurrentUser(updateUserState))
     } else {
       // let user know something went wrong
+      console.log('Something went wrong deleting your account')
     }
   }
 

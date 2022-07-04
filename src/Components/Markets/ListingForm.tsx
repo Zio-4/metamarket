@@ -67,6 +67,14 @@ interface IstripeSignUpResponse {
   }
 }
 
+interface IupdateUserResponse {
+  data: {
+    checkAndUpdateAccount: {
+      // enum value of 'SUCCESS or FAILED'
+    }
+  }
+}
+
 const ListingForm: React.FC = () => {
   const navigate = useNavigate()
   const userInfo = useAppSelector(userState)
@@ -85,11 +93,11 @@ const ListingForm: React.FC = () => {
     // Add custom loading animation letting user know their account is being updated
     const updateUser = async () => {
       // Call lambda func
-      let updateUserResponse = await API.graphql(graphqlOperation(checkAndUpdateAccount, {input: {stripeAccountId: userInfo.stripeId, userId: userInfo.userId}}))
+      let updateUserResponse = await API.graphql(graphqlOperation(checkAndUpdateAccount, {input: {stripeAccountId: userInfo.stripeId, userId: userInfo.userId}})) as IupdateUserResponse
 
       console.log('updateUserResponse: ', updateUserResponse)
 
-      if (updateUserResponse === 'SUCCESS') {
+      if (updateUserResponse.data.checkAndUpdateAccount === 'SUCCESS') {
         console.log('yay everything went correctly!')
         updateUserHook({chargesEnabled: true})
         // updateUser({chargesEnabled: true})
