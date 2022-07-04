@@ -33,19 +33,17 @@ const ProfilePage: React.FC = () => {
     console.log('deleteResponse :', deleteResponse)
     if (deleteResponse === 'SUCCESFULLY DELETED ACCOUNT') {
       console.log('hurray!')
-
       updateUser({stripeId: '', chargesEnabled: false})
-
-      // const userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
-      // const updatedUser = {...userInStorage, 'stripeId': '', 'chargesEnabled': false}
-      // localStorage.setItem('userInfo', JSON.stringify(updatedUser))
-      
-      // const updateUserState = {...userInfo, stripeId: '', chargesEnabled: false}
-      // dispatch(setCurrentUser(updateUserState))
     } else {
       // let user know something went wrong
       console.log('Something went wrong deleting your account')
     }
+  }
+
+  const handleUpdateStripeAccount = async () => {
+    // let updateUserResponse = await API.graphql(graphqlOperation(createStripeAccountLink, {input: {stripeAccountId: userInfo.stripeId, userId: userInfo.userId}})) as IupdateUserResponse
+    // Call createStripeAccountLink
+    // set in storage session user is signing up
   }
 
 
@@ -57,6 +55,7 @@ const ProfilePage: React.FC = () => {
       <div className='placeholder-text'>Current user: {userInfo.username}</div>
       <br></br>
       <Button variant='contained' onClick={handleUpdateUser}>useUpdateHook</Button>
+      {userInfo.stripeId && !userInfo.chargesEnabled ? <Button variant='contained' color='secondary' sx={{ marginTop: '1rem'}} onClick={handleUpdateStripeAccount}>Continue stripe account setup</Button> : null}
     </div>
   )
 }
