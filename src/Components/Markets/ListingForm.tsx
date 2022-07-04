@@ -17,9 +17,12 @@ import { signUpUser } from '../../graphql/mutations';
 import { useAppSelector } from '../../Redux-Toolkit/reduxHooks';
 import { userState } from '../../Redux-Toolkit/userSlice';
 import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
-import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
+// import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
 import { checkAndUpdateAccount } from '../../graphql/mutations';
 import { useUpdateUser } from '../../Hooks/useUpdateUser';
+// import { getUserQuery } from '../../Interfaces/ListingFormInterfaces';
+import { IstripeSignUpResponse } from '../../Interfaces/ListingFormInterfaces';
+import { IupdateUserResponse } from '../../Interfaces/ListingFormInterfaces';
 
 
 const Input = styled('input')({
@@ -32,48 +35,7 @@ const blockchains = [{label: 'Ethereum'}, {label: 'Solana'}, {label: 'Polygon'},
 
 const categories = [{label: 'Art'}, {label: 'Boats'}, {label: 'Cars'}, {label: 'Clothes'}, {label: 'Land'}, {label: 'Houses'}, {label: 'Items'}, {label: 'Jewelry'}, {label: 'Traits'}]
 
-// interface Iprops {
-//   cognitoUser: {
-//     cognitoId: string
-//     username: string
-//     email: string
-//   }
-// }
 
-type getUserQuery = {
-  data: {
-    getUser: {
-      Nfts?: []
-      createdAt: string
-      favorited?: []
-      owner: string
-      updatedAt: string
-      userId: string
-      username: string
-      stripe_id?: string
-    }
-  }
-}
-
-interface IstripeSignUpResponse {
-  data: {
-    signUpUser: {
-      accountId: string
-      object: string
-      created: number
-      expires_at: number
-      url: string
-    }
-  }
-}
-
-interface IupdateUserResponse {
-  data: {
-    checkAndUpdateAccount: {
-      // enum value of 'SUCCESS or FAILED'
-    }
-  }
-}
 
 const ListingForm: React.FC = () => {
   const navigate = useNavigate()
@@ -87,12 +49,10 @@ const ListingForm: React.FC = () => {
   useEffect(() => {
     // loading animation or if not signed in/ error return
     if (!userInfo.email) return navigate('/signin')
-    // fetch user from db, see if they have a stripe acc (stripe_id)
     console.log("userInfo in ListingForm: ", userInfo)
 
     // Add custom loading animation letting user know their account is being updated
     const updateUser = async () => {
-      // Call lambda func
       let updateUserResponse = await API.graphql(graphqlOperation(checkAndUpdateAccount, {input: {stripeAccountId: userInfo.stripeId, userId: userInfo.userId}})) as IupdateUserResponse
 
       console.log('updateUserResponse: ', updateUserResponse)
@@ -100,9 +60,6 @@ const ListingForm: React.FC = () => {
       if (updateUserResponse.data.checkAndUpdateAccount === 'SUCCESS') {
         console.log('yay everything went correctly!')
         updateUserHook({chargesEnabled: true})
-        // updateUser({chargesEnabled: true})
-        // update redux
-        // update user in localstorage
       } else {
         // let user know their account did not get updated / something went wrong
         console.log('Something went wrong. You can try again from the profile page.')
@@ -122,7 +79,6 @@ const ListingForm: React.FC = () => {
       // Tell user to finish the onboarding flow to have account fully set up
     }
 
-    
   },[])
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -141,7 +97,6 @@ const ListingForm: React.FC = () => {
     
     if (eventCast.textContent === 'Back to home') return navigate('/')
     else createStripeAccount()
-
   }
 
   const redirectToOnboarding = (url: string) => {
@@ -150,19 +105,11 @@ const ListingForm: React.FC = () => {
   }
 
   const createStripeAccount = async () => {
-    // call lambda function
     try {
       let signUpResponse = await API.graphql(graphqlOperation(signUpUser, {input: {username: userInfo.username, email: userInfo.email, userId: userInfo.userId} })) as IstripeSignUpResponse
       updateUserHook({stripeId: signUpResponse.data.signUpUser.accountId})
-      
-      // let userInStorage = JSON.parse(localStorage.getItem('userInfo') || '')
-      // let updatedUser = {...userInStorage, 'stripeId': signUpResponse.data.signUpUser.accountId}
-      // localStorage.setItem('userInfo', JSON.stringify(updatedUser))
-
-      // let updateUserState = {...userInfo, stripeId: signUpResponse.data.signUpUser.accountId}
 
       localStorage.setItem('onboardingInfo', JSON.stringify({'userCameFromOnboardFlow': true}))
-      // dispatch(setCurrentUser(updateUserState))
       // redirect the user to the onboarding flow from the url in the response
       redirectToOnboarding(signUpResponse.data.signUpUser.url)
     } catch (err) {
