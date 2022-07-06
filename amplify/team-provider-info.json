@@ -24,16 +24,16 @@
         },
         "checkAndUpdateAccount": {
           "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
-          "s3Key": "amplify-builds/checkAndUpdateAccount-417a51657a63526e6e67-build.zip",
+          "s3Key": "amplify-builds/checkAndUpdateAccount-68453262535963436247-build.zip",
           "tableName": "User-gjwunvctrjgghnx6jcuwe5pvwm-dev"
         },
         "createStripeAccountLink": {
           "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
-          "s3Key": "amplify-builds/createStripeAccountLink-6463373830576f707463-build.zip"
+          "s3Key": "amplify-builds/createStripeAccountLink-564a4d6b4a5741743364-build.zip"
         },
         "deleteStripeConnectAccount": {
           "deploymentBucketName": "amplify-metamarket-dev-111210-deployment",
-          "s3Key": "amplify-builds/deleteStripeConnectAccount-657943447a384e356944-build.zip",
+          "s3Key": "amplify-builds/deleteStripeConnectAccount-70676c5073582f465334-build.zip",
           "tableName": "User-gjwunvctrjgghnx6jcuwe5pvwm-dev"
         }
       }

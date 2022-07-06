@@ -84,7 +84,8 @@ enum CheckAndUpdateAccountResponse {
 }
 
 enum deleteStripeConnectAccountResponse {
-  SUCCESSFULLY DELETED ACCOUNT
+  SUCCESSFULLY DELETED
+  FAILED TO DELETE
 }
 
 # type CreateStripeAccountLinkInput {

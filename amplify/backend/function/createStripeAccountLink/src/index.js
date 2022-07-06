@@ -6,14 +6,15 @@ const stripe = require('stripe')('sk_test_51J22KpGBmWPuX4VCT8wPqbVnX3yTKaGsuQXOI
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
-    const {stripeAccountId, refreshUrl, returnUrl} = event.arguments.input
+    const {stripeAccountId} = event.arguments.input
 
     const accountLink = await stripe.accountLinks.create({
-        account: stripeAccountId,
-        refresh_url: refreshUrl,
-        return_url: returnUrl,
-        type: 'account_onboarding',
-      });
+      account: stripeAccountId,
+      //Swap for live website
+      refresh_url: 'http://localhost:3000/profile',
+      return_url: 'http://localhost:3000/profile',
+      type: 'account_onboarding',
+    });
     
     return accountLink
 };

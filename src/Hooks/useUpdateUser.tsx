@@ -12,7 +12,7 @@ export const useUpdateUser = () => {
 
     const updateReduxAndLocalStorage = (fieldsToUpdate: any) => {
         console.log('fields', fieldsToUpdate)
-
+// If user is signed in
         if (userInfo) {
             const user = {...userInfo, ...fieldsToUpdate}
             dispatch(setCurrentUser(user))

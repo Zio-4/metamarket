@@ -31,7 +31,9 @@ export enum CheckAndUpdateAccountResponse {
 export enum deleteStripeConnectAccountResponse {
   SUCCESSFULLY = "SUCCESSFULLY",
   DELETED = "DELETED",
-  ACCOUNT = "ACCOUNT",
+  FAILED = "FAILED",
+  TO = "TO",
+  DELETE = "DELETE",
 }
 
 
