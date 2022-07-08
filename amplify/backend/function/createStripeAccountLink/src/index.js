@@ -7,7 +7,7 @@ exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
     const {stripeAccountId} = event.arguments.input
-
+    
     const accountLink = await stripe.accountLinks.create({
       account: stripeAccountId,
       //Swap for live website
