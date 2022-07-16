@@ -84,6 +84,7 @@ const ListingForm: React.FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     console.log('handle submit')
+    // Add logic and lambda function(s)
   }
 
   const handleClose = (event: object, reason: string) => {
