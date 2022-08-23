@@ -10,7 +10,6 @@ import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
 import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import { Link, useNavigate,} from 'react-router-dom'
 import SellSharpIcon from '@mui/icons-material/SellSharp';
@@ -27,14 +26,7 @@ import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
 import { removeCurrentUser } from '../../Redux-Toolkit/userSlice'
 import { userState } from '../../Redux-Toolkit/userSlice';
 
-// interface Iprops {
-//   cognitoUser: {
-//     cognitoId: string
-//     username: string
-//     email: string
-//   }
-//   signOutCognitoUser: () => void
-// }
+
 
 const NavBar: React.FC = () => {
   let navigate = useNavigate()
@@ -139,57 +131,34 @@ const NavBar: React.FC = () => {
       </div>
     </nav>
 
-    <AppBar position="static" sx={{ bgcolor: "#1F2833" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+    {/* Desktop Menu */}
+
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static" sx={{ bgcolor: "#1F2833" }}>
+        <Toolbar>
+
           <Typography
             variant="h5"
             noWrap
             component={Link}
             to={'/'}
-            sx={{ mr: 90, display: { xs: 'none', md: 'flex' }, color: "#66FCF1", fontFamily: 'MuseoModerno', textDecoration: 'none' }}
+            sx={{ color: "#66FCF1", fontFamily: 'MuseoModerno', textDecoration: 'none', flexGrow: 1 }}
           >
             metaMarket
           </Typography>
 
-          <Typography
-            variant="h6"
-            noWrap
-            component={Link}
-            to={'/'}
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, color: "#66FCF1", fontFamily: 'MuseoModerno', textDecoration: 'none' }}
-          >
-            metaMarket
-          </Typography>
-
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}> */}
-            <IconButton
-              size="large"
-              aria-label="menu button"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              edge="end"
-              color="inherit"
-              sx={{display: {md: 'none'}}}
-              onClick={setMenu}
-            >
-              <MenuIcon />
-            </IconButton>
-          {/* </Box> */}
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 3 }}>
+          <Box sx={{ display: { xs: 'none', md: 'block'}}}>
             <Button 
-              sx={{ my: 2, color: "#66FCF1", fontFamily: 'Cambay' }}
+              sx={{ color: "#66FCF1", mr: 1}}
               component={Link}
               to={'/markets'}
               endIcon={<StorefrontSharpIcon />}
-              size="large"
             >
               Markets 
             </Button>
 
             <Button 
-              sx={{ my: 2, color: "#66FCF1", fontFamily: 'Cambay' }}
+              sx={{ color: "#66FCF1", mr: 1}}
               component={Link}
               to={'/listingform'}
               endIcon={<SellSharpIcon />}
@@ -198,7 +167,7 @@ const NavBar: React.FC = () => {
             </Button>
 
             <Button
-              sx={{ my: 2, color: "#66FCF1", fontFamily: 'Cambay' }}
+              sx={{ color: "#66FCF1", mr: 1}}
               component={Link}
               to={'/cart'}
               endIcon={<Badge badgeContent={idsInCart.length} color="warning">
@@ -208,18 +177,49 @@ const NavBar: React.FC = () => {
               Cart 
             </Button>
 
-            <Button
-              sx={{ my: 2, color: "#66FCF1", fontFamily: 'Cambay' }}
+            {!userInfo.username && <Button 
+              sx={{ color: "#66FCF1", mr: 1}}
               component={Link}
-              to={'/login'}
+              to={'/signin'}
+              endIcon={<LoginSharpIcon />}
+              onClick={navigateUser}
+            >
+              Sign In
+            </Button>}
+
+            {userInfo.username && <Button 
+              sx={{ color: "#66FCF1", mr: 1}}
+              component={Link}
+              to={'/profile'}
               endIcon={<AccountBoxSharpIcon />}
             >
-              Login 
-            </Button>
+              Profile
+            </Button>}
+
+            {userInfo.username && <Button 
+              sx={{ color: "#FF6666", mr: 1}}
+              component={Link}
+              to={'/profile'}
+              endIcon={<LogoutSharpIcon />}
+              onClick={signOutUser}
+            >
+              Sign Out
+            </Button>}
           </Box>
+
+          <IconButton
+            size="large"
+            edge="end"
+            color="inherit"
+            aria-label="menu"
+            sx={{ display: { md: 'none'} }}
+            onClick={setMenu}
+          >
+            <MenuIcon />
+          </IconButton>
         </Toolbar>
-      </Container>
-    </AppBar>
+      </AppBar>
+    </Box>
     </>
   )
 }

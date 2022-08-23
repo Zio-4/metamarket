@@ -21,8 +21,8 @@ import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
 import { checkAndUpdateAccount } from '../../graphql/mutations';
 import { useUpdateUser } from '../../Hooks/useUpdateUser';
 // import { getUserQuery } from '../../Interfaces/ListingFormInterfaces';
-import { IstripeSignUpResponse } from '../../Interfaces/ListingFormInterfaces';
-import { IupdateUserResponse } from '../../Interfaces/ListingFormInterfaces';
+import { IstripeSignUpResponse } from '../../lib/Interfaces/ListingFormInterfaces';
+import { IupdateUserResponse } from '../../lib/Interfaces/ListingFormInterfaces';
 
 
 const Input = styled('input')({
