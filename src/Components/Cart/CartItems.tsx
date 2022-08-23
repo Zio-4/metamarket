@@ -1,15 +1,8 @@
 import { useEffect, useState } from 'react'
-import Grid from '@mui/material/Grid';
-import { Button, Typography, Box, Divider,} from '@mui/material';
+import { Button, Typography, Box, Divider, Grid } from '@mui/material';
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import { useRemoveFromCart } from '../../Hooks/useRemoveFromCart'
-
-interface Icart {
-  listingId: number
-  title: string
-  price: number
-  image: string
-}
+import { Icart } from '../../lib/Interfaces/DataInterfaces'
 
 function CartItems () {
   const [cartItems, setCartItems] = useState<Icart[]>([])
@@ -26,7 +19,6 @@ function CartItems () {
     removeFromCart(listingId)
     setItemRemoved(!itemRemoved)
   }
-
 
   return (
     <>

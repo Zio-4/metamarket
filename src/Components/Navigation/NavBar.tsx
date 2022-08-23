@@ -1,31 +1,18 @@
-import React, {useState, useEffect} from 'react'
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import React, {useState, } from 'react'
+import { AppBar, Box, Toolbar, Typography, Badge, IconButton, Button, ListItemIcon, List, ListItem, ListItemText  } from '@mui/material';
 import StorefrontSharpIcon from '@mui/icons-material/StorefrontSharp';
 import ShoppingCartSharpIcon from '@mui/icons-material/ShoppingCartSharp';
 import AccountBoxSharpIcon from '@mui/icons-material/AccountBoxSharp';
 import LogoutSharpIcon from '@mui/icons-material/LogoutSharp';
-import Badge from '@mui/material/Badge';
-import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import Button from '@mui/material/Button';
 import { Link, useNavigate,} from 'react-router-dom'
 import SellSharpIcon from '@mui/icons-material/SellSharp';
 import CloseSharpIcon from '@mui/icons-material/CloseSharp';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import LoginSharpIcon from '@mui/icons-material/LoginSharp';
 import { Auth } from 'aws-amplify';
-import { useAppSelector } from '../../Redux-Toolkit/reduxHooks'
+import { useAppSelector, useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
 import { selectCount } from '../../Redux-Toolkit/listingIDSlice'
-import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks'
-import { removeCurrentUser } from '../../Redux-Toolkit/userSlice'
-import { userState } from '../../Redux-Toolkit/userSlice';
-
+import { removeCurrentUser, userState } from '../../Redux-Toolkit/userSlice'
 
 
 const NavBar: React.FC = () => {

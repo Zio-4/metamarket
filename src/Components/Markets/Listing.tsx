@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box'
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { TextField, Divider, Button } from '@mui/material';
+import { Typography, Grid, Box, Card, CardContent, Divider, Button } from '@mui/material';
 import USD from '../../../node_modules/cryptocurrency-icons/svg/black/usd.svg'
 import FavoriteBorderSharpIcon from '@mui/icons-material/FavoriteBorderSharp';
 import AddShoppingCartSharpIcon from '@mui/icons-material/AddShoppingCartSharp';
@@ -14,14 +9,15 @@ import { useParams } from 'react-router-dom'
 import { useAddToCart } from '../../Hooks/useAddToCart'
 import { useRemoveFromCart } from '../../Hooks/useRemoveFromCart'
 import RemoveShoppingCartSharpIcon from '@mui/icons-material/RemoveShoppingCartSharp';
+import { ItestListing } from '../../lib/Interfaces/DataInterfaces'
 
-interface ItestListing {
-  albumId: number
-  id: number
-  title: string
-  url: string
-  thumbnailUrl: string
-}
+// interface ItestListing {
+//   albumId: number
+//   id: number
+//   title: string
+//   url: string
+//   thumbnailUrl: string
+// }
  
 
 function Listing() {

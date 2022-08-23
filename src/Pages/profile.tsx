@@ -1,14 +1,12 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAppSelector } from '../Redux-Toolkit/reduxHooks'
+import { useAppSelector, useAppDispatch } from '../Redux-Toolkit/reduxHooks'
 import { userState } from '../Redux-Toolkit/userSlice'
 import { Button, Box } from '@mui/material'
 import { API, graphqlOperation } from 'aws-amplify'
-import { deleteStripeConnectAccount } from '../graphql/mutations'
-import { useAppDispatch } from '../Redux-Toolkit/reduxHooks';
-import { setCurrentUser } from '../Redux-Toolkit/userSlice';
+import { deleteStripeConnectAccount, checkAndUpdateAccount } from '../graphql/mutations'
+// import { setCurrentUser } from '../Redux-Toolkit/userSlice';
 import { useUpdateUser } from '../Hooks/useUpdateUser'
-import { checkAndUpdateAccount } from '../graphql/mutations'
 import { IupdateUserResponse } from '../lib/Interfaces/ListingFormInterfaces'
 
 export const Profile = () => {
@@ -23,7 +21,7 @@ export const Profile = () => {
       const handleUpdateUser = async () => {
         let updateUserResponse = await API.graphql(graphqlOperation(checkAndUpdateAccount, {input: {stripeAccountId: userInfo.stripeId, userId: userInfo.userId}})) as IupdateUserResponse
   
-        console.log('updateuser response:', updateUserResponse)
+        console.log('updateUser response:', updateUserResponse)
         if (updateUserResponse.data.checkAndUpdateAccount === 'SUCCESS') {
           updateUser({chargesEnabled: true})
         } 

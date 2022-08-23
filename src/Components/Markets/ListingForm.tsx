@@ -1,28 +1,14 @@
 import React, {useEffect, useState, MouseEvent} from 'react'
-import Grid from '@mui/material/Grid'
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
+import { Grid, TextField, Button, Autocomplete, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@mui/material'
 import { styled } from '@mui/material/styles';
 import ArrowUpwardSharpIcon from '@mui/icons-material/ArrowUpwardSharp';
-import Autocomplete from '@mui/material/Autocomplete';
-import Typography from '@mui/material/Typography';
 import { API, graphqlOperation } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { signUpUser } from '../../graphql/mutations';
-import { useAppSelector } from '../../Redux-Toolkit/reduxHooks';
+import { signUpUser, checkAndUpdateAccount } from '../../graphql/mutations';
+import { useAppSelector, useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
 import { userState } from '../../Redux-Toolkit/userSlice';
-import { useAppDispatch } from '../../Redux-Toolkit/reduxHooks';
-// import { setCurrentUser } from '../../Redux-Toolkit/userSlice';
-import { checkAndUpdateAccount } from '../../graphql/mutations';
 import { useUpdateUser } from '../../Hooks/useUpdateUser';
-// import { getUserQuery } from '../../Interfaces/ListingFormInterfaces';
-import { IstripeSignUpResponse } from '../../lib/Interfaces/ListingFormInterfaces';
-import { IupdateUserResponse } from '../../lib/Interfaces/ListingFormInterfaces';
+import { IstripeSignUpResponse, IupdateUserResponse } from '../../lib/Interfaces/ListingFormInterfaces';
 
 
 const Input = styled('input')({
@@ -36,15 +22,14 @@ const blockchains = [{label: 'Ethereum'}, {label: 'Solana'}, {label: 'Polygon'},
 const categories = [{label: 'Art'}, {label: 'Boats'}, {label: 'Cars'}, {label: 'Clothes'}, {label: 'Land'}, {label: 'Houses'}, {label: 'Items'}, {label: 'Jewelry'}, {label: 'Traits'}]
 
 
-
 const ListingForm: React.FC = () => {
   const navigate = useNavigate()
   const userInfo = useAppSelector(userState)
   const dispatch = useAppDispatch()
   const [dialogState, setDialogState] = useState(false)
   const updateUserHook = useUpdateUser()
-
-
+  const [formValues, setFormValues] = useState({title: '', price: 0, category: '', colors: [], blockchain: '', xCoordinate: 0, yCoordinate: 0, description: ''})
+ 
 
   useEffect(() => {
     // loading animation or if not signed in/ error return
@@ -77,9 +62,17 @@ const ListingForm: React.FC = () => {
 
     if (!userInfo.chargesEnabled) {
       // Tell user to finish the onboarding flow to have account fully set up
+      console.log('Finish setting up Stripe account')
     }
+  }, [])
 
-  },[])
+  const handleFormChange = (e: any) => {
+    if (e.target.name === 'colors') {
+      // handle adding to array
+    } else {
+      setFormValues({...formValues, [e.target.name]: e.target.value})
+    }
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -89,7 +82,7 @@ const ListingForm: React.FC = () => {
 
   const handleClose = (event: object, reason: string) => {
     if (reason ==="backdropClick" || reason === "escapeKeyDown") return
-    console.log('reason', reason)
+    // console.log('reason', reason)
     setDialogState(false);
   };
 
@@ -116,7 +109,6 @@ const ListingForm: React.FC = () => {
     } catch (err) {
       console.log(err)
     }
-
     setDialogState(false)
   }
 
